@@ -1,0 +1,59 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 10/09/2020, 10:43:02 PM
+    Author     : yelbetto
+*/
+*{
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+#login{
+    width: 36%;
+    margin-left: 32%;
+    margin-top: 8%;
+    background-color: #010015;
+    color: #EBEBEB;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #000000;
+    animation-duration: 3000ms;
+    animation-name: aparecer;
+    opacity: 0.85;
+    display: inline-block;
+    padding-top: 1em;
+}
+
+h1{
+    margin: 5%;
+}
+h4{
+    margin: 0;
+}
+#recordar{
+    width: 0;
+}
+
+@keyframes aparecer{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 0.85;
+    }
+}
+#nombre-hospital{
+    display: inline-block;
+    text-align: center;
+    font-weight: 800;
+}
+#logo{
+    vertical-align: middle;
+}
+
+#adentro{
+    display:block;
+}
