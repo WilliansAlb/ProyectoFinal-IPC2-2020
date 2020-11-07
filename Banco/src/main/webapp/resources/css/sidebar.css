@@ -1,0 +1,153 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 7/11/2020, 12:55:35 AM
+    Author     : yelbetto
+*/
+*{
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.page-bg {
+    /*background-image: url("../img/fondo2.jpg");
+    -webkit-filter: blur(8px);
+    -moz-filter: blur(8px);
+    -o-filter: blur(8px);
+    -ms-filter: blur(8px);
+    filter: blur(8px);
+    */
+    background-size: 100%;
+    background-color: #001a28;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -100;
+}
+
+.w3-container{
+    display: inline-block;
+    padding: 0px;
+    width: 100%;
+}
+#menu{
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 700;
+    border: none;
+display: inline-block;
+padding: 8px 16px;
+vertical-align: middle;
+overflow: hidden;
+text-decoration: none;
+color: inherit;
+background-color: inherit;
+font-size: 2em;
+text-align: center;
+cursor: pointer;
+white-space: nowrap;
+}
+.boton{
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 700;
+    border: none;
+display: inline-block;
+padding: 8px 16px;
+vertical-align: middle;
+overflow: hidden;
+text-decoration: none;
+font-size: 1.64em;
+color: white;
+background-color: #262546;
+text-align: center;
+cursor: pointer;
+white-space: nowrap;
+line-height: 2em;
+width: 100%;
+}
+.boton:hover{
+    background-color: #ff0057;
+}
+.nav{
+    padding: 0;
+    background-color: #262546;
+    color: white;
+    -webkit-box-shadow: 0px 8px 6px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 8px 6px -7px rgba(0,0,0,0.75);
+    box-shadow: 0px 8px 6px -7px rgba(0,0,0,0.75); 
+}
+
+#menu:hover{
+    background-color: #ff0057;
+}
+
+#menuBar{
+    background-color: #625656;
+    z-index: 100;
+    box-shadow: 9px 8px 7px -7px rgba(0,0,0,0.75);
+    overflow: hidden;
+}
+.w3-bar-item{
+    text-decoration: none;
+    font-size: 1.21em;
+}
+.w3-bar-item:hover{
+    background-color: #ffffff2a;
+}
+#nombreHospital{
+    font-size: 1em;
+    display: inline-block;
+}
+#contenedor{
+    width: 100%;
+}
+#izquierda{
+    display: inline-block;
+}
+#derecha{
+    float: right;
+}
+#imagenHospital{
+    border-radius: 200px 200px 200px 200px;
+-moz-border-radius: 200px 200px 200px 200px;
+-webkit-border-radius: 200px 200px 200px 200px;
+border: 0px solid #000000;
+}
+
+#informacionPerfil{
+padding: 5px;
+margin: 0.15em;
+}
+
+.boton1{
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 700;
+    border: none;
+display: inline-block;
+background-color: inherit;
+vertical-align: middle;
+overflow: hidden;
+text-decoration: none;
+font-size: 1.64em;
+text-align: center;
+cursor: pointer;
+white-space: nowrap;
+line-height: 2em;
+width: 100%;
+border-radius: 44px 44px 44px 44px;
+    -moz-border-radius: 44px 44px 44px 44px;
+    -webkit-border-radius: 22px 22px 22px 22px;
+    border: 0px dashed skyblue;
+    color: white;
+}
+#boton1:hover{
+    background-color: #ff0057;
+    cursor: pointer;
+}
+

@@ -162,7 +162,7 @@ function showDocInTable(xml) {
         if (CUENTAS !== null) {
             const LISTADOC = CUENTAS.querySelectorAll("CUENTA");
             if (LISTADOC.length > 0) {
-                CUENTASDATOS.innerHTML = '<center><button class="learn-more" onclick="verCuentas(this)">CUENTAS<img src="../resources/img/expand.svg" width="15%" style="display: inline-block;vertical-align: middle;"></button></center>';
+                CUENTASDATOS.innerHTML = '<center><button class="learn-more buttonEspecial" onclick="verCuentas(this)">CUENTAS<img src="../resources/img/expand.svg" width="15%" style="display: inline-block;vertical-align: middle;"></button></center>';
                 CUENTASDATOS.innerHTML += '<table class="table-fill cuentas" style="display: none;"><thead><tr><th>Cuenta</th><th>Credito</th><th>Fecha creación</th></tr></thead><tbody>';
                 CUENTASDATOS.innerHTML += '</tbody></table>';
                 const tbody23 = CUENTASDATOS.querySelectorAll("table")[0];

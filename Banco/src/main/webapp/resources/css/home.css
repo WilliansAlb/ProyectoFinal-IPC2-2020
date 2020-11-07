@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 7/11/2020, 02:46:21 AM
+    Author     : yelbetto
+*/
+*,h1,h2,h3,h4,h5,h6,h7{
+    font-family: 'Oswald', sans-serif;
+}
+.bienvenida{
+    display: grid;
+grid-template-columns: 100%;
+align-content: center;
+align-items: center;
+text-align: center;
+z-index: -1;
+position: absolute;
+background-image: url("../img/waves3.png");
+width: 100%;
+color: white;
+font-weight: bold;
+height: 80%;
+background-repeat: repeat-x;
+background-size: contain;
+opacity: 0.4;
+}
+.bienvenida2{
+    color: white;
+}
