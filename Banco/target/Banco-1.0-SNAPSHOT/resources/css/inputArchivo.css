@@ -1,0 +1,52 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 7/11/2020, 11:45:11 PM
+    Author     : yelbetto
+*/
+
+.input-file-trigger {
+    display: block;
+    padding: 14px 4px;    
+    background-color: #010015;
+    color: #fff;
+    font-size: 1em;
+    transition: all .4s;
+    cursor: pointer;
+    width: 70%;
+}
+#archivo {
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    cursor: pointer;
+    display: inline;
+}
+#archivo:hover + .input-file-trigger,
+#archivo:focus + .input-file-trigger,
+.input-file-trigger:hover,
+.input-file-trigger:focus {
+    background: #34495E;
+    color: #39D2B4;
+}
+
+.file-return {
+    margin: 0;
+    display: inline-block;
+}
+.file-return:not(:empty) {
+    margin: 1em 0;
+}
+.file-return {
+    font-style: italic;
+    font-size: .9em;
+    font-weight: bold;
+}
+.file-return:not(:empty):before {
+    content: "Archivo PDF de DPI: ";
+    font-style: normal;
+    font-weight: normal;
+}

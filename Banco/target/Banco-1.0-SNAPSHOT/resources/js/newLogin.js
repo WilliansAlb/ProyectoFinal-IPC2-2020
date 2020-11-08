@@ -42,17 +42,17 @@ function comprobar() {
 
 let timeout;
 function dejarDeEscribir() {
-    clearTimeout(timeout)
+    clearTimeout(timeout);
     timeout = setTimeout(() => {
         var usuario1 = $("#usuario").val();
         var contraseña1 = $("#password").val();
-        var deshabilitar = usuario1.length == 0 || contraseña1.length == 0;
+        var deshabilitar = usuario1.length === 0 || contraseña1.length === 0;
         if (deshabilitar){
             bloquearBoton(document.getElementById("ingresarCredenciales"));
         } else {
             activarBoton(document.getElementById("ingresarCredenciales"),"../resources/img/advance.svg")
         }
-        clearTimeout(timeout)
-    }, 800)
+        clearTimeout(timeout);
+    }, 800);
 }
 

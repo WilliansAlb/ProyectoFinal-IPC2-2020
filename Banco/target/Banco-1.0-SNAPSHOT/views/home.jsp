@@ -35,13 +35,14 @@
                     <div class="face face1">
                         <div class="content">
                             <img src="../resources/img/manager.svg">
-                            <h3>Tus datos</h3>
+                            <h3>Tu Perfil</h3>
                         </div>
                     </div>
                     <div class="face face2">
                         <div class="content">
-                            <p>Verifica tus datos</p>
-                            <a href="#">Ir</a>
+                            <p>Ver tus datos o el historial de lo que has hecho</p>
+                            <a href="#">Ver datos</a>
+                            <a href="#">Historial</a>
                         </div>
                     </div>
                 </div>
@@ -55,10 +56,8 @@
                     <div class="face face2">
                         <div class="content">
                             <p>¿Que deseas ingresar?</p>
-                            <a href="#">Cuenta</a>
-                            <a href="#">Cliente</a>
-                            <a href="#">Cajero</a>
-                            <a href="#">Gerente</a>
+                            <a href="crearCuenta.jsp">Nueva cuenta</a>
+                            <a href="crearCajero.jsp">Nuevo trabajador</a>
                         </div>
                     </div>
                 </div>
@@ -102,18 +101,12 @@
                     <div class="face face2">
                         <div class="content">
                             <p>Ajusta los limites y los horarios de los turnos</p>
-                            <a href="#">Ir</a>
+                            <a href="configuracion.jsp">Ir</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </body>
-    <footer>
-        <center>
-        <hr width="50%" style="border-top: 1px dotted red;">
-        <p>Autor: Willians López</p>
-        <p>Año 2020</p>
-        </center>
-    </footer> 
+    
 </html>

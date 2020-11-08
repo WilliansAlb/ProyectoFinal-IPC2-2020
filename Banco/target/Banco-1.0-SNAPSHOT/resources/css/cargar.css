@@ -30,13 +30,14 @@ font-size: 0.8em;
     margin: 10px 0 0 10%;
     width: 80%;
     height: 50%;
-    background-color: #010015;
+    background-color: inherit;
     opacity: 0.8;
     border-radius: 10px 10px 10px 10px;
 -moz-border-radius: 10px 10px 10px 10px;
 -webkit-border-radius: 10px 10px 10px 10px;
 border: 0px solid #000000;
-    font-size: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
 #btn-con-iz{
     width: 50%;
@@ -195,3 +196,21 @@ color: #ebebeb;
       padding: 0;
       left: 0;
   }
+
+  
+.tablaDatos {
+    background-color: inherit;
+    border-collapse: collapse;
+    text-align: center;
+}
+.tablaDatos tbody tr td{
+    border: 2px dotted purple;
+    font-weight: 300;
+    color: white;
+}
+.tablaDatos thead tr th {
+	/* background-color: skyblue; */
+    border: 2px solid #5264AE;
+    font-weight: 900;
+    color: #5264AE;
+}

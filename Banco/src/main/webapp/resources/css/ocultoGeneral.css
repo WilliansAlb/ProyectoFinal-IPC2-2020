@@ -1,0 +1,31 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 7/11/2020, 10:43:53 PM
+    Author     : yelbetto
+*/
+.oculto{
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    background-color: rgba(0, 0, 0, 0.507);
+}
+.mensaje2{
+    padding: 0;
+    background-color: #b6b6b6;
+    width: 40%;
+    height: auto;
+    -webkit-box-shadow: 7px 6px 78px 7px rgb(34, 0, 34);
+    -moz-box-shadow: 7px 6px 78px 7px  rgb(34, 0, 34);
+    box-shadow: 7px 6px 78px 7px  rgb(34, 0, 34);
+}
+
+.mensaje2 article{
+    text-align: justify;
+}

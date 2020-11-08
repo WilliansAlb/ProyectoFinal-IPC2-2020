@@ -13,7 +13,6 @@ and open the template in the editor.
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: consolas;
     flex-wrap: wrap;
 }
 

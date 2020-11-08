@@ -1,0 +1,50 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 7/11/2020, 08:52:41 PM
+    Author     : yelbetto
+*/
+*,h1,h2,h3,h4,h5,h6{
+    font-family: 'Oswald', sans-serif;
+}
+.crear{
+    display: inline-block;
+    width: 100%;
+}
+.ingreso{
+    width: 40%;
+    box-sizing: border-box;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+.ingreso img {
+    max-width: 100px;
+}
+.contenedorFlex{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.tablaDatos {
+    background-color: inherit;
+    border-collapse: collapse;
+    text-align: center;
+}
+.tablaDatos tbody tr td{
+    border: 2px dotted purple;
+    font-weight: 300;
+    color: white;
+}
+.tablaDatos thead tr th {
+	/* background-color: skyblue; */
+    border: 2px solid #5264AE;
+    font-weight: 900;
+    color: #5264AE;
+}
+#datosCuenta{
+    width: 60%;
+}

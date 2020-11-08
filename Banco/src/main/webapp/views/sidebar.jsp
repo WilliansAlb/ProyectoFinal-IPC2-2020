@@ -14,14 +14,12 @@
     <%
         if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
     %>
-    <a href="" class="w3-bar-item">Crear cliente</a>
-    <a href="" class="w3-bar-item">Crear cuenta</a>
-    <a href="" class="w3-bar-item">Crear cajero</a>
-    <a href="" class="w3-bar-item">Crear gerente</a>
+    <a href="crearCuenta.jsp" class="w3-bar-item">Crear cuenta</a>
+    <a href="crearCajero.jsp" class="w3-bar-item">Crear trabajador</a>
     <a href="" class="w3-bar-item">Modificar cliente</a>
     <a href="" class="w3-bar-item">Modificar cajero</a>
     <a href="" class="w3-bar-item">Modificar datos</a>
-    <a href="" class="w3-bar-item">Configuracion</a>
+    <a href="configuracion.jsp" class="w3-bar-item">Configuracion</a>
     <a href="" class="w3-bar-item">Reportes</a>
     <a href="" class="w3-bar-item">Ver datos</a>
     <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("DOCTOR")) {%>
