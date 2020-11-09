@@ -21,6 +21,8 @@
     </head>
     <body>
         <%@include file='sidebar.jsp'%>
+        <%HttpSession sesionHome = request.getSession();
+        %>
         <div class="bienvenida">
         </div>
     <center>
@@ -29,84 +31,195 @@
             <h5>¿Qué deseas hacer?</h5>
         </div>
     </center>
-        <div class="contenido">
-            <div class="container">
-                <div class="card">
-                    <div class="face face1">
-                        <div class="content">
-                            <img src="../resources/img/manager.svg">
-                            <h3>Tu Perfil</h3>
-                        </div>
-                    </div>
-                    <div class="face face2">
-                        <div class="content">
-                            <p>Ver tus datos o el historial de lo que has hecho</p>
-                            <a href="#">Ver datos</a>
-                            <a href="#">Historial</a>
-                        </div>
+    <div class="contenido">
+        <div class="container">
+            <%if (sesionHome.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {%>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/manager.svg">
+                        <h3>Tu Perfil</h3>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="face face1">
-                        <div class="content">
-                            <img src="../resources/img/add_database.svg">
-                            <h3>Ingresar</h3>
-                        </div>
-                    </div>
-                    <div class="face face2">
-                        <div class="content">
-                            <p>¿Que deseas ingresar?</p>
-                            <a href="crearCuenta.jsp">Nueva cuenta</a>
-                            <a href="crearCajero.jsp">Nuevo trabajador</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="face face1">
-                        <div class="content">
-                            <img src="../resources/img/editar_base.svg">
-                            <h3>Modificar</h3>
-                        </div>
-                    </div>
-                    <div class="face face2">
-                        <div class="content">
-                            <p>¿Que deseas modificar?</p>
-                            <a href="#">Cliente</a>
-                            <a href="#">Cajero</a>
-                            <a href="#">Datos Personales</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="face face1">
-                        <div class="content">
-                            <img src="../resources/img/survey.svg">
-                            <h3>Reportes</h3>
-                        </div>
-                    </div>
-                    <div class="face face2">
-                        <div class="content">
-                            <p>Ver y exportar tus reportes</p>
-                            <a href="#">Ir</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="face face1">
-                        <div class="content">
-                            <img src="../resources/img/settings.svg">
-                            <h3>Ajustes</h3>
-                        </div>
-                    </div>
-                    <div class="face face2">
-                        <div class="content">
-                            <p>Ajusta los limites y los horarios de los turnos</p>
-                            <a href="configuracion.jsp">Ir</a>
-                        </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Ver tus datos o el historial de lo que has hecho</p>
+                        <a href="datosGerente.jsp">Ver datos</a>
+                        <a href="#">Historial</a>
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/add_database.svg">
+                        <h3>Ingresar</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>¿Que deseas ingresar?</p>
+                        <a href="crearCuenta.jsp">Nueva cuenta</a>
+                        <a href="crearCajero.jsp">Nuevo trabajador</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/editar.svg">
+                        <h3>Modificar</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>¿Que deseas modificar?</p>
+                        <a href="modificarCliente.jsp">Cliente</a>
+                        <a href="modificarCajero.jsp">Cajero</a>
+                        <a href="datosGerente.jsp">Datos Personales</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/survey.svg">
+                        <h3>Reportes</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Ver y exportar tus reportes</p>
+                        <a href="#">Ir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/settings.svg">
+                        <h3>Ajustes</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Ajusta los limites y los horarios de los turnos</p>
+                        <a href="configuracion.jsp">Ir</a>
+                    </div>
+                </div>
+            </div>
+            <%} else if (sesionHome.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {%>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/manager.svg">
+                        <h3>Tu Perfil</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Ver tus datos o el historial de las transacciones</p>
+                        <a href="datosGerente.jsp">Ver datos</a>
+                        <a href="#">Historial</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <center>
+                            <img src="../resources/img/conference_call.svg">
+                            <h3>Asociaciones</h3>
+                        </center>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>¿Que deseas hacer?</p>
+                        <a href="modificarCliente.jsp">Solicitar asociacion</a>
+                        <a href="modificarCajero.jsp">Ver solicitudes</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <center>
+                            <img src="../resources/img/money_transfer.svg">
+                            <h3>Transaccion</h3>
+                        </center>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Realiza transacciones en banca virtual o cajero automatico</p>
+                        <a href="configuracion.jsp">Transferir dinero</a>
+                        <a href="configuracion.jsp">Cajero automatico</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/survey.svg">
+                        <h3>Reportes</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Ver y exportar tus reportes</p>
+                        <a href="#">Ir</a>
+                    </div>
+                </div>
+            </div>
+            <%} else if (sesionHome.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {%>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/manager.svg">
+                        <h3>Tu Perfil</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Ver tus datos</p>
+                        <a href="datosGerente.jsp">Ver datos</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <center>
+                            <img src="../resources/img/money_transfer.svg">
+                            <h3>Transaccion</h3>
+                        </center>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>¿Qué tipo de transacción harás?</p>
+                        <a href="configuracion.jsp">Deposito</a>
+                        <a href="configuracion.jsp">Retiro</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <img src="../resources/img/survey.svg">
+                        <h3>Reportes</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Ver y exportar tus reportes</p>
+                        <a href="#">Ir</a>
+                    </div>
+                </div>
+            </div>
+            <%}%>
         </div>
-    </body>
-    
+    </div>
+</body>
 </html>

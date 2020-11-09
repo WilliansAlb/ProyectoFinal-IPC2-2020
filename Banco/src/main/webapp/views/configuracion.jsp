@@ -35,59 +35,61 @@
                         <img src="../resources/img/engineering.svg" max-width="67px">
                         <h1 style="font-weight: 900;color:white;">Configurar</h1>
                         <p style="font-size: 0.8em;font-weight: 300; color: grey;">Configura mediante el cambio y guardado de los siguientes campos algunos aspectos para reportes</p>
-                        <div class="group">
-                            <input type="number" required id="limiteMenor" style="color: #EBEBEB !important;">
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
-                            <label for="limiteMenor">Limite menor</label>
-                        </div>
-                        <div class="group">
-                            <input type="number" required id="limiteMayor" style="color: #EBEBEB !important;">
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
-                            <label for="limiteMayor">Limite menor</label>
-                        </div>
-                        <div class="group">
-                            <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="matutino">Turno matutino</label>
-                            <br>
-                            <div id="matutino" style="display:grid; grid-template-columns:auto auto auto auto; color:white;">
-                                Desde -
-                                <div class="input-group clockpicker">
-                                    <input type="text" class="form-control" value="09:30">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                    </span>
-                                </div>
-                                - Hasta -
-                                <div class="input-group clockpicker">
-                                    <input type="text" class="form-control" value="09:30">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                    </span>
+                        <form>
+                            <div class="group">
+                                <input type="number" required id="limiteMenor" style="color: #EBEBEB !important;">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="limiteMenor">Limite menor</label>
+                            </div>
+                            <div class="group">
+                                <input type="number" required id="limiteMayor" style="color: #EBEBEB !important;">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="limiteMayor">Limite menor</label>
+                            </div>
+                            <div class="group">
+                                <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="matutino">Turno matutino</label>
+                                <br>
+                                <div id="matutino" style="display:grid; grid-template-columns:auto auto auto auto; color:white;">
+                                    Desde -
+                                    <div class="input-group clockpicker">
+                                        <input type="text" class="form-control" value="09:30" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                    - Hasta -
+                                    <div class="input-group clockpicker">
+                                        <input type="text" class="form-control" value="09:30" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="group">
-                            <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="vespertino">Turno vespertino</label>
-                            <br>
-                            <div id="vespertino" style="display:grid; grid-template-columns:auto auto auto auto; color:white;">
-                                Desde -
-                                <div class="input-group clockpicker">
-                                    <input type="text" class="form-control" value="09:30:00">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                    </span>
-                                </div>
-                                - Hasta -
-                                <div class="input-group clockpicker">
-                                    <input type="text" class="form-control" value="06:30:50">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
-                                    </span>
+                            <div class="group">
+                                <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="vespertino">Turno vespertino</label>
+                                <br>
+                                <div id="vespertino" style="display:grid; grid-template-columns:auto auto auto auto; color:white;">
+                                    Desde -
+                                    <div class="input-group clockpicker">
+                                        <input type="text" class="form-control" value="09:30:00" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                    - Hasta -
+                                    <div class="input-group clockpicker">
+                                        <input type="text" class="form-control" value="06:30:50" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <button class="learn-more buttonEspecial" onclick="$('#contenedorMensaje2').show()">Guardar cambios</button>
+                            <button class="learn-more buttonEspecial" onclick="$('#contenedorMensaje2').show()">Guardar cambios</button>
+                        </form>
                     </center>
                 </div>
             </div>
@@ -97,7 +99,11 @@
         <script type="text/javascript" src="../resources/js/bootstrap-clockpicker.min.js"></script>
         <script type="text/javascript" src="../resources/js/highlight.min.js"></script>
         <script type="text/javascript">
-                            $('.clockpicker').clockpicker();
+                            $('.clockpicker').clockpicker({
+                                placement: 'top',
+                                align: 'left',
+                                donetext: 'Hecho'
+                            });
         </script>
     </body>
     <%@include file='footer.html' %>

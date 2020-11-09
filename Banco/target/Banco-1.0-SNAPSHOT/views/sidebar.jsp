@@ -5,7 +5,7 @@
 --%>
 <%
     HttpSession sInicio = request.getSession();
-    sInicio.setAttribute("tipo", "GERENTE");
+    sInicio.setAttribute("tipo", "CAJERO");
     if (sInicio.getAttribute("tipo") != null) {
 %>
 <div class="page-bg"></div>
@@ -16,26 +16,24 @@
     %>
     <a href="crearCuenta.jsp" class="w3-bar-item">Crear cuenta</a>
     <a href="crearCajero.jsp" class="w3-bar-item">Crear trabajador</a>
-    <a href="" class="w3-bar-item">Modificar cliente</a>
-    <a href="" class="w3-bar-item">Modificar cajero</a>
-    <a href="" class="w3-bar-item">Modificar datos</a>
+    <a href="modificarCliente.jsp" class="w3-bar-item">Modificar cliente</a>
+    <a href="modificarCajero.jsp" class="w3-bar-item">Modificar cajero</a>
     <a href="configuracion.jsp" class="w3-bar-item">Configuracion</a>
+    <a href="datosGerente.jsp" class="w3-bar-item">Ver datos</a>
     <a href="" class="w3-bar-item">Reportes</a>
-    <a href="" class="w3-bar-item">Ver datos</a>
-    <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("DOCTOR")) {%>
-    <a href="Informe.jsp" class="w3-bar-item">Ingresar informe</a>
-    <a href="HistorialMedico.jsp" class="w3-bar-item">Ver historial de paciente</a>
-    <a href="Perfil.jsp" class="w3-bar-item">Ver perfil</a>
-    <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("ADMIN")) {%>
+    <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {%>
+    <a href="#" class="w3-bar-item">Transferir dinero</a>
+    <a href="#" class="w3-bar-item">Cajero automático</a>
+    <a href="#" class="w3-bar-item">Solicitar asociación</a>
+    <a href="#" class="w3-bar-item">Listar solicitudes de asociación</a>
+    <a href="#" class="w3-bar-item">Historial de transacciones</a>
+    <a href="#" class="w3-bar-item">Perfil</a>
+    <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {%>
     <a href="AdminConsultas.jsp" class="w3-bar-item">Editar/crear tipos consultas</a>
     <a href="AdminExamenes.jsp" class="w3-bar-item">Editar/crear tipos examen</a>
     <a href="AdminMedicos.jsp" class="w3-bar-item">Editar/crear medico</a>
     <a href="AdminLaboratoristas.jsp" class="w3-bar-item">Editar/crear laboratorista</a>
     <a href="ReporteAdmin.jsp" class="w3-bar-item">Reportes</a>
-    <a href="Perfil.jsp" class="w3-bar-item">Ver perfil</a>
-    <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("LABORATORISTA")) {%>
-    <a href="Laboratorista.jsp" class="w3-bar-item">Ingresar resultado</a>
-    <a href="ReporteLaboratorista.jsp" class="w3-bar-item">Reportes</a>
     <a href="Perfil.jsp" class="w3-bar-item">Ver perfil</a>
     <%}%>
     <a href="/Servidor/Perfil?tipo=123" class="w3-bar-item">Cerrar sesión</a>

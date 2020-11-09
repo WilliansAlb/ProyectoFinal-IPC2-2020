@@ -1,0 +1,30 @@
+<svg width="518" height="518" xmlns="http://www.w3.org/2000/svg" style="vector-effect: non-scaling-stroke;">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="520" width="520" y="-1" x="-1"/>
+  <g style="vector-effect: non-scaling-stroke;" display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_28">
+   <g transform="matrix(4.10591, 0, 0, 4.10591, -367.119, -355.691)" id="svg_26">
+    <title>background</title>
+    <rect x="19.22157" y="15.9513" width="202" height="202" id="svg_24" fill="none"/>
+   </g>
+   <g transform="matrix(4.10591, 0, 0, 4.10591, -367.119, -355.691)" id="svg_27">
+    <title>Layer 1</title>
+    <g id="svg_14">
+     <path fill="#E57373" d="m199.58144,120.10958l-11.34718,-10.82212c-1.62103,-1.54602 -4.45782,-1.54602 -6.4841,0l-5.26834,5.02456l17.83129,17.00619l5.26834,-5.02456c1.62103,-1.54602 1.62103,-4.25155 0,-6.18407l-0.00001,0z" id="svg_19"/>
+     <rect x="1.03828" y="189.50263" transform="matrix(2.86516, -2.73259, 2.86516, 2.73259, -428.343, -344.381)" fill="#FF9800" width="17.4" height="6.2" id="svg_18"/>
+     <rect x="67.56172" y="-126.60263" transform="matrix(-2.86516, 2.73259, -2.86516, -2.73259, 25.1508, -399.106)" fill="#B0BEC5" width="3.1" height="6.2" id="svg_17"/>
+     <polygon fill="#FFC107" points="117.71963310241699,170.74170398712158 111.6407527923584,193.15887928009033 135.14562797546387,187.36133289337158 " id="svg_16"/>
+     <polygon fill="#37474F" points="114.47756767272949,181.5637559890747 111.6407527923584,193.15887928009033 123.79842948913574,190.45337390899658 " id="svg_15"/>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>
