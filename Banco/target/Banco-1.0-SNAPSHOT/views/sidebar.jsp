@@ -5,7 +5,7 @@
 --%>
 <%
     HttpSession sInicio = request.getSession();
-    sInicio.setAttribute("tipo", "CAJERO");
+    sInicio.setAttribute("tipo", "CLIENTE");
     if (sInicio.getAttribute("tipo") != null) {
 %>
 <div class="page-bg"></div>

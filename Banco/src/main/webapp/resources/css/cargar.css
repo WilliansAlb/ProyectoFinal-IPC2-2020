@@ -96,7 +96,7 @@ color: #ebebeb;
 .progress {
     vertical-align: middle;
 	--progress-value: 0;
-	--color: hsl(calc(240 * (1 - var(--progress-value))), 100%, calc(20% + 40% * var(--progress-value)));
+	--color: grey;
 }
 
 .circle-progress-value {

@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>El Billeton</title>
         <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
@@ -35,7 +35,9 @@
                     con datos a cargar...<img src="../resources/img/data_recovery.svg" width="10%"
                                               style="display: inline-block;vertical-align: middle;"></label>
                 <p id="ruta" class="file-return"></p>
-                <input type="file" id="archivo" accept=".xml" onchange="verificar()">
+                <form action="../archivo" method="POST" enctype="multipart/form-data" id="prueba1">
+                    <input type="file" id="archivo" name="archivo" onchange="verificar()" webkitdirectory directory multiple>
+                </form>
                 <br>
                 <div id="opciones" style="display: none;">
                     <button class="learn-more buttonEspecial" onclick="cambiarArchivo(this)">CAMBIAR ARCHIVO<img src="../resources/img/data_backup.svg"
@@ -44,8 +46,8 @@
                             src="../resources/img/search.svg" width="10%" style="display: inline-block;vertical-align: middle;"></button>
                     <button class="learn-more buttonEspecial"
                             onclick="verMensaje('Ingresando datos a base')"
-                            style="display: none;" id="ingresarDatos">INGRESAR DATOS<img src="../resources/img/add_database.svg" width="10%"
-                                                                                 style="display: inline-block;vertical-align: middle;"></button>
+                            style="display: none;" id="ingresarDatos">INGRESAR DATOS<img src="../resources/img/add_database.svg" width="10%" style="display: inline-block;vertical-align: middle;"></button>
+                            <button class="learn-more buttonEspecial" onclick="mandarLogin()" style="display: none;" id="iniciarSesion">Inicio de sesión<img src="../resources/img/next.svg" width="10%" style="display: inline-block;vertical-align: middle;"></button>
                 </div>
             </center>
         </div>
@@ -60,7 +62,7 @@
             </div>
             <div id="tablas">
                 <center>
-                    <table class="tablaDatos tablas" id="gerentes">
+                    <table class="tablaDatos tablas" id="gerentes" style="width: 95%;">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -76,7 +78,7 @@
                         <tbody>
                         </tbody>
                     </table>
-                    <table class="tablaDatos tablas" id="cajeros" style="display: none;">
+                    <table class="tablaDatos tablas" id="cajeros" style="display: none; width: 95%;">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -92,12 +94,13 @@
                         <tbody>
                         </tbody>
                     </table>
-                    <table class="tablaDatos tablas" id="clientes" style="display: none;">
+                    <table class="tablaDatos tablas" id="clientes" style="display: none; width: 95%;">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
                                 <th>DPI</th>
+                                <th>PDF DPI</th>
                                 <th>Fecha nacimiento</th>
                                 <th>Direccion</th>
                                 <th>Sexo</th>
@@ -107,75 +110,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>12345</td>
-                                <td>Panchito de tal</td>
-                                <td>1234567890123</td>
-                                <td>2020-07-21</td>
-                                <td>3ra calle 4-18 zona 1, San Lorenzo</td>
-                                <td>Masculino</td>
-                                <td>papitoremolino</td>
-                                <td>
-                        <center><button class="learn-more buttonEspecial" onclick="verCuentas(this)">CUENTAS<img
-                                    src="../resources/img/expand.svg" width="15%"
-                                    style="display: inline-block;vertical-align: middle;"></button></center>
-                        <table class="tablaDatos cuentas" style="display: none;">
-                            <thead>
-                                <tr>
-                                    <th>Cuenta</th>
-                                    <th>Credito</th>
-                                    <th>Fecha creación</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Cuenta1</td>
-                                    <td>1000.00</td>
-                                    <td>04-10-2020</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </td>
-                        <td>SIN INGRESAR</td>
-                        </tr>
                         </tbody>
                     </table>
-                    <table class="tablaDatos tablas" id="transacciones" style="display: none;">
+                    <table class="tablaDatos tablas" id="transacciones" style="display: none; width: 95%;">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -189,87 +126,80 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>15475</td>
-                                <td>1111101</td>
-                                <td>2020-01-12</td>
-                                <td>16:15:25</td>
-                                <td>Credito</td>
-                                <td>156.75</td>
-                                <td>15948711</td>
-                                <td>SIN INGRESAR</td>
-                            </tr>
-                            <tr>
-                                <td>15475</td>
-                                <td>1111101</td>
-                                <td>2020-01-12</td>
-                                <td>16:15:25</td>
-                                <td>Credito</td>
-                                <td>156.75</td>
-                                <td>15948711</td>
-                                <td>SIN INGRESAR</td>
-                            </tr>
-                            <tr>
-                                <td>15475</td>
-                                <td>1111101</td>
-                                <td>2020-01-12</td>
-                                <td>16:15:25</td>
-                                <td>Credito</td>
-                                <td>156.75</td>
-                                <td>15948711</td>
-                                <td>SIN INGRESAR</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </center>
             </div>
-            <hr width="30%">
-            <div class="buttons" id="btn2">
-                <div class="container">
-                    <a onclick="ingresarTodo(this)" class="effect01" target="_blank"><span>INGRESAR TODO</span></a>
-                </div>
-            </div>
-            <center>
-                <div id="botonsote">
-                    <center>
-                        <div id="cargando" style="display: none;">
-                            <div class="progress" id="pro"></div>
-                            <label for="pro" id="actualSubiendo"></label>
-                        </div>
-                    </center>
-                    <button id="ingresar-todo" onclick="ingresarTodo(this)" style="display: none;">INGRESAR TODO</button>
-                </div>
-            </center>
         </div>
     <center>
         <div id="contenedorMensaje" class="oculto" style="display:none;">
-            <div id="contenedorInterior" class="mensaje2">
+            <div id="contenedorInterior" class="mensaje2" style="background-color:#001a28">
                 <div style="padding: 0.5em;">
                     <img id="imagen" src="../resources/img/checkmark.svg" width="10%" style="display: none;vertical-align: middle;">
-                    <h3 id="tituloMensaje" style="font-weight: bold;font-size: 1.5em; margin: 0;">por defecto</h3>
+                    <h3 id="tituloMensaje" style="font-weight: bold;font-size: 1.5em; margin: 0;color:white;">por defecto</h3>
                 </div>
                 <center>
                     <div id="cargando">
                         <div class="progress" id="pro"></div>
-                        <label for="pro" id="actualSubiendo">ingresando...</label>
-                        <article id="articulo" style="display:inline-block;">
-                            <span style="font-weight: bold;font-size: 1em;">ERRORES:</span>
-                        </article>
+                        <label for="pro" id="actualSubiendo" style="color: grey;">ingresando...</label>
+                    </div>
+                    <div style="width:100%;overflow-y: scroll;display: none;" id="resumenContenedor">
+                        <label for="resumen" style="color: grey;">RESUMEN</label>
+                        <table id="resumen" style="text-align: center;" class="tablaDatos">
+                            <thead>
+                                <tr>
+                                    <th>Ingresados</th>
+                                    <th>Tabla</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="height:130px;width:100%;overflow-y: scroll;display:none;" id="historialContenedor">
+                        <label for="historial" style="color:grey;">ERRORES</label>
+                        <table id="historial" style="text-align: center;" class="tablaDatos">
+                            <thead>
+                                <tr>
+                                    <th>Registro</th>
+                                    <th>Estado</th>
+                                    <th>Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                     </div>
                 </center>
-                <button class="learn-more buttonEspecial" onclick="cerrandoFrame()">Cerrar</button>
+                <p id="informar1" style="color:grey"></p>
+                <div id="botonesIngresado" style="display:none;">
+                    <button class="learn-more buttonEspecial" onclick="cerrandoFrame()">Revisar registros<img src="../resources/img/search.svg" width="10%" style="display: inline-block;vertical-align: middle;"></button>
+                    <button class="learn-more buttonEspecial" onclick="mandarLogin()">Inicio de sesión<img src="../resources/img/next.svg" width="10%" style="display: inline-block;vertical-align: middle;"></button>
+                </div>
+            </div>
+        </div>
+    </center>
+    <center>
+        <div id="mostradorDPI" class="oculto" style="display:none;">
+            <div id="contenedorEmbed" class="mensaje2">
+                <div style="padding: 0.5em;">
+                    <img id="imagen" src="../resources/img/document.svg" width="10%" style="display: none;vertical-align: middle;">
+                    <h3 id="tituloMensaje2" style="font-weight: bold;font-size: 1.5em; margin: 0;">DPI de cliente </h3>
+                    <embed src="" title="DPI" width="70%" height="400px" id="embeberDPI">
+                </div>
+                <br>
+                <button class="learn-more buttonEspecial" onclick="cerrandoFrame1()">Cerrar</button>
             </div>
         </div>
     </center>
     <script>
-        function verMensaje(titulo) {
-            document.getElementById("tituloMensaje").textContent = titulo;
-            $("#contenedorMensaje").fadeIn(1000);
-            repetir();
+        function cerrandoFrame1() {
+            $("#mostradorDPI").hide();
         }
-
-        function cerrandoFrame() {
-            $("#contenedorMensaje").hide();
+        function mandarLogin(){
+            window.location = 'login.jsp';
         }
         let timeout;
         var veces = 0;

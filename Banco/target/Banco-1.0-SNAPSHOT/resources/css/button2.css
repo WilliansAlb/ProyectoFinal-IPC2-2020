@@ -84,3 +84,8 @@ button.selected{
 button.selected:hover{
     cursor: auto;
 }
+
+-imagenBoton{
+    display: inline-block;
+    vertical-align: middle;
+}

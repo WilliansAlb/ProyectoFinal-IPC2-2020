@@ -136,7 +136,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>¿Que deseas hacer?</p>
-                        <a href="modificarCliente.jsp">Solicitar asociacion</a>
+                        <a href="asociar.jsp">Solicitar asociacion</a>
                         <a href="modificarCajero.jsp">Ver solicitudes</a>
                     </div>
                 </div>
