@@ -8,17 +8,18 @@ function metodo(x, y) {
         $.ajax({
         type: 'GET',
         data: {usuario: x, password: y},
-        url: 'Login',
+        url: '../sesion',
         success: function (result) {
-            if (result==='mal'){
+            if (result==='NOEXISTE'){
                 $('#password').val("");
-                alert('Credenciales incorrectas');
-            } else if (result==='fallo conexion') {
+                verMensaje('../resources/img/disapprove.svg','El usuario y la contraseña no coinciden con ningún registro válido','Credenciales incorrectas');
+            } else if (result === 'BIEN'){
+                window.location = "home.jsp";
+            } else {
                 $('#password').val("");
                 alert("ERROR: fallo al conectar con la base de datos");
-            } else if (result === 'bien'){
-                window.location = "JSP/Perfil.jsp";
-            }
+                verMensaje('../resources/img/disapprove.svg','El usuario y la contraseña no coinciden con ningún registro válido','Credenciales incorrectas');
+            } 
         }
     });
     } else {

@@ -20,7 +20,32 @@ public class CajeroDTO {
     
     public CajeroDTO(){
         
-    } 
+    }
+    /**
+     * Constructor de la entidad Cajero
+     * @param codigo 
+     * @param nombre
+     * @param sexo
+     * @param turno
+     * @param dpi
+     * @param direccion 
+     */
+    public CajeroDTO(int codigo,String nombre,String sexo,String turno,String dpi,String direccion){
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.sexo = sexo;
+        this.turno = turno;
+        this.dpi = dpi;
+        this.direccion = direccion;
+    }
+    
+    public CajeroDTO(int codigo,String nombre,String sexo,String turno,String direccion){
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.sexo = sexo;
+        this.turno = turno;
+        this.direccion = direccion;
+    }
 
     public int getCodigo() {
         return codigo;

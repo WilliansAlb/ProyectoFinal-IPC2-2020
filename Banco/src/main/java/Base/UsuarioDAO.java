@@ -8,7 +8,10 @@ package Base;
 import DTO.UsuarioDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,4 +46,24 @@ public class UsuarioDAO {
         return ingresado;
     }
     
+    public UsuarioDTO obtenerUsuario(String id, String password){
+        UsuarioDTO usuario = new UsuarioDTO();
+        String sql = "SELECT id, codigo, tipo FROM Usuario WHERE id = ? AND contra = md5(?)";
+        
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setString(1, id);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                usuario.setCodigo(rs.getInt("codigo"));
+                usuario.setId(id);
+                usuario.setContra(password);
+                usuario.setTipo(rs.getString("tipo"));
+            }
+        } catch (SQLException ex) {
+            System.err.print("ERROR en metodo obtenerUsuario() de clase UsuarioDAO por "+ex);
+            System.out.print("ERROR en metodo obtenerUsuario() de clase UsuarioDAO por "+ex);
+        }
+        return usuario;
+    }
 }

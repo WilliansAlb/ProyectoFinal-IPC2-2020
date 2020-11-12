@@ -39,21 +39,21 @@
             <div id="adentro">
                 <div class="group" style="width: 55% !important;">
                     <span class="popuptext" id="myPopup">Rellena este campo!</span>
-                    <input type="text" onkeyup="comprobar()" required id="usuario" style="color: #EBEBEB !important;">
+                    <input type="text" onchange="comprobar()" required id="usuario" style="color: #EBEBEB !important;">
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label for="usuario2">Usuario</label>
                 </div>
                 <div class="group" style="width: 55% !important;">
                     <span class="popuptext" id="myPopup1">Rellena este campo!</span>
-                    <input type="password" onkeyup="comprobar()" required id="password" style="color: #EBEBEB !important;">
+                    <input type="password" onchange="comprobar()" required id="password" style="color: #EBEBEB !important;">
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label for="password">Contraseña</label>
                 </div>
             </div>
             <div>
-                <button id="ingresarCredenciales" class="selected buttonEspecial" disabled onclick="verMensaje('../resources/img/checkmark.svg','articulo de prueba, acá puede ir un mensaje lo suficientemente grande como para ser la envidia de los libros del señor de los anillos','Mensaje de prueba')">INGRESAR
+                <button id="ingresarCredenciales" class="selected buttonEspecial" disabled onclick="metodo($('#usuario').val(),$('#password').val())">INGRESAR
                 <img src='../resources/img/cancel.svg' width='15%' style='display: inline-block;vertical-align: middle;'></button>
             </div>
         </center>

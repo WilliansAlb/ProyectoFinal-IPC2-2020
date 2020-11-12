@@ -12,6 +12,18 @@
         <servlet-name>carga</servlet-name>
         <servlet-class>Servlet.carga</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>sesion</servlet-name>
+        <servlet-class>Servlet.sesion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>creacion</servlet-name>
+        <servlet-class>Servlet.creacion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>modificacion</servlet-name>
+        <servlet-class>Servlet.modificacion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>asociacion</servlet-name>
         <url-pattern>/asociacion</url-pattern>
@@ -23,6 +35,18 @@
     <servlet-mapping>
         <servlet-name>carga</servlet-name>
         <url-pattern>/carga</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sesion</servlet-name>
+        <url-pattern>/sesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>creacion</servlet-name>
+        <url-pattern>/creacion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>modificacion</servlet-name>
+        <url-pattern>/modificacion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

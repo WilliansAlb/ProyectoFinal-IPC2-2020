@@ -5,7 +5,6 @@
 --%>
 <%
     HttpSession sInicio = request.getSession();
-    sInicio.setAttribute("tipo", "CLIENTE");
     if (sInicio.getAttribute("tipo") != null) {
 %>
 <div class="page-bg"></div>
@@ -36,7 +35,7 @@
     <a href="ReporteAdmin.jsp" class="w3-bar-item">Reportes</a>
     <a href="Perfil.jsp" class="w3-bar-item">Ver perfil</a>
     <%}%>
-    <a href="/Servidor/Perfil?tipo=123" class="w3-bar-item">Cerrar sesión</a>
+    <a href="/Banco/sesion?tipo=123" class="w3-bar-item">Cerrar sesión</a>
 </div>
 
 <div class="nav">

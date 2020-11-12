@@ -8,9 +8,13 @@ package Servlet;
 import Base.ClienteDAO;
 import Base.Conector;
 import DTO.ClienteDTO;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -75,7 +79,31 @@ public class archivo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Conector con = new Conector("encender");
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        byte[] b = null;
+        String codigo = request.getParameter("pdf");
+        try {
+            ps = con.getConexion().prepareStatement("SELECT pdf FROM Cliente WHERE dpi = ?;");
+            ps.setString(1, codigo);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                b = rs.getBytes(1);
+            }
+            InputStream bos = new ByteArrayInputStream(b);
+
+            int tamanoInput = bos.available();
+            byte[] datosPDF = new byte[tamanoInput];
+            bos.read(datosPDF, 0, tamanoInput);
+
+            response.getOutputStream().write(datosPDF);
+            bos.close();
+            ps.close();
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage()+"/");
+        }
     }
 
     /**

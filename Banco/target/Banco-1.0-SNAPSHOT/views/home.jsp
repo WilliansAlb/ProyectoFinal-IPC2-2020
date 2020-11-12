@@ -154,7 +154,7 @@
                     <div class="content">
                         <p>Realiza transacciones en banca virtual o cajero automatico</p>
                         <a href="configuracion.jsp">Transferir dinero</a>
-                        <a href="configuracion.jsp">Cajero automatico</a>
+                        <a href="retiroCliente.jsp">Cajero automatico</a>
                     </div>
                 </div>
             </div>

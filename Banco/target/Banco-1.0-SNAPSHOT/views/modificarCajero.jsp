@@ -4,6 +4,10 @@
     Author     : yelbetto
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="DTO.CajeroDTO"%>
+<%@page import="Base.CajeroDAO"%>
+<%@page import="Base.Conector"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,9 +27,16 @@
         <link rel="stylesheet" href="../resources/css/button2.css">
         <script src="../resources/js/oculto.js" type="text/javascript"></script>
         <script src="../resources/js/modificarEstadoBoton.js" type="text/javascript"></script>
+        <script src="../resources/js/modificacion.js" type="text/javascript"></script>
     </head>
     <body>
         <%@include file="sidebar.jsp"%>
+        <%
+            Conector cn = new Conector("cn");
+            CajeroDAO cajeros = new CajeroDAO(cn);
+            ArrayList<CajeroDTO> listadoCajeros = cajeros.obtenerCajeros();
+
+        %>
         <div class="bienvenida">
         </div>
         <div id="contenedorModCajero" class="crear">
@@ -36,10 +47,10 @@
                         <h1 style="font-weight: 900; color: white;">Cajeros</h1>
                         <p style="color: grey;">Se muestran los cajeros, puedes filtrar los cajeros ingresando el codigo, dpi, o nombre</p>
                         <div class="group" style="width: 40%;">
-                            <input type="text" id="busqueda" onkeyup="comprobar(this)" style="color: white;">
+                            <input type="text" id="busqueda" class="inputCentrado" onkeyup="comprobar(this)" style="color: white;">
                             <span class="highlight"></span>
                             <span class="bar"></span>
-                            <label for="busqueda">DPI/NOMBRE/CODIGO</label>
+                            <label for="busqueda" class="labelCentrado">DPI/NOMBRE/CODIGO</label>
                         </div>   
                         <table class="tablaDatos tablas" id="cajeros" style="width: 95%;">
                             <thead>
@@ -58,8 +69,20 @@
                                     <td><button class="learn-more buttonEspecial" onclick="rellenarCajero(this.parentNode)">EDITAR</button></td></tr>
                                 <tr class="cajerosDatos"><td>654321</td><td>Juan Gonzalez</td><td>MATUTINO</td><td>2222222222222</td><td>4ta calle 1-10 zona 13, Guatemala</td><td>Masculino</td>
                                     <td><button class="learn-more buttonEspecial" onclick="rellenarCajero(this.parentNode)">EDITAR</button></td></tr>
-                                <tr class="cajerosDatos"><td>891234</td><td>Pedro Perez</td><td>MATUTINO</td><td>333333333333</td><td>4ta calle 1-10 zona 13, Guatemala</td><td>Masculino</td>
-                                    <td><button class="learn-more buttonEspecial" onclick="rellenarCajero(this.parentNode)">EDITAR</button></td></tr>
+                                    <%for (int i = 0; i < listadoCajeros.size(); i++) {
+                                            CajeroDTO temporal = listadoCajeros.get(i);%>
+                                <tr class="cajerosDatos">
+                                    <td><%out.print(temporal.getCodigo());%></td>
+                                    <td><%out.print(temporal.getNombre());%></td>
+                                    <td><%out.print(temporal.getTurno());%></td>
+                                    <td><%out.print(temporal.getDpi());%></td>
+                                    <td><%out.print(temporal.getDireccion());%></td>
+                                    <td><%out.print(temporal.getSexo());%></td>
+                                    <td><button class="learn-more buttonEspecial" onclick="rellenarCajero(this.parentNode)">EDITAR</button></td>
+                                </tr>
+                                <%}
+                                %>
+
                             </tbody>
                         </table>
                     </center>
@@ -71,21 +94,21 @@
                         <img src="../resources/img/businessman.svg">
                         <h1 style="font-weight: 900; color: white;">Modificar cajero</h1>
                         <p style="color: grey;">Se muestran los datos del cajero seleccionado</p>
-                        <form>
+                        <form id="formModificacionCajero" action="../modificacion" method="POST">
                             <div class="group">
-                                <input type="text" id="codigo" onkeyup="guardarCambios(this)" class="deshabilitado" value="1234543" disabled required>
+                                <input type="text" id="codigo" name="codigo" onkeyup="guardarCambios(this)" class="deshabilitado" value="1234543" disabled required>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="codigo">Codigo</label>
                             </div>
                             <div class="group">
-                                <input type="text" id="dpi" onkeyup="guardarCambios(this)" class="deshabilitado" value="1832048181007" disabled required>
+                                <input type="text" id="dpi" name="dpi" onkeyup="guardarCambios(this)" class="deshabilitado" value="1832048181007" disabled required>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="dpi">DPI</label>
                             </div>
                             <div class="group">
-                                <input type="text" id="nombre" onkeyup="guardarCambios(this)" required value="juan" style="color: #EBEBEB !important;" value="">
+                                <input type="text" id="nombre" name="nombre" onkeyup="guardarCambios(this)" required value="juan" style="color: #EBEBEB !important;" value="">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="nombre">Nombre</label>
@@ -93,7 +116,7 @@
                             <div class="group">
                                 <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="turnos">Turno</label>
                                 <br>
-                                <select id="turnos" style="width:100%;" onchange="guardarCambios(this)">
+                                <select id="turnos" style="width:100%;" name="turno" onchange="guardarCambios(this)">
                                     <option value="M">Matutino</option>
                                     <option value="V">Vespertino</option>
                                 </select>
@@ -101,13 +124,13 @@
                             <div class="group">
                                 <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="sexos">Sexo</label>
                                 <br>
-                                <select id="sexos" style="width:100%;" onchange="guardarCambios(this)">
+                                <select id="sexos" style="width:100%;" name="sexo" onchange="guardarCambios(this)">
                                     <option value="M">Masculino</option>
                                     <option value="F">Femenino</option>
                                 </select>
                             </div>
                             <div class="group">
-                                <input type="text" id="direccion" onkeyup="guardarCambios(this)" required style="color: #EBEBEB !important;">
+                                <input type="text" id="direccion" name="direccion" onkeyup="guardarCambios(this)" required style="color: #EBEBEB !important;">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="direccion">Direccion</label>
@@ -118,6 +141,17 @@
                 </div>
             </div>
         </div>
+    <center>
+        <div id="contenedorMensaje" class="oculto" style="display:none;">
+            <div id="contenedorInterior" class="mensaje2" style="background-color: #001a28;">
+                <div style="padding: 2em;">
+                    <img id="imagen" src="../resources/img/checkmark.svg" width="10%" style="display: inline-block;vertical-align: middle;">
+                    <h2 id="tituloMensaje" style="font-weight: 900;margin:0;color: white;">por defecto</h2><article id="articulo" style="color:grey;display:inline-block;">asdjfaksjdlfkajsdlkfjalsdjflkasjdlkfjaskldjflasdfa</article>
+                </div>
+                <button class="learn-more buttonEspecial" onclick="cerrarRedirigir(this)" id="cerrarRedirigir">CERRAR</button>
+            </div>
+        </div>
+    </center>
         <%@include file="footer.html" %>
         <script>
             function comprobar(input) {
@@ -164,7 +198,7 @@
                 var sexo = tr.querySelectorAll("td")[5].textContent;
                 nombreC = nombre;
                 direccionC = direccion;
-                if (turno.toUpperCase() === "MATUTINO") {
+                if (turno.toUpperCase() === "M") {
                     $("#turnos").val("M");
                     sexoC = "M";
                 } else {
@@ -172,7 +206,7 @@
                     sexoC = "V";
                 }
 
-                if (sexo.toUpperCase() === "MASCULINO") {
+                if (sexo.toUpperCase() === "M") {
                     $("#sexos").val("M");
                     turnoC = "M";
                 } else {
@@ -202,19 +236,22 @@
                     }
                 }
                 if (noExiste) {
-                    document.getElementById("guardarCambios2").textContent = "Guardar cambios";
+                    document.getElementById("guardarCambios2").textContent = "GUARDAR CAMBIOS";
                 } else {
-                    document.getElementById("guardarCambios2").textContent = "Cancelar";
+                    document.getElementById("guardarCambios2").textContent = "CANCELAR";
                 }
             }
-            function cambios(boton) {
-                var tipo = boton.value;
-                if (tipo === "Guardar cambios") {
 
-                } else {
-                    $("#modificarCajero").hide(1000);
-                    $("#busquedaCajero").fadeIn();
-                }
+            function actualizarFormulario() {
+                var nombre = $("#nombre").val();
+                var turno = $("#turnos").val();
+                var sexos = $("#sexos").val();
+                var direccion = $("#direccion").val();
+                nombreC = nombre;
+                turnoC = turno;
+                sexoC = sexos;
+                direccionC = direccion;
+                document.getElementById("guardarCambios2").textContent = "CANCELAR";
             }
         </script>
     </body>

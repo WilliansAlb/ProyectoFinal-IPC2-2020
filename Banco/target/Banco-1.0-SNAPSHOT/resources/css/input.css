@@ -15,6 +15,9 @@ input 				{
     border-bottom:1px solid #757575;
     background-color: #00000000;
 }
+.inputCentrado{
+    text-align: center;
+}
 input:focus 		{ outline:none; }
 
 /* LABEL ======================================= */
@@ -31,13 +34,30 @@ input:focus 		{ outline:none; }
     -webkit-transition:0.2s ease all;
 }
 
+.group .labelCentrado{
+    top:10px;
+    left: -0.5%;
+    width: 100%;
+}
+
 /* active state */
 input:focus ~ label, input:valid ~ label 		{
     top:-20px;
     font-size:1em;
     color:#5264AE;
 }
-
+.inputCentrado:focus ~ label, .inputCentrado:valid ~ label 		{
+    top:-20px;
+    font-size:1em;
+    left: -0.5%;
+    color:#5264AE;
+}
+.inputCentrado:invalid ~ label 		{
+    top:-20px;
+    font-size:1em;
+    left: -0.5%;
+    color:#5264AE;
+}
 .deshabilitado:disabled ~ label{
     top:-20px;
     font-size:1em;

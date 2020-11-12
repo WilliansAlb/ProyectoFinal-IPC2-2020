@@ -19,9 +19,21 @@ public class CuentaDTO {
     public CuentaDTO(){
         
     }
-    
+    /**
+     * Constructor de entidad cuenta 
+     * @param codigo
+     * @param credito
+     * @param cliente
+     * @param creacion 
+     */
     public CuentaDTO(int codigo,Double credito,int cliente,String creacion){
         this.codigo = codigo;
+        this.credito = credito;
+        this.cliente = cliente;
+        this.creacion = creacion;
+    }
+    
+    public CuentaDTO(Double credito,int cliente,String creacion){
         this.credito = credito;
         this.cliente = cliente;
         this.creacion = creacion;

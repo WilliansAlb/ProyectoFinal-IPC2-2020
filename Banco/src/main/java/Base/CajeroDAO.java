@@ -9,7 +9,10 @@ import DTO.CajeroDTO;
 import DTO.GerenteDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -45,4 +48,80 @@ public class CajeroDAO {
         return ingresado;
     }
     
+     public boolean existeCajero(CajeroDTO cajero){
+        String sql = "SELECT COUNT(*) AS total FROM Cajero WHERE dpi = ?";
+        boolean ingresado = false;
+        
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setString(1, cajero.getDpi());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                ingresado = rs.getInt("total") > 0;
+            }
+        } catch (SQLException sqle){
+            System.err.print("Error en método existeTransaccion() de la clase TransaccionDAO por: "+sqle);
+            System.out.print("Error en método existeTransaccion() de la clase TransaccionDAO por: "+sqle);
+        }
+        return ingresado;
+    }
+    
+      public int crearCajero(CajeroDTO cajero){
+        String sql = "INSERT INTO Cajero(nombre,turno,sexo,dpi,direccion) "
+                + " SELECT ?, ?, ?, ?, ?"
+                + " FROM dual WHERE NOT EXISTS (SELECT * FROM Cajero WHERE dpi = ?);";
+        int ingresado = -1;
+        try(PreparedStatement ps = cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+            ps.setString(1, cajero.getNombre());
+            ps.setString(2, cajero.getTurno());
+            ps.setString(3, cajero.getSexo());
+            ps.setString(4, cajero.getDpi());
+            ps.setString(5, cajero.getDireccion());
+            ps.setString(6, cajero.getDpi());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            while(rs.next()){
+                ingresado = rs.getInt(1);
+            }
+        } catch (SQLException sqle){
+            System.err.print("Error en método crearCajero() de la clase CajeroDAO por: "+sqle);
+            System.out.print("Error en método crearCajero() de la clase CajeroDAO por: "+sqle);
+        }
+        return ingresado;
+    }
+    public ArrayList<CajeroDTO> obtenerCajeros(){
+        String sql = "SELECT * FROM Cajero";
+        ArrayList<CajeroDTO> listado = new ArrayList<>();
+        
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                CajeroDTO temporal = new CajeroDTO(rs.getInt("codigo"),rs.getString("nombre"),
+                        rs.getString("sexo"),rs.getString("turno"),rs.getString("dpi"),rs.getString("direccion"));
+                listado.add(temporal);
+            }
+        } catch (SQLException sqle){
+            System.err.print("Error en método existeTransaccion() de la clase TransaccionDAO por: "+sqle);
+            System.out.print("Error en método existeTransaccion() de la clase TransaccionDAO por: "+sqle);
+        }
+        return listado;
+    }
+    
+    public boolean actualizarCajero(CajeroDTO cajero){
+        String sql = "UPDATE Cajero SET nombre = ?, sexo = ?, turno = ?, direccion = ? WHERE codigo = ?";
+        boolean ingresado = false;
+        
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setString(1, cajero.getNombre());
+            ps.setString(2, cajero.getSexo());
+            ps.setString(3, cajero.getTurno());
+            ps.setString(4, cajero.getDireccion());
+            ps.setInt(5, cajero.getCodigo());
+            ingresado = ps.executeUpdate() > 0;
+        } catch (SQLException sqle){
+            System.err.print("Error en método actualizarCajero() de la clase CajeroDAO por: "+sqle);
+            System.out.print("Error en método actualizarCajero() de la clase CajeroDAO por: "+sqle);
+        }
+        
+        return ingresado;
+    }
 }

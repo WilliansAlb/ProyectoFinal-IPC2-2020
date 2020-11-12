@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="../resources/css/inputArchivo.css"/>
         <link rel="stylesheet" href="../resources/css/fondo.css"/>
         <script src="../resources/js/oculto.js" type="text/javascript"></script>
+        <script src="../resources/js/creacion.js" type="text/javascript"></script>
     </head>
     <body>
         <% java.util.Date fecha = new Date();
@@ -34,52 +35,56 @@
         <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
         <div id="contenedorCuenta" class="crear">
-            <div class="contenedorFlex" >
+            <div class="contenedorFlex" id="buscarCliente">
                 <div class="ingreso" id="ingresoDpiCuenta">
                     <center>
                         <img src="../resources/img/manager.svg" max-width="67px">
-                        <h1 style="font-weight: 900;">Crear Cuenta</h1>
-                        <div class="group">
-                            <input type="text" required id="dpi" style="color: #EBEBEB !important;">
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
-                            <label for="dpi">DPI del dueño de la cuenta</label>
-                        </div>
-                        <button class="learn-more buttonEspecial" onclick="$('#contenedorMensaje2').show()">Validar</button>
+                        <h1 style="font-weight: 900;color:white;">Crear Cuenta</h1>
+                        <p style="color:grey;">Ingresa el DPI del propietario de la nueva cuenta</p>
+                        <form id="formularioValidarCliente" action="../creacion" method="GET">
+                            <div class="group">
+                                <input type="text" class="inputCentrado" required id="dpi" onkeydown="dpiValido(this)" style="color: #EBEBEB !important;">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="dpi" class="labelCentrado">DPI del dueño de la cuenta</label>
+                            </div>
+                            <button class="learn-more buttonEspecial" style="width: 30%;">Validar<img src="../resources/img/fine_print.svg" width="15%" class="imagenBoton"></button>
+                        </form>
                     </center>
                 </div>
             </div>
-            <div class="contenedorFlex" >
-                <div class="ingreso" id="ingresoDpiCuenta" style="width: 70% !important;">
+            <div class="contenedorFlex" id="confirmarCliente" style="display:none;">
+                <div class="ingreso" id="ingresoDpiCuenta1" style="width: 70% !important;">
                     <center>
+                        <img src="../resources/img/manager.svg" max-width="67px">
                         <h1 style="font-weight: 900;">Crear Cuenta</h1>
                         <p>Datos de dueño de cliente a corroborar e ingresar monto de apertura</p>
-                        <table class="tablaDatos">
+                        <table class="tablaDatos" style="width: 95%;">
                             <thead>
                                 <tr>
                                     <th>Codigo</th>
                                     <th>Nombre</th>
                                     <th>Sexo</th>
-                                    <th>Telefono</th>
+                                    <th>DPI</th>
                                     <th>Direccion</th>
                                     <th>Fecha nacimiento</th>
-                                    <th>DPI</th>
+                                    <th>PDF DPI</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>######</td>
-                                    <td>aaaaaa</td>
-                                    <td>MMMMMM</td>
-                                    <td>111111</td>
-                                    <td>la cuarta avenida de alguna colonia de un lugar donde no entra la luz en los amaneceres</td>
-                                    <td>####-##-##</td>
-                                    <td><button class="buttonEspecial learn-more"  onclick="$('#contenedorMensaje3').show()">VER DPI</button></td>
+                                    <td id="celdaCodigo">######</td>
+                                    <td id="celdaNombre">aaaaaa</td>
+                                    <td id="celdaSexo">MMMMMM</td>
+                                    <td id="celdaDPI">111111</td>
+                                    <td id="celdaDireccion">la cuarta avenida de alguna colonia de un lugar donde no entra la luz en los amaneceres</td>
+                                    <td id="celdaFecha">####-##-##</td>
+                                    <td><button class="buttonEspecial learn-more" id="botonDPI" onclick="visualizarDPI(this)">VER DPI</button></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div id="datosCuenta" style="display:none;">
-                            <form>
+                            <form action="../creacion" method="POST" id="formularioCuenta">
                                 <h3>Datos para la creación de la cuenta</h3>
                                 <div class="group">
                                     <input type="date" id="fecha" style="color: #EBEBEB !important;" value="<%out.print(fecha_actual);%>">
@@ -93,99 +98,118 @@
                                     <span class="bar"></span>
                                     <label for="fecha">Monto con el que aperturar la cuenta</label>
                                 </div>
-                                <button class="learn-more buttonEspecial">Ingresar cuenta</button>
+                                <button class="learn-more buttonEspecial" id="ingresarCuenta">Ingresar cuenta</button>
                             </form>
                         </div>
-                        <button class="learn-more buttonEspecial" onclick="dpiCorrecto(this)">DPI correcto</button>
+                        <button class="learn-more buttonEspecial" onclick="dpiCorrecto(this)" style="width: 30%;">CONTINUAR</button>
                     </center>
                 </div>
             </div>
+            <div id="contenedorMensaje2" class="contenedorFlex" style="display:none;overflow-y: scroll;">
+                <div id="contenedorInterior2" class="ingreso" style="background-color: inherit;">
+                    <center>
+                        <h1 style="font-weight: 900;color:white;">Crear Cliente</h1>
+                        <p style="color:grey;">Dado que el cliente aún no está en el sistema, ingresa el siguiente formulario con sus datos</p>
+                        <form action="../creacion" method="POST" id="formularioCliente" enctype="multipart/form-data">
+                            <div class="group">
+                                <input type="text" id="dpiCliente" class="deshabilitado" value="" name="dpi" disabled style="color: grey !important;">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="dpiCliente">DPI</label>
+                            </div>
+                            <div class="group">
+                                <input type="text" id="nombreCliente" name="nombre" required style="color: #EBEBEB !important;" value="">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="nombreCliente">Nombre</label>
+                            </div>
+                            <div class="group">
+                                <input type="date" id="fechaCliente" name="fecha" required style="color: #EBEBEB !important;" value="2000-01-01">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="fechaCliente">Fecha de nacimiento</label>
+                            </div>
+                            <div class="group">
+                                <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="sexos">Sexo</label>
+                                <br>
+                                <select id="sexos" style="width:100%;" name="sexo">
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                </select>
+                            </div>
+                            <div class="group">
+                                <input type="text" id="direccionCliente" name="direccion" required style="color: #EBEBEB !important;">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="direccionCliente">Direccion</label>
+                            </div>
+                            <div style="width:100%;">
+                                <label for="archivo" id="selectorArchivo" tabindex="0" class="input-file-trigger">Ingresa PDF de DPI...<img src="../resources/img/data_recovery.svg" width="10%" style="display: inline-block;vertical-align: middle;">
+                                    <input type="file" id="archivo" accept=".pdf" name="archivo" onchange="verificar()" required></label>
+                                <p id="ruta" class="file-return"></p>
+                            </div>
+                            <div class="group">
+                                <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="generar">¿Generar contraseña aleatoria?</label>
+                                <br>
+                                <select id="generar" onchange="generarPassword(this)" name="generar" style="width:100%;">
+                                    <option value="N" selected>No</option>
+                                    <option value="S">Sí</option>
+                                </select>
+                            </div>
+                            <div class="group" id="campoPassword">
+                                <input type="password" id="passwordCliente" name="password" required style="color: #EBEBEB !important;">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label for="passwordCliente">Contraseña</label>
+                            </div>
+                            <button class="learn-more buttonEspecial" id="ingresarCliente">CONTINUAR</button>
+                        </form>
+                    </center>
+                </div>
+            </div> 
         </div>
     <center>
         <div id="contenedorMensaje" class="oculto" style="display:none;">
-            <div id="contenedorInterior" class="mensaje2">
+            <div id="contenedorInterior" class="mensaje2" style="background-color: #001a28;">
                 <div style="padding: 2em;">
                     <img id="imagen" src="../resources/img/checkmark.svg" width="10%" style="display: inline-block;vertical-align: middle;">
-                    <h2 id="tituloMensaje" style="font-weight: 900;margin:0;">por defecto</h2><article id="articulo" style="display:inline-block;">asdjfaksjdlfkajsdlkfjalsdjflkasjdlkfjaskldjflasdfa</article>
+                    <h2 id="tituloMensaje" style="font-weight: 900;margin:0;color: white;">por defecto</h2><article id="articulo" style="color:grey;display:inline-block;">asdjfaksjdlfkajsdlkfjalsdjflkasjdlkfjaskldjflasdfa</article>
+                    <table class="tablaDatos" style="width: 95%;">
+                        <thead>
+                            <tr>
+                                <th id="columna1">No. de cuenta</th>
+                                <th id="columna2">Propietario</th>
+                                <th id="columna3">Saldo</th>
+                                <th id="columna4">Fecha de creacion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="mostrar1"></td>
+                                <td id="mostrar2"></td>
+                                <td id="mostrar3"></td>
+                                <td id="mostrar4"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <button class="learn-more buttonEspecial" onclick="document.getElementById('contenedorMensaje').style.display = 'none'">Cerrar</button>
+                <button class="learn-more buttonEspecial" onclick="cerrarRedirigir(this)" id="cerrarRedirigir">CONTINUAR</button>
             </div>
         </div>
         <div id="contenedorMensaje3" class="oculto" style="display:none;">
-            <div id="contenedorInterior3" class="mensaje2">
+            <div id="contenedorInterior3" class="mensaje2" style="background-color: #001a28;">
                 <center>
-                    <h1>DPI de cliente .....</h1>
-                    <embed src="https://www.w3docs.com/uploads/media/default/0001/01/540cb75550adf33f281f29132dddd14fded85bfc.pdf" width="80%" height="400px">
-                    <br><button class="learn-more buttonEspecial" onclick="document.getElementById('contenedorMensaje3').style.display = 'none'">CERRAR</button>
+                    <h1 id="informando1" style="color: white;">DPI de cliente .....</h1>
+                    <embed src="" width="80%" height="400px" id="visorPDF">
+                    <br><button class="learn-more buttonEspecial" onclick="document.getElementById('contenedorMensaje3').style.display = 'none';">CERRAR</button>
                 </center>
             </div>
         </div>
-        <div id="contenedorMensaje2" class="oculto" style="display:none;overflow-y: scroll;">
-            <div id="contenedorInterior2" class="mensaje2">
-                <h1 style="font-weight: 900;">Crear Cliente</h1>
-                <p>Dado que el cliente aún no está en el sistema, ingresa el siguiente formulario con sus datos</p>
-                <form>
-                    <div class="group">
-                        <input type="text" id="dpiCliente" value="" disabled style="color: #EBEBEB !important;">
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label for="dpiCliente">DPI</label>
-                    </div>
-                    <div class="group">
-                        <input type="text" id="nombreCliente" required style="color: #EBEBEB !important;" value="">
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label for="nombreCliente">Nombre</label>
-                    </div>
-                    <div class="group">
-                        <input type="date" id="fechaCliente" required style="color: #EBEBEB !important;" value="2000-01-01">
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label for="fechaCliente">Fecha de nacimiento</label>
-                    </div>
-                    <div class="group">
-                        <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="sexos">Sexo</label>
-                        <br>
-                        <select id="sexos" style="width:100%;">
-                            <option value="M">Masculino</option>
-                            <option value="F">Femenino</option>
-                        </select>
-                    </div>
-                    <div class="group">
-                        <input type="text" id="direccionCliente" required style="color: #EBEBEB !important;">
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label for="direccionCliente">Direccion</label>
-                    </div>
-                    <div style="width:100%;">
-                        <label for="archivo" id="selectorArchivo" tabindex="0" class="input-file-trigger">Ingresa PDF de DPI...<img src="../resources/img/data_recovery.svg" width="10%" style="display: inline-block;vertical-align: middle;">
-                            <input type="file" id="archivo" accept=".pdf" onchange="verificar()" required></label>
-                        <p id="ruta" class="file-return"></p>
-                    </div>
-                    <div class="group">
-                        <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="sexos">¿Generar contraseña aleatoria?</label>
-                        <br>
-                        <select id="generar" onchange="generarPassword(this)" style="width:100%;">
-                            <option value="N" selected>No</option>
-                            <option value="S">Sí</option>
-                        </select>
-                    </div>
-                    <div class="group" id="campoPassword">
-                        <input type="password" id="passwordCliente" required style="color: #EBEBEB !important;">
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label for="passwordCliente">Contraseña</label>
-                    </div>
-                    <button class="learn-more buttonEspecial">Cerrar</button>
-                </form>
-            </div>
-        </div> 
     </center>
     <script>
         function dpiCorrecto(boton) {
             boton.style.display = "none";
-            $("#datosCuenta").fadeIn(1000);
-            verMensaje("../resources/img/manager.svg", "El número de tu cuenta es #### y tu id de usuario CL-1231", "CUENTA INGRESADA");
+            $("#datosCuenta").fadeIn();
         }
         function verificar() {
             const file = document.getElementById("archivo").files[0];

@@ -4,13 +4,16 @@ Base/TransaccionDAO.class
 Servlet/archivo.class
 Base/ClienteDAO.class
 Base/CajeroDAO.class
+Servlet/creacion.class
 DTO/GerenteDTO.class
 DTO/ClienteDTO.class
 Servlet/asociacion.class
 Base/GerenteDAO.class
 DTO/CajeroDTO.class
 DTO/TransaccionDTO.class
+Servlet/modificacion.class
 DTO/UsuarioDTO.class
 Base/CuentaDAO.class
 Base/UsuarioDAO.class
+Servlet/sesion.class
 Servlet/carga.class

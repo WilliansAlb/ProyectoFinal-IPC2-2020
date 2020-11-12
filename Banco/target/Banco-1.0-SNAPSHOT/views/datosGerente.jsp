@@ -4,6 +4,9 @@
     Author     : yelbetto
 --%>
 
+<%@page import="DTO.GerenteDTO"%>
+<%@page import="Base.GerenteDAO"%>
+<%@page import="Base.Conector"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,11 +26,19 @@
         <link rel="stylesheet" href="../resources/css/button2.css">
         <script src="../resources/js/oculto.js" type="text/javascript"></script>
         <script src="../resources/js/modificarEstadoBoton.js" type="text/javascript"></script>
+        <script src="../resources/js/modificacion.js" type="text/javascript"></script>
     </head>
     <body>
         <%@include file="sidebar.jsp"%>
         <div class="bienvenida">
         </div>
+
+        <%
+            HttpSession sesionModificarCliente = request.getSession();
+            Conector cn = new Conector("encender");
+            GerenteDAO gerentes = new GerenteDAO(cn);
+            GerenteDTO gerente = gerentes.obteniendoDatosPersonales(Integer.parseInt(sesionModificarCliente.getAttribute("codigo").toString()));
+        %>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" >
                 <div class="ingreso" id="ingresoDpiCuenta">
@@ -35,21 +46,21 @@
                         <img src="../resources/img/businessman.svg">
                         <h1 style="font-weight: 900; color: white;">Tus datos</h1>
                         <p style="color: grey;">Se muestran los datos</p>
-                        <form>
+                        <form id="formModificacionGerente" action="../modificacion" method="POST">
                             <div class="group">
-                                <input type="text" id="codigo" onkeyup="activarGuardarCambios(this)" class="deshabilitado" value="1234543" disabled required>
+                                <input type="text" id="codigo" onkeyup="activarGuardarCambios(this)" class="deshabilitado" value="<%out.print(gerente.getCodigo());%>" disabled required>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="codigo">Codigo</label>
                             </div>
                             <div class="group">
-                                <input type="text" id="dpi" onkeyup="activarGuardarCambios(this)" class="deshabilitado" value="1832048181007" disabled required>
+                                <input type="text" id="dpi" onkeyup="activarGuardarCambios(this)" class="deshabilitado" value="<%out.print(gerente.getDpi());%>" disabled required>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="dpi">DPI</label>
                             </div>
                             <div class="group">
-                                <input type="text" id="nombre" onkeyup="activarGuardarCambios(this)" required value="juan" style="color: #EBEBEB !important;" value="">
+                                <input type="text" id="nombre" onkeyup="activarGuardarCambios(this)" required value="<%out.print(gerente.getNombre());%>" style="color: #EBEBEB !important;" value="">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="nombre">Nombre</label>
@@ -57,56 +68,96 @@
                             <div class="group">
                                 <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="turnos">Turno</label>
                                 <br>
-                                <select id="turnos" style="width:100%;" onchange="activarGuardarCambios(this)">
-                                    <option value="M">Matutino</option>
+                                <select id="turnos" style="width:100%;" value="<%out.print(gerente.getTurno());%>" onchange="activarGuardarCambios(this)">
+                                    <%if (gerente.getTurno().equalsIgnoreCase("M")) {%>
+                                    <option value="M" selected>Matutino</option>
                                     <option value="V">Vespertino</option>
+                                    <%} else {%>
+                                    <option value="M">Matutino</option>
+                                    <option value="V" selected>Vespertino</option>
+                                    <%}%>
                                 </select>
                             </div>
                             <div class="group">
                                 <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="sexos">Sexo</label>
                                 <br>
-                                <select id="sexos" style="width:100%;" onchange="activarGuardarCambios(this)">
-                                    <option value="M">Masculino</option>
+                                <select id="sexos" style="width:100%;" value="<%out.print(gerente.getSexo());%>" onchange="activarGuardarCambios(this)">
+                                    <%if (gerente.getSexo().equalsIgnoreCase("M")) {%>
+                                    <option value="M" selected>Masculino</option>
                                     <option value="F">Femenino</option>
+                                    <%} else {%>
+                                    <option value="M">Masculino</option>
+                                    <option value="F" selected>Femenino</option>
+                                    <%}%>
                                 </select>
                             </div>
                             <div class="group">
-                                <input type="text" id="direccion" onkeyup="activarGuardarCambios(this)" required style="color: #EBEBEB !important;">
+                                <input type="text" id="direccion" value="<%out.print(gerente.getDireccion());%>" onkeyup="activarGuardarCambios(this)" required style="color: #EBEBEB !important;">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="direccion">Direccion</label>
                             </div>
-                            <button class="selected buttonEspecial" disabled id="guardarCambios" style="font-weight: inherit !important;">Guardar cambios<img src="../resources/img/cancel.svg" width="15%"
-                                    style="display: inline-block;vertical-align: middle;"></button>
+                            <button class="selected buttonEspecial" disabled id="guardarCambios" style="font-weight: inherit !important;">GUARDAR CAMBIOS<img src="../resources/img/cancel.svg" width="15%"
+                                                                                                                                                              style="display: inline-block;vertical-align: middle;"></button>
                         </form>
                     </center>
                 </div>
             </div>
         </div>
-        <script>
-            var nombre = $("#nombre").val();
-            var turno = $("#turnos").val();
-            var sexo = $("#sexos").val();
-            var direccion = $("#direccion").val();
-            function activarGuardarCambios(elemento){
-                var valor = elemento.value;
-                var array = [nombre,turno,sexo,direccion];
-                var array2 = [$("#nombre").val(),$("#turnos").val(),$("#sexos").val(),$("#direccion").val()];
-                var noExiste = false;
-                for (let i = 0; i < array.length; i++){
-                    if (array[i]!==array2[i]){
-                        noExiste = true;
-                        break;
-                    }
-                }
-                console.log(array[0]);
-                if (noExiste){
-                    activarBoton(document.getElementById("guardarCambios"),"../resources/img/safe.svg");
-                } else {
-                    bloquearBoton(document.getElementById("guardarCambios"));
+    <center>
+        <div id="contenedorMensaje" class="oculto" style="display:none;">
+            <div id="contenedorInterior" class="mensaje2" style="background-color: #001a28;">
+                <div style="padding: 2em;">
+                    <img id="imagen" src="../resources/img/checkmark.svg" width="10%" style="display: inline-block;vertical-align: middle;">
+                    <h2 id="tituloMensaje" style="font-weight: 900;margin:0;color: white;">por defecto</h2><article id="articulo" style="color:grey;display:inline-block;">asdjfaksjdlfkajsdlkfjalsdjflkasjdlkfjaskldjflasdfa</article>
+                </div>
+                <button class="learn-more buttonEspecial" onclick="cerrar(this)" id="cerrarRedirigir">CERRAR</button>
+            </div>
+        </div>
+    </center>
+    <script>
+        var nombre = $("#nombre").val();
+        var turno = $("#turnos").val();
+        var sexo = $("#sexos").val();
+        var direccion = $("#direccion").val();
+        function cerrar(boton) {
+            if (boton.textContent === 'OK') {
+                window.location = "datosGerente.jsp";
+            } else {
+                var contenedor = boton.parentNode;
+                var contenedor2 = contenedor.parentNode;
+                contenedor2.style.display = 'none';
+            }
+        }
+        function activarGuardarCambios() {
+            var array = [nombre, turno, sexo, direccion];
+            var array2 = [$("#nombre").val(), $("#turnos").val(), $("#sexos").val(), $("#direccion").val()];
+            var noExiste = false;
+            for (let i = 0; i < array.length; i++) {
+                if (array[i] !== array2[i]) {
+                    noExiste = true;
+                    break;
                 }
             }
-        </script>
-    </body>
-    <%@include file='footer.html' %>
+            console.log(array[0]);
+            if (noExiste) {
+                activarBoton(document.getElementById("guardarCambios"), "../resources/img/safe.svg");
+            } else {
+                bloquearBoton(document.getElementById("guardarCambios"));
+            }
+        }
+        function actualizarFormulario() {
+            var nombre = $("#nombre").val();
+            var turno = $("#turnos").val();
+            var sexos = $("#sexos").val();
+            var direccion = $("#direccion").val();
+            nombreC = nombre;
+            turnoC = turno;
+            sexoC = sexos;
+            direccionC = direccion;
+            bloquearBoton(document.getElementById("guardarCambios"));
+        }
+    </script>
+</body>
+<%@include file='footer.html' %>
 </html>

@@ -30,6 +30,23 @@ public class GerenteDTO implements Serializable{
     public GerenteDTO(){
     
     } 
+    /**
+     * Constructor de la entidad Gerente
+     * @param codigo
+     * @param nombre
+     * @param sexo
+     * @param turno
+     * @param dpi
+     * @param direccion 
+     */
+    public GerenteDTO(int codigo, String nombre, String sexo, String turno, String dpi, String direccion){
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.sexo = sexo;
+        this.turno = turno;
+        this.dpi = dpi;
+        this.direccion = direccion;
+    }
 
     public int getCodigo() {
         return codigo;
