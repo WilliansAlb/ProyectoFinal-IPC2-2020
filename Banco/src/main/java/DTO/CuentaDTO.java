@@ -11,7 +11,7 @@ package DTO;
  */
 public class CuentaDTO {
     
-    private int codigo;
+    private long codigo;
     private Double credito;
     private int cliente;
     private String creacion;
@@ -26,7 +26,7 @@ public class CuentaDTO {
      * @param cliente
      * @param creacion 
      */
-    public CuentaDTO(int codigo,Double credito,int cliente,String creacion){
+    public CuentaDTO(long codigo,Double credito,int cliente,String creacion){
         this.codigo = codigo;
         this.credito = credito;
         this.cliente = cliente;
@@ -39,13 +39,14 @@ public class CuentaDTO {
         this.creacion = creacion;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
+
 
     public Double getCredito() {
         return credito;

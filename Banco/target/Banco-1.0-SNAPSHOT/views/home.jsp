@@ -120,6 +120,7 @@
                     <div class="content">
                         <p>Ver tus datos o el historial de las transacciones</p>
                         <a href="datosGerente.jsp">Ver datos</a>
+                        <a href="datosGerente.jsp">Ver cuentas</a>
                         <a href="#">Historial</a>
                     </div>
                 </div>
@@ -137,7 +138,7 @@
                     <div class="content">
                         <p>¿Que deseas hacer?</p>
                         <a href="asociar.jsp">Solicitar asociacion</a>
-                        <a href="modificarCajero.jsp">Ver solicitudes</a>
+                        <a href="asociaciones.jsp">Ver solicitudes</a>
                     </div>
                 </div>
             </div>

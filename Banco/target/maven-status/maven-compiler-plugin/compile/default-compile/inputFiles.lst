@@ -1,10 +1,13 @@
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/DTO/ClienteDTO.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/DTO/UsuarioDTO.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Servlet/creacion.java
+/home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Servlet/transaccion.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Servlet/asociacion.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Servlet/carga.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Base/CuentaDAO.java
+/home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/DTO/AsociacionDTO.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Base/Conector.java
+/home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Base/AsociacionDAO.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Servlet/sesion.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Base/TransaccionDAO.java
 /home/yelbetto/Escritorio/[trs]/Proyectos 2020/Proyecto Final/Banco/src/main/java/Base/GerenteDAO.java

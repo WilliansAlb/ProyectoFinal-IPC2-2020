@@ -38,10 +38,10 @@
                         <p style="color: grey;">Ingresa el número de la cuenta a la que le solicitarás la asociación</p>
                         <form id="validarDatos" method="GET" action="../asociacion">
                             <div class="group" style="width: 60%;">
-                                <input type="text" id="busqueda" name="busqueda" required onkeyup="comprobar(this)" pattern="\d+" style="color: white;">
+                                <input type="text" id="busqueda" name="busqueda" class="inputCentrado" required onkeyup="comprobar(this)" pattern="\d+" style="color: white;">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label for="busqueda">Número de cuenta</label>
+                                <label for="busqueda" class="labelCentrado">Número de cuenta</label>
                             </div>
                             <button class="selected buttonEspecial" disabled id="validar" title="Rellena los campos para activar este botón" style="width: 40%;" type="submit">Validar<img src="../resources/img/cancel.svg" width="15%" class="imagenBoton"></button>
                         </form>
@@ -64,24 +64,37 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td id="cuentaSolicitado">######</td>
-                                    <td id="nombreSolicitado">MMMMMM</td>
-                                    <td id="dpiSolicitado">111111</td>
-                                    <td id="direccionSolicitado">la cuarta avenida de alguna colonia de un lugar donde no entra la luz en los amaneceres</td>
+                                    <td id="campo1">######</td>
+                                    <td id="campo2">MMMMMM</td>
+                                    <td id="campo3">111111</td>
+                                    <td id="campo4">la cuarta avenida de alguna colonia de un lugar donde no entra la luz en los amaneceres</td>
                                 </tr>
                             </tbody>
                         </table>
+                        <p style="font-weight: 300; color: grey;">DPI del propietario de la cuenta</p>
+                        <embed src="" width="80%" height="250px" id="visorPDF">
                         <hr width="50%">
-                        <button class="learn-more buttonEspecial" onclick="dpiCorrecto(this)" style="width:30%;">Solicitar asociacion<img class="imagenBoton" src="../resources/img/checkmark.svg" width="15%"></button>
-                        <button class="learn-more buttonEspecial" onclick="ocultarMostrar($('#datosBusqueda'),$('#busquedaCuenta'))" style="width:30%;">Cancelar<img class="imagenBoton" src="../resources/img/cancel.svg" width="15%"></button>
+                        <button class="learn-more buttonEspecial" onclick="enviarSolicitud()" style="width:30%;" id="enviarSolicitud">Solicitar asociacion<img class="imagenBoton" src="../resources/img/checkmark.svg" width="5%"></button>
+                        <button class="learn-more buttonEspecial" onclick="ocultarMostrar($('#datosBusqueda'), $('#busquedaCuenta'))" style="width:30%;">Cancelar<img class="imagenBoton" src="../resources/img/cancel.svg" width="5%"></button>
                     </center>
                 </div>
             </div>
         </div>
+    <center>
+        <div id="contenedorMensaje" class="oculto" style="display:none;">
+            <div id="contenedorInterior" class="mensaje2" style="background-color: #001a28;">
+                <div style="padding: 2em;">
+                    <img id="imagen" src="../resources/img/checkmark.svg" width="10%" style="display: inline-block;vertical-align: middle;">
+                    <h2 id="tituloMensaje" style="font-weight: 900;margin:0;color: white;">por defecto</h2><article id="articulo" style="color:grey;display:inline-block;">asdjfaksjdlfkajsdlkfjalsdjflkasjdlkfjaskldjflasdfa</article>
+                </div>
+                <button class="learn-more buttonEspecial" onclick="cerrar(this)" id="cerrarRedirigir">CERRAR</button>
+            </div>
+        </div>
+    </center>
         <script>
             function llamarMetodoDejoDeEscribir(input) {
                 if (input.value > 0) {
-                    activarBoton(document.getElementById("validar"),"../resources/img/search.svg");
+                    activarBoton(document.getElementById("validar"), "../resources/img/search.svg");
                 } else {
                     if (input.value.length > 0) {
                         input.setCustomValidity("No pueden ir letras en el número de cuenta!");
@@ -90,6 +103,15 @@
                         input.setCustomValidity("");
                     }
                     bloquearBoton(document.getElementById("validar"));
+                }
+            }
+            function cerrar(boton){
+                if (boton.textContent === 'CERRAR'){
+                    var con1 = boton.parentNode;
+                    var con2 = con1.parentNode;
+                    con2.style.display = "none";
+                } else {
+                    window.location = "asociar.jsp";
                 }
             }
         </script>

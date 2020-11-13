@@ -105,6 +105,50 @@ public class ClienteDAO {
         return retorno;
     }
     
+    public ClienteDTO obtenerClienteConCodigo(ClienteDTO cliente){
+        String sql = "SELECT codigo, dpi, nombre, direccion, sexo, nacimiento FROM Cliente WHERE codigo = ?";
+        ClienteDTO retorno = new ClienteDTO();
+        
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setInt(1, cliente.getCodigo());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                retorno.setCodigo(rs.getInt("codigo"));
+                retorno.setNombre(rs.getString("nombre"));
+                retorno.setDireccion(rs.getString("direccion"));
+                retorno.setSexo(rs.getString("sexo"));
+                retorno.setFecha(rs.getString("nacimiento"));
+                retorno.setDpi(rs.getString("dpi"));
+            }
+        } catch (SQLException sqle){
+            System.err.print("Error en método existeClienteConCodigo() de la clase ClienteDAO() por: "+sqle);
+            System.out.print("Error en método existeClienteConCodigo() de la clase ClienteDAO() por: "+sqle);
+        }
+        return retorno;
+    }
+    
+    public ClienteDTO obtenerClienteConCodigo(int codigo){
+        String sql = "SELECT codigo, nombre, direccion, sexo, nacimiento, dpi FROM Cliente WHERE codigo = ?";
+        ClienteDTO retorno = new ClienteDTO();
+        
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setInt(1, codigo);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                retorno.setCodigo(rs.getInt("codigo"));
+                retorno.setNombre(rs.getString("nombre"));
+                retorno.setDireccion(rs.getString("direccion"));
+                retorno.setSexo(rs.getString("sexo"));
+                retorno.setFecha(rs.getString("nacimiento"));
+                retorno.setDpi(rs.getString("dpi"));
+            }
+        } catch (SQLException sqle){
+            System.err.print("Error en método existeCliente() de la clase ClienteDAO() por: "+sqle);
+            System.out.print("Error en método existeCliente() de la clase ClienteDAO() por: "+sqle);
+        }
+        return retorno;
+    }
+    
     public ArrayList<ClienteDTO> obtenerClientes(){
         String sql = "SELECT * FROM Cliente";
         ArrayList<ClienteDTO> listaCliente = new ArrayList<>();

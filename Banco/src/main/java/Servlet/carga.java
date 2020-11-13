@@ -105,7 +105,7 @@ public class carga extends HttpServlet {
                     // Object of array
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
-                    int codigo = Integer.parseInt(gsonObj.get("codigo").getAsString());
+                    int codigo = gsonObj.get("codigo").getAsInt();
                     String nombre = encoding(gsonObj.get("nombre").getAsString());
                     String dpi = gsonObj.get("dpi").getAsString();
                     String turno = gsonObj.get("turno").getAsString().toUpperCase();
@@ -202,7 +202,7 @@ public class carga extends HttpServlet {
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
                     int cliente = Integer.parseInt(gsonObj.get("cliente").getAsString());
-                    int codigo = Integer.parseInt(gsonObj.get("codigo").getAsString());
+                    long codigo = gsonObj.get("codigo").getAsLong();
                     String fecha = gsonObj.get("fecha").getAsString();
                     Double monto = gsonObj.get("monto").getAsDouble();
                     CuentaDTO cuenta = new CuentaDTO(codigo, monto, cliente, fecha);
@@ -219,7 +219,7 @@ public class carga extends HttpServlet {
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
                     int codigo = Integer.parseInt(gsonObj.get("codigo").getAsString());
-                    int cuenta = Integer.parseInt(gsonObj.get("cuenta").getAsString());
+                    long cuenta = gsonObj.get("cuenta").getAsLong();
                     String fecha = gsonObj.get("fecha").getAsString();
                     String hora = gsonObj.get("hora").getAsString();
                     String creacion = fecha + " " + hora;

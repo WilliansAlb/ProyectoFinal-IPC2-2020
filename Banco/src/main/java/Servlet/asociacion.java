@@ -5,12 +5,22 @@
  */
 package Servlet;
 
+import Base.AsociacionDAO;
+import Base.ClienteDAO;
+import Base.Conector;
+import Base.CuentaDAO;
+import DTO.AsociacionDTO;
+import DTO.ClienteDTO;
+import DTO.CuentaDTO;
+import DTO.UsuarioDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -57,13 +67,53 @@ public class asociacion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/plain;charset=UTF-8");
+        HttpSession actual = request.getSession();
+        Conector cn = new Conector("encender");
+        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
         if (request.getParameter("busqueda") != null) {
-            if (request.getParameter("busqueda").equalsIgnoreCase("123")){
-                response.getWriter().write("EXISTE");
+            long cuenta = Long.parseLong(request.getParameter("busqueda"));
+            CuentaDAO cuentas = new CuentaDAO(cn);
+            CuentaDTO retorno = cuentas.existeCuenta(cuenta);
+            if (retorno.getCreacion() != null) {
+                ClienteDAO clientes = new ClienteDAO(cn);
+                ClienteDTO cliente = clientes.obtenerClienteConCodigo(retorno.getCliente());
+                if (cliente.getNombre() != null) {
+                    if (retorno.getCliente() == usuario.getCodigo()) {
+                        response.getWriter().write("PROPIEDAD");
+                    } else {
+                        response.getWriter().write(retorno.getCodigo() + "\n" + cliente.getNombre() + "\n" + cliente.getDpi() + "\n" + cliente.getDireccion());
+                    }
+                } else {
+                    response.getWriter().write("ERROR: No se pudieron recuperar los datos del propietario de la cuenta, por favor intenta de nuevo");
+                }
             } else {
                 response.getWriter().write("NOEXISTE");
             }
-        } 
+        } else {
+            if (request.getParameter("cliente") != null) {
+                ClienteDAO cliente = new ClienteDAO(cn);
+                int codigo = Integer.parseInt(request.getParameter("cliente"));
+                ClienteDTO nuevo = new ClienteDTO();
+                nuevo.setCodigo(codigo);
+                ClienteDTO obtenido = cliente.obtenerClienteConCodigo(nuevo);
+                if (obtenido.getNombre() != null) {
+                    String enviarDatos = obtenido.getCodigo() + "\n" + obtenido.getNombre() + "\n" + obtenido.getDpi() + "\n" + obtenido.getDireccion();
+                    response.getWriter().write(enviarDatos);
+                } else {
+                    response.getWriter().write("NOEXISTE");
+                }
+            }
+            if (request.getParameter("asociacion")!=null){
+                int codigoAsociacion = Integer.parseInt(request.getParameter("asociacion"));
+                String estado = request.getParameter("estado");
+                AsociacionDAO asociacion = new AsociacionDAO(cn);
+                if (asociacion.editarEstado(codigoAsociacion, estado)){
+                    response.getWriter().write("ACTUALIZADO");
+                } else {
+                    response.getWriter().write("ERROR");
+                }
+            }
+        }
     }
 
     /**
@@ -77,7 +127,45 @@ public class asociacion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/plain;charset=UTF-8");
+        HttpSession actual = request.getSession();
+        Conector cn = new Conector("encender");
+        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
+
+        String tipo = request.getParameter("tipo");
+        if (tipo.equalsIgnoreCase("ENVIAR")) {
+            long cuenta = Long.parseLong(request.getParameter("cuenta"));
+            AsociacionDAO asociaciones = new AsociacionDAO(cn);
+            AsociacionDTO asociacion = new AsociacionDTO(cuenta, usuario.getCodigo(), "EN ESPERA");
+            ArrayList<String> estados = asociaciones.estados(asociacion);
+            if (estados.size() > 0) {
+                if (estados.size() < 3) {
+                    if (estados.contains(asociacion.getEstado())) {
+                        response.getWriter().write("ESPERA");
+                    } else {
+                        if (estados.contains("ACEPTADA")) {
+                            response.getWriter().write("ACEPTADA");
+                        } else {
+                            int codigoGenerado = asociaciones.enviarSolicitud(asociacion);
+                            if (codigoGenerado != -1) {
+                                response.getWriter().write("SOLICITUD " + codigoGenerado);
+                            } else {
+                                response.getWriter().write("ERROR");
+                            }
+                        }
+                    }
+                } else {
+                    response.getWriter().write("LIMITE");
+                }
+            } else {
+                int codigoGenerado = asociaciones.enviarSolicitud(asociacion);
+                if (codigoGenerado != -1) {
+                    response.getWriter().write("SOLICITUD " + codigoGenerado);
+                } else {
+                    response.getWriter().write("ERROR");
+                }
+            }
+        }
     }
 
     /**

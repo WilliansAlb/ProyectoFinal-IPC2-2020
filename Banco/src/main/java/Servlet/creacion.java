@@ -218,7 +218,7 @@ public class creacion extends HttpServlet {
             CuentaDTO cuenta = new CuentaDTO(montoCantidad, Integer.parseInt(request.getParameter("cliente")), request.getParameter("creacion"));
             CuentaDAO cuentas = new CuentaDAO(cn);
             
-            int retorno = cuentas.crearCuenta(cuenta);
+            long retorno = cuentas.crearCuenta(cuenta);
             
             if (retorno != -1) {
                 response.getWriter().write(retorno+" ");

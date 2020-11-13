@@ -19,84 +19,99 @@ import java.util.ArrayList;
  * @author yelbetto
  */
 public class CuentaDAO {
-    
+
     Connection cn;
-    
-    public CuentaDAO(Conector cn){
+
+    public CuentaDAO(Conector cn) {
         this.cn = cn.getConexion();
     }
-    
-    public boolean ingresarCuenta(CuentaDTO cuenta){
+
+    public boolean ingresarCuenta(CuentaDTO cuenta) {
         String sql = "INSERT INTO Cuenta(codigo,credito,cliente,creacion) "
                 + " SELECT ?, ?, ?, ?"
                 + " FROM dual WHERE NOT EXISTS (SELECT * FROM Cuenta WHERE codigo = ?);";
         boolean ingresado = false;
-        try(PreparedStatement ps = cn.prepareStatement(sql)){
-            ps.setInt(1, cuenta.getCodigo());
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, cuenta.getCodigo());
             ps.setDouble(2, cuenta.getCredito());
             ps.setInt(3, cuenta.getCliente());
             ps.setString(4, cuenta.getCreacion());
-            ps.setInt(5, cuenta.getCodigo());
+            ps.setLong(5, cuenta.getCodigo());
             ps.executeUpdate();
             ingresado = true;
-        } catch (SQLException sqle){
-            System.err.print("Error en método ingresarCuenta() de la clase CuentaDAO por: "+sqle);
-            System.out.print("Error en método ingresarCuenta() de la clase CuentaDAO por: "+sqle);
+        } catch (SQLException sqle) {
+            System.err.print("Error en método ingresarCuenta() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método ingresarCuenta() de la clase CuentaDAO por: " + sqle);
         }
         return ingresado;
     }
-    
-    public boolean actualizarSaldo(int cuenta, Double monto){
+
+    public boolean actualizarSaldo(long cuenta, Double monto) {
         String sql = "UPDATE Cuenta SET credito = credito + ? WHERE codigo = ?";
         boolean ingresado = false;
-        try(PreparedStatement ps = cn.prepareStatement(sql)){
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setDouble(1, monto);
-            ps.setInt(2, cuenta);
+            ps.setLong(2, cuenta);
             ps.executeUpdate();
             ingresado = true;
-        } catch (SQLException sqle){
-            System.err.print("Error en método actualizarSaldo() de la clase CuentaDAO por: "+sqle);
-            System.out.print("Error en método actualizarSaldo() de la clase CuentaDAO por: "+sqle);
+        } catch (SQLException sqle) {
+            System.err.print("Error en método actualizarSaldo() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método actualizarSaldo() de la clase CuentaDAO por: " + sqle);
         }
         return ingresado;
     }
-    
-    public int crearCuenta(CuentaDTO cuenta){
+
+    public long crearCuenta(CuentaDTO cuenta) {
         String sql = "INSERT INTO Cuenta(credito,cliente,creacion) VALUES(?,?,?)";
-        int ingresado = -1;
-        try(PreparedStatement ps = cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+        long ingresado = -1;
+        try (PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setDouble(1, cuenta.getCredito());
             ps.setInt(2, cuenta.getCliente());
             ps.setString(3, cuenta.getCreacion());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
-            while(rs.next()){
-                ingresado = rs.getInt(1);
+            while (rs.next()) {
+                ingresado = rs.getLong(1);
             }
-            
-        } catch (SQLException sqle){
-            System.err.print("Error en método crearCuenta() de la clase CuentaDAO por: "+sqle);
-            System.out.print("Error en método crearCuenta() de la clase CuentaDAO por: "+sqle);
+        } catch (SQLException sqle) {
+            System.err.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
         }
         return ingresado;
     }
-    
-    public ArrayList<CuentaDTO> obtenerCuentas(int codigo){
+
+    public CuentaDTO existeCuenta(long cuenta) {
+        String sql = "SELECT * FROM Cuenta WHERE codigo = ?";
+        CuentaDTO existe = new CuentaDTO();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, cuenta);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                existe = new CuentaDTO(cuenta,rs.getDouble("credito"),rs.getInt("cliente"),rs.getString("creacion"));
+            }
+        } catch (SQLException sqle) {
+            System.err.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
+        }
+        return existe;
+    }
+
+    public ArrayList<CuentaDTO> obtenerCuentas(int codigo) {
         String sql = "SELECT * FROM Cuenta WHERE cliente = ?";
         ArrayList<CuentaDTO> cuentas = new ArrayList<>();
-        try(PreparedStatement ps = cn.prepareStatement(sql)){
-            ps.setInt(1,codigo);
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                CuentaDTO temporal = new CuentaDTO(rs.getInt("codigo"),rs.getDouble("credito"),codigo,rs.getString("creacion"));
+            while (rs.next()) {
+                CuentaDTO temporal = new CuentaDTO(rs.getInt("codigo"), rs.getDouble("credito"), codigo, rs.getString("creacion"));
                 cuentas.add(temporal);
             }
-            
-        } catch (SQLException sqle){
-            System.err.print("Error en método crearCuenta() de la clase CuentaDAO por: "+sqle);
-            System.out.print("Error en método crearCuenta() de la clase CuentaDAO por: "+sqle);
+
+        } catch (SQLException sqle) {
+            System.err.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
         }
         return cuentas;
     }
-    
+
 }
