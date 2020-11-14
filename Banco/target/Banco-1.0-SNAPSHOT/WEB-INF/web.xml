@@ -28,6 +28,10 @@
         <servlet-name>transaccion</servlet-name>
         <servlet-class>Servlet.transaccion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>configuracion</servlet-name>
+        <servlet-class>Servlet.configuracion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>asociacion</servlet-name>
         <url-pattern>/asociacion</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>transaccion</servlet-name>
         <url-pattern>/transaccion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>configuracion</servlet-name>
+        <url-pattern>/configuracion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

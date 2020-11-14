@@ -45,7 +45,7 @@
                     <div class="content">
                         <p>Ver tus datos o el historial de lo que has hecho</p>
                         <a href="datosGerente.jsp">Ver datos</a>
-                        <a href="#">Historial</a>
+                        <a href="acciones.jsp">Historial</a>
                     </div>
                 </div>
             </div>

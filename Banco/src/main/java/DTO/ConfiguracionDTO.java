@@ -20,6 +20,16 @@ public class ConfiguracionDTO {
     public ConfiguracionDTO(){
     
     }
+    
+    public ConfiguracionDTO(Double limiteMe,Double limiteMa, String dMatutino, String hMatutino, String dVespertino, String hVespertino){
+        this.limite_mayor = limiteMa;
+        this.limite_menor = limiteMe;
+        this.d_matutino = dMatutino;
+        this.h_matutino = hMatutino;
+        this.d_vespertino = dVespertino;
+        this.h_vespertino = hVespertino;
+    }
+    
 
     public Double getLimite_menor() {
         return limite_menor;
