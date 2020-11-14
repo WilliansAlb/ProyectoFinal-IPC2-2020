@@ -5,9 +5,12 @@
  */
 package Servlet;
 
+import Base.ClienteDAO;
 import Base.Conector;
 import Base.CuentaDAO;
 import Base.TransaccionDAO;
+import DTO.ClienteDTO;
+import DTO.CuentaDTO;
 import DTO.TransaccionDTO;
 import DTO.UsuarioDTO;
 import java.io.IOException;
@@ -65,7 +68,26 @@ public class transaccion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/plain;charset=UTF-8");
+        HttpSession actual = request.getSession();
+        Conector cn = new Conector("encender");
+        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
+        if (request.getParameter("cuenta") != null) {
+            long cuenta = Long.parseLong(request.getParameter("cuenta"));
+            CuentaDAO cuentas = new CuentaDAO(cn);
+            CuentaDTO retorno = cuentas.existeCuenta(cuenta);
+            if (retorno.getCreacion() != null) {
+                ClienteDAO clientes = new ClienteDAO(cn);
+                ClienteDTO cliente = clientes.obtenerClienteConCodigo(retorno.getCliente());
+                if (cliente.getNombre() != null) {
+                    response.getWriter().write(retorno.getCodigo() + "\n" + cliente.getNombre() + "\n" + cliente.getDpi() + "\n" + cliente.getDireccion());
+                } else {
+                    response.getWriter().write("ERROR: No se pudieron recuperar los datos del propietario de la cuenta, por favor intenta de nuevo");
+                }
+            } else {
+                response.getWriter().write("NOEXISTE");
+            }
+        }
     }
 
     /**
@@ -80,6 +102,7 @@ public class transaccion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String retiro = request.getParameter("retiro");
+        String deposito = request.getParameter("deposito");
         response.setContentType("text/plain;charset=UTF-8");
         HttpSession actual = request.getSession();
         Conector cn = new Conector("encender");
@@ -90,18 +113,56 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto,hourdateFormat.format(fecha),"D");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto, hourdateFormat.format(fecha), "D");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
                 int codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
-                if (codigoTransaccion!=-1){
-                    if (cuentas.actualizarSaldo(cuenta, monto*-1)){
-                        response.getWriter().write(codigoTransaccion+"\n"+hourdateFormat.format(fecha));
+                if (codigoTransaccion != -1) {
+                    if (cuentas.actualizarSaldo(cuenta, monto * -1)) {
+                        response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
                     } else {
                         response.getWriter().write("ERROR: se creo la transaccion, pero no se logro actualizar el saldo de la cuenta");
                     }
                 } else {
                     response.getWriter().write("ERROR: no se pudo ingresar la transaccion a la base");
+                }
+            } else if (retiro.equalsIgnoreCase("CAJERO")) {
+                long cuenta = Long.parseLong(request.getParameter("cuenta"));
+                Double monto = Double.parseDouble(request.getParameter("monto"));
+                Date fecha = new Date();
+                DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "D");
+                TransaccionDAO transacciones = new TransaccionDAO(cn);
+                CuentaDAO cuentas = new CuentaDAO(cn);
+                int codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                if (codigoTransaccion != -1) {
+                    if (cuentas.actualizarSaldo(cuenta, monto * -1)) {
+                        response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
+                    } else {
+                        response.getWriter().write("ERROR: se creo la transaccion, pero no se logro actualizar el saldo de la cuenta");
+                    }
+                } else {
+                    response.getWriter().write("ERROR: no se cuenta con el saldo suficiente para realizar la transacción");
+                }
+            }
+        } else if (deposito!=null){
+            if (deposito.equalsIgnoreCase("CAJERO")) {
+                long cuenta = Long.parseLong(request.getParameter("cuenta"));
+                Double monto = Double.parseDouble(request.getParameter("monto"));
+                Date fecha = new Date();
+                DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "C");
+                TransaccionDAO transacciones = new TransaccionDAO(cn);
+                CuentaDAO cuentas = new CuentaDAO(cn);
+                int codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                if (codigoTransaccion != -1) {
+                    if (cuentas.actualizarSaldo(cuenta, monto)) {
+                        response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
+                    } else {
+                        response.getWriter().write("ERROR: se creo la transaccion, pero no se logro actualizar el saldo de la cuenta");
+                    }
+                } else {
+                    response.getWriter().write("ERROR: no se cuenta con el saldo suficiente para realizar la transacción");
                 }
             }
         }

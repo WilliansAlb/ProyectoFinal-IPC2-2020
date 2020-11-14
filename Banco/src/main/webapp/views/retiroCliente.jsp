@@ -36,6 +36,7 @@
             Conector cn = new Conector("encender");
             CuentaDAO cuentas = new CuentaDAO(cn);
             ArrayList<CuentaDTO> listado = cuentas.obtenerCuentas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
+            ArrayList<CuentaDTO> listadoAsociada = cuentas.obtenerCuentasAsociadas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
         %>
         <div class="bienvenida"></div>
         <div id="contenedorCuenta" class="crear">
@@ -78,6 +79,34 @@
                                         <td style="color:red;"><%out.print(temporal.getCredito());%></td>
                                         <%}%>
                                         <td>NO</td>
+                                        <td><%out.print(temporal.getCreacion());%></td>
+                                        <%
+                                            if (temporal.getCredito() > 0.25) {
+                                        %>
+                                        <td><button class="learn-more buttonEspecial" onclick="rellenarDatosElegida(this)">ELEGIR CUENTA</button></td>
+                                        <%
+                                        } else {
+                                        %>
+                                        <td><button class="selected buttonEspecial" style="background: red;">SALDO INSUFICIENTE</button></td>
+                                        <%}%>
+                                    </tr>
+                                    <%}
+                                    %>
+                                    <%for (int i = 0; i < listadoAsociada.size(); i++) {
+                                            CuentaDTO temporal = listadoAsociada.get(i);
+                                    %>
+                                    <tr class="cuentaDatos">
+                                        <td><%out.print(temporal.getCodigo());%></td>
+                                        <%
+                                            if (temporal.getCredito() > 0.25) {
+                                        %>
+                                        <td style="color:green;"><%out.print(temporal.getCredito());%></td>
+                                        <%
+                                        } else {
+                                        %>
+                                        <td style="color:red;"><%out.print(temporal.getCredito());%></td>
+                                        <%}%>
+                                        <td>SI</td>
                                         <td><%out.print(temporal.getCreacion());%></td>
                                         <%
                                             if (temporal.getCredito() > 0.25) {

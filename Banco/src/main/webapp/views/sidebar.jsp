@@ -48,7 +48,7 @@
             <div id="derecha">
                 <div id="informacionPerfil">
                     <button class="boton1" id="boton1" onclick="mandarAPerfil()">
-                        <img src="../resources/img/manager.svg" id="imagenUsuario" width="32em" height="auto">
+                        <img src="../resources/img/home.svg" id="imagenUsuario" width="32em" height="auto">
                         HOME
                     </button>
                 </div>

@@ -200,8 +200,8 @@
                 <div class="face face2">
                     <div class="content">
                         <p>¿Qué tipo de transacción harás?</p>
-                        <a href="configuracion.jsp">Deposito</a>
-                        <a href="configuracion.jsp">Retiro</a>
+                        <a href="depositoCajero.jsp">Deposito</a>
+                        <a href="retiroCajero.jsp">Retiro</a>
                     </div>
                 </div>
             </div>

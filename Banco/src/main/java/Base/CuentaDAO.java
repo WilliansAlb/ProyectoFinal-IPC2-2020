@@ -103,13 +103,31 @@ public class CuentaDAO {
             ps.setInt(1, codigo);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                CuentaDTO temporal = new CuentaDTO(rs.getInt("codigo"), rs.getDouble("credito"), codigo, rs.getString("creacion"));
+                CuentaDTO temporal = new CuentaDTO(rs.getLong("codigo"), rs.getDouble("credito"), codigo, rs.getString("creacion"));
                 cuentas.add(temporal);
             }
 
         } catch (SQLException sqle) {
-            System.err.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
+            System.err.print("Error en método obtenerCuentas() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método obtenerCuentas() de la clase CuentaDAO por: " + sqle);
+        }
+        return cuentas;
+    }
+    public ArrayList<CuentaDTO> obtenerCuentasAsociadas(int codigo) {
+        String sql = "SELECT c.codigo, c.credito, c.cliente, c.creacion FROM Asociacion a, Cuenta c WHERE a.cliente = ? AND a.cuenta = c.codigo AND a.estado = ?;";
+        ArrayList<CuentaDTO> cuentas = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            ps.setString(2, "ACEPTADA");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CuentaDTO temporal = new CuentaDTO(rs.getLong(1), rs.getDouble(2), rs.getInt(3), rs.getString(4));
+                cuentas.add(temporal);
+            }
+
+        } catch (SQLException sqle) {
+            System.err.print("Error en método obtenerCuentasAsociadas() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método obtenerCuentasAsociadas() de la clase CuentaDAO por: " + sqle);
         }
         return cuentas;
     }

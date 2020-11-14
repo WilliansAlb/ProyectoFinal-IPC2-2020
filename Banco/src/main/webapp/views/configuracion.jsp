@@ -4,6 +4,9 @@
     Author     : yelbetto
 --%>
 
+<%@page import="DTO.ConfiguracionDTO"%>
+<%@page import="Base.ConfiguracionDAO"%>
+<%@page import="Base.Conector"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -28,6 +31,11 @@
     <body>
         <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
+        <%
+            Conector cn = new Conector("encender");
+            ConfiguracionDAO configuraciones = new ConfiguracionDAO(cn);
+            ConfiguracionDTO confi = configuraciones.obtenerConfiguracion();
+        %>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" >
                 <div class="ingreso" id="ingresoDpiCuenta">
@@ -37,13 +45,13 @@
                         <p style="font-size: 0.8em;font-weight: 300; color: grey;">Configura mediante el cambio y guardado de los siguientes campos algunos aspectos para reportes</p>
                         <form>
                             <div class="group">
-                                <input type="number" required id="limiteMenor" style="color: #EBEBEB !important;">
+                                <input type="number" required id="limiteMenor" onkeyup="activarGuardarConfiguracion(this)" value="<%out.print(confi.getLimite_menor());%>" style="color: #EBEBEB !important;">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="limiteMenor">Limite menor</label>
                             </div>
                             <div class="group">
-                                <input type="number" required id="limiteMayor" style="color: #EBEBEB !important;">
+                                <input type="number" required id="limiteMayor" onkeyup="activarGuardarConfiguracion(this)" value="<%out.print(confi.getLimite_mayor());%>" style="color: #EBEBEB !important;">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <label for="limiteMayor">Limite menor</label>
@@ -54,14 +62,14 @@
                                 <div id="matutino" style="display:grid; grid-template-columns:auto auto auto auto; color:white;">
                                     Desde -
                                     <div class="input-group clockpicker">
-                                        <input type="text" class="form-control" value="09:30" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <input type="text" class="form-control" onchange="activarGuardarConfiguracion(this)" value="<%out.print(confi.getD_matutino());%>" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
                                     </div>
                                     - Hasta -
                                     <div class="input-group clockpicker">
-                                        <input type="text" class="form-control" value="09:30" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <input type="text" class="form-control" onchange="activarGuardarConfiguracion(this)" value="<%out.print(confi.getH_matutino());%>" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -74,21 +82,21 @@
                                 <div id="vespertino" style="display:grid; grid-template-columns:auto auto auto auto; color:white;">
                                     Desde -
                                     <div class="input-group clockpicker">
-                                        <input type="text" class="form-control" value="09:30:00" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <input type="text" class="form-control" onchange="activarGuardarConfiguracion(this)" value="<%out.print(confi.getD_vespertino());%>" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
                                     </div>
                                     - Hasta -
                                     <div class="input-group clockpicker">
-                                        <input type="text" class="form-control" value="06:30:50" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
+                                        <input type="text" class="form-control" onchange="activarGuardarConfiguracion(this)" value="<%out.print(confi.getH_vespertino());%>" pattern="^\d{2}:\d{2}(:\d{2})?$" oninvalid="setCustomValidity('Tienes que ingresar una hora')">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <button class="learn-more buttonEspecial" onclick="$('#contenedorMensaje2').show()">Guardar cambios</button>
+                            <button class="learn-more buttonEspecial" style="color:grey;" id="guardarCambios">Guardar cambios</button>
                         </form>
                     </center>
                 </div>
@@ -104,6 +112,9 @@
                                 align: 'left',
                                 donetext: 'Hecho'
                             });
+                            function activarGuardarConfiguracion(){
+                                document.getElementById("guardarCambios").style.color = "#5264AE";
+                            }
         </script>
     </body>
     <%@include file='footer.html' %>
