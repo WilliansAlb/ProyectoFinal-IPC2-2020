@@ -127,8 +127,8 @@
                     <div class="content">
                         <p>Ver tus datos o el historial de las transacciones</p>
                         <a href="datos.jsp">Ver datos</a>
-                        <a href="#.jsp">Ver cuentas</a>
-                        <a href="#">Historial</a>
+                        <a href="cuentas.jsp">Ver cuentas</a>
+                        <a href="transacciones.jsp">Historial</a>
                     </div>
                 </div>
             </div>

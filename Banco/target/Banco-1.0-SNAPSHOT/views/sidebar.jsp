@@ -24,8 +24,8 @@
     <a href="retiroCliente.jsp" class="w3-bar-item"><img src="../resources/img/cajero-automatico.svg" width="20%">Cajero automático</a>
     <a href="asociar.jsp" class="w3-bar-item"><img src="../resources/img/020-handshake.svg" width="20%">Solicitar asociación</a>
     <a href="asociaciones.jsp" class="w3-bar-item"><img src="../resources/img/conference_call.svg" width="20%">Solicitudes de asociación</a>
-    <a href="asociaciones.jsp" class="w3-bar-item"><img src="../resources/img/012-coin.svg" width="20%">Cuentas</a>
-    <a href="#" class="w3-bar-item"><img src="../resources/img/007-checkbook.svg" width="20%">Transacciones</a>
+    <a href="cuentas.jsp" class="w3-bar-item"><img src="../resources/img/012-coin.svg" width="20%">Cuentas</a>
+    <a href="transacciones.jsp" class="w3-bar-item"><img src="../resources/img/007-checkbook.svg" width="20%">Transacciones</a>
     <a href="#" class="w3-bar-item"><img src="../resources/img/survey.svg" width="20%">Reportes</a>
     <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {%>
     <a href="retiroCajero.jsp" class="w3-bar-item"><img src="../resources/img/013-profit.svg" width="20%">Retirar</a>
@@ -40,7 +40,7 @@
     <div class="w3-container">
         <div id="contenedor">
             <div id="izquierda">
-                <button class="" id="menu" onclick="w3_open()">MENU<img src="../resources/img/bank.png" width="45em" height="auto" id="imagenHospital"></button>
+                <button class="" id="menu" onclick="w3_open()">MENU<img src="../resources/img/033-savings.svg" width="45em" height="auto" id="imagenHospital"></button>
                 <label for="menu" id="nombreHospital">Banco "El Billeton"</label>
             </div>
             <div id="derecha">

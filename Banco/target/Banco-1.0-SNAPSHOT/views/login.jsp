@@ -10,8 +10,8 @@
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Banco de Guatemala</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
-        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;700&display=swap" rel="stylesheet"> 
+    <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="../resources/css/button2.css" type="text/css">
     <link rel="stylesheet" href="../resources/css/ocultoGeneral.css" type="text/css">
     <link rel="stylesheet" href="../resources/css/PopUp.css" type="text/css">
@@ -34,7 +34,7 @@
     <div id='login'>
         <center>
             <div>
-                <img name="hospital-img" src='../resources/img/bank.png' alt="imagen de un hospital" width="20%" height="auto"
+                <img name="hospital-img" src="../resources/img/033-savings.svg" alt="imagen de un hospital" width="20%" height="auto"
                     id="logo"><br>
                     <label for="hospital-img" style="font-weight: bold; font-size: 1.3em;">Banco El Billeton</label>
                     <p style="width: 55%;font-size: 0.7em;color:grey;">Ingresa tus credenciales para poder acceder al sistema</p>

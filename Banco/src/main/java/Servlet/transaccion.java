@@ -68,11 +68,11 @@ public class transaccion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain;charset=UTF-8");
         HttpSession actual = request.getSession();
         Conector cn = new Conector("encender");
         UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
         if (request.getParameter("cuenta") != null) {
+            response.setContentType("text/plain;charset=UTF-8");
             long cuenta = Long.parseLong(request.getParameter("cuenta"));
             CuentaDAO cuentas = new CuentaDAO(cn);
             CuentaDTO retorno = cuentas.existeCuenta(cuenta);
@@ -86,6 +86,27 @@ public class transaccion extends HttpServlet {
                 }
             } else {
                 response.getWriter().write("NOEXISTE");
+            }
+        } else if (request.getParameter("cuentas") != null) {
+            if (request.getParameter("verificado").equalsIgnoreCase("S")) {
+                long cuenta = Long.parseLong(request.getParameter("cuentas"));
+                actual.setAttribute("noCuenta", cuenta);
+                response.sendRedirect(request.getContextPath() + "/views/transacciones.jsp");
+            } else if (request.getParameter("verificado").equalsIgnoreCase("N")) {
+                long cuenta = Long.parseLong(request.getParameter("cuentas"));
+                CuentaDAO cuentas = new CuentaDAO(cn);
+                CuentaDTO retorno = cuentas.existeCuenta(cuenta, usuario.getCodigo());
+                if (retorno.getCreacion() != null) {
+                    actual.setAttribute("noCuenta", cuenta);
+                    response.sendRedirect(request.getContextPath() + "/views/transacciones.jsp");
+                } else {
+                    actual.setAttribute("noCuenta", "ERROR");
+                    response.sendRedirect(request.getContextPath() + "/views/transacciones.jsp");
+                }
+            } else {
+                actual.setAttribute("noCuenta", null);
+                actual.removeAttribute("noCuenta");
+                response.sendRedirect(request.getContextPath() + "/views/transacciones.jsp");
             }
         }
     }
@@ -145,7 +166,7 @@ public class transaccion extends HttpServlet {
                     response.getWriter().write("ERROR: no se cuenta con el saldo suficiente para realizar la transacción");
                 }
             }
-        } else if (deposito!=null){
+        } else if (deposito != null) {
             if (deposito.equalsIgnoreCase("CAJERO")) {
                 long cuenta = Long.parseLong(request.getParameter("cuenta"));
                 Double monto = Double.parseDouble(request.getParameter("monto"));

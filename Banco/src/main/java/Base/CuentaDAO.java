@@ -95,6 +95,23 @@ public class CuentaDAO {
         }
         return existe;
     }
+    
+    public CuentaDTO existeCuenta(long cuenta, int codigo) {
+        String sql = "SELECT * FROM Cuenta WHERE codigo = ? AND cliente = ?";
+        CuentaDTO existe = new CuentaDTO();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, cuenta);
+            ps.setInt(2, codigo);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                existe = new CuentaDTO(cuenta,rs.getDouble("credito"),rs.getInt("cliente"),rs.getString("creacion"));
+            }
+        } catch (SQLException sqle) {
+            System.err.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
+            System.out.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
+        }
+        return existe;
+    }
 
     public ArrayList<CuentaDTO> obtenerCuentas(int codigo) {
         String sql = "SELECT * FROM Cuenta WHERE cliente = ?";

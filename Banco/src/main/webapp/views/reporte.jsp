@@ -74,6 +74,20 @@
                                 <button class="learn-more">Generar reporte</button>
                             </form>
                         </div>
+                        <div id="filtros2" style="width:40%;background-color: grey;display:none;" >
+                            <form id="filtro2Gerente" method="POST" action="../reporte">
+                                <label for="entidades">Entidad:</label>
+                                <br>
+                                <select id="entidades" name="entidad">
+                                    <option value="CLIENTE">Cliente</option>
+                                    <option value="CAJERO">Cajero</option>
+                                    <option value="GERENTE">Gerente</option>
+                                    <option value="CONFIGURACION">Configuracion</option>
+                                </select>
+                                <hr style="width: 50%;margin: 2px;">
+                                <button class="learn-more">Generar reporte</button>
+                            </form>
+                        </div>
                         <div id="tablaReporte" style="display:none;">
                             <table id="reporteGerente" class="tablaDatos">
                                 <thead>

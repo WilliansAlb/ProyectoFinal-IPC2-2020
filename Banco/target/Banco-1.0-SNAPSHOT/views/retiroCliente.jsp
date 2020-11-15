@@ -13,8 +13,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
-        <title>Crear Cuenta</title>
+        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
+        <title>Retirar</title>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;700&display=swap" rel="stylesheet"> 
@@ -30,18 +30,32 @@
         <script src="../resources/js/retiro.js" type="text/javascript"></script>
     </head>
     <body>
-        <%@include file='sidebar.jsp'%>
         <%
-            HttpSession sesionRetiroCliente = request.getSession();
-            Conector cn = new Conector("encender");
-            CuentaDAO cuentas = new CuentaDAO(cn);
-            ArrayList<CuentaDTO> listado = cuentas.obtenerCuentas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
-            ArrayList<CuentaDTO> listadoAsociada = cuentas.obtenerCuentasAsociadas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
+            HttpSession sesionRetiro = request.getSession();
+            boolean correcto = false;
+            if (sesionRetiro.getAttribute("tipo") != null) {
+                if (sesionRetiro.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {
+                    correcto = true;
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
         %>
+        <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
+        <%
+            if (correcto) {
+                HttpSession sesionRetiroCliente = request.getSession();
+                Conector cn = new Conector("encender");
+                CuentaDAO cuentas = new CuentaDAO(cn);
+                ArrayList<CuentaDTO> listado = cuentas.obtenerCuentas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
+                ArrayList<CuentaDTO> listadoAsociada = cuentas.obtenerCuentasAsociadas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
+        %>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" id="buscarCliente">
-                <div class="ingreso" id="ingresoDpiCuenta">
+                <div class="ingreso" id="ingresoDpiCuenta" style="width:80%;">
                     <center>
                         <img src="../resources/img/cajero-automatico.svg" max-width="67px">
                         <h1 style="font-weight: 900;color:white;">Cajero Automático</h1>
@@ -148,9 +162,9 @@
                                 </tbody>
                             </table>
                             <form action="../transaccion" method="POST" id="formMontoRetiroCuenta">
-                                <div class="group">
+                                <div class="group" style="width:50%;">
                                     <span class="popuptext" id="popUpMonto">Tiene que ser número!</span>
-                                    <input type="number" id="monto" max="10000" step="0.25" min="1" name="monto" onkeyup="comprobar(this, 'VALIDAR')" required style="color: #EBEBEB !important;">
+                                    <input type="number" id="monto" max="10000" class="inputCentrado" step="0.25" min="1" name="monto" onkeyup="comprobar(this, 'VALIDAR')" required style="color: #EBEBEB !important;">
                                     <span class="highlight"></span>
                                     <span class="bar"></span>
                                     <label for="monto" class="labelCentrado" style="top:-20px;font-size: 1em;color: #5264AE;">Monto</label>
@@ -192,8 +206,8 @@
         </div>
     </center>
     <script>
-        function cerrarRedirigir(boton){
-            if (boton.textContent === 'CERRAR'){
+        function cerrarRedirigir(boton) {
+            if (boton.textContent === 'CERRAR') {
                 var con1 = boton.parentNode;
                 var con2 = con1.parentNode;
                 con2.style.display = "none";
@@ -235,8 +249,8 @@
             document.getElementById("retiroMonto").style.display = "";
         }
 
-        function comprobar(input) {
-            dejarDeEscribir(input);
+        function comprobar(input, valor) {
+            dejarDeEscribir(input, valor);
         }
         let timeout;
         function dejarDeEscribir(input, valor) {
@@ -289,5 +303,6 @@
         }
     </script>
     <%@include file='footer.html' %>
+    <%}%>
 </body>
 </html>

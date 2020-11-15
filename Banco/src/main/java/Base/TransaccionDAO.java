@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -95,5 +96,23 @@ public class TransaccionDAO {
             System.out.print("Error en método existeTransaccion() de la clase TransaccionDAO por: "+sqle);
         }
         return ingresado;
+    }
+    
+    public ArrayList<TransaccionDTO> obtenerTransaccionesCuenta(long cuenta){
+        ArrayList<TransaccionDTO> retorno = new ArrayList<>();
+        String sql = "SELECT * FROM Transaccion WHERE cuenta = ? ORDER BY creacion DESC";
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setLong(1, cuenta);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                TransaccionDTO nueva = new TransaccionDTO(rs.getInt("codigo"),cuenta,rs.getInt("cajero"),rs.getDouble("monto"),rs.getString("creacion"),rs.getString("tipo"));
+                retorno.add(nueva);
+            }
+        } catch (SQLException sqle){
+            System.err.print("Error en método obtenerTransaccionesCuenta() de la clase TransaccionDAO por: "+sqle);
+            System.out.print("Error en método obtenerTransaccionesCuenta() de la clase TransaccionDAO por: "+sqle);
+        }
+        
+        return retorno;
     }
 }
