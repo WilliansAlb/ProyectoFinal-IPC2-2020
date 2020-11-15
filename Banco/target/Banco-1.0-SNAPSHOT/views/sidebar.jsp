@@ -13,29 +13,27 @@
     <%
         if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
     %>
-    <a href="crearCuenta.jsp" class="w3-bar-item">Crear cuenta</a>
-    <a href="crearCajero.jsp" class="w3-bar-item">Crear trabajador</a>
-    <a href="modificarCliente.jsp" class="w3-bar-item">Modificar cliente</a>
-    <a href="modificarCajero.jsp" class="w3-bar-item">Modificar cajero</a>
-    <a href="configuracion.jsp" class="w3-bar-item">Configuracion</a>
-    <a href="datosGerente.jsp" class="w3-bar-item">Ver datos</a>
-    <a href="" class="w3-bar-item">Reportes</a>
+    <a href="crearCuenta.jsp" class="w3-bar-item"><img src="../resources/img/add_database.svg" width="20%">Crear cuenta</a>
+    <a href="crearCajero.jsp" class="w3-bar-item"><img src="../resources/img/add_database.svg" width="20%">Crear trabajador</a>
+    <a href="modificarCliente.jsp" class="w3-bar-item"><img src="../resources/img/editar.svg" width="20%">Modificar cliente</a>
+    <a href="modificarCajero.jsp" class="w3-bar-item"><img src="../resources/img/editar.svg" width="20%">Modificar cajero</a>
+    <a href="configuracion.jsp" class="w3-bar-item"><img src="../resources/img/settings.svg" width="20%">Configuracion</a>
+    <a href="#" class="w3-bar-item"><img src="../resources/img/survey.svg" width="20%">Reportes</a>
     <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {%>
-    <a href="#" class="w3-bar-item">Transferir dinero</a>
-    <a href="#" class="w3-bar-item">Cajero automático</a>
-    <a href="#" class="w3-bar-item">Solicitar asociación</a>
-    <a href="#" class="w3-bar-item">Listar solicitudes de asociación</a>
-    <a href="#" class="w3-bar-item">Historial de transacciones</a>
-    <a href="#" class="w3-bar-item">Perfil</a>
+    <a href="#" class="w3-bar-item"><img src="../resources/img/009-transfer.svg" width="20%">Transferir dinero</a>
+    <a href="retiroCliente.jsp" class="w3-bar-item"><img src="../resources/img/cajero-automatico.svg" width="20%">Cajero automático</a>
+    <a href="asociar.jsp" class="w3-bar-item"><img src="../resources/img/020-handshake.svg" width="20%">Solicitar asociación</a>
+    <a href="asociaciones.jsp" class="w3-bar-item"><img src="../resources/img/conference_call.svg" width="20%">Solicitudes de asociación</a>
+    <a href="asociaciones.jsp" class="w3-bar-item"><img src="../resources/img/012-coin.svg" width="20%">Cuentas</a>
+    <a href="#" class="w3-bar-item"><img src="../resources/img/007-checkbook.svg" width="20%">Transacciones</a>
+    <a href="#" class="w3-bar-item"><img src="../resources/img/survey.svg" width="20%">Reportes</a>
     <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {%>
-    <a href="AdminConsultas.jsp" class="w3-bar-item">Editar/crear tipos consultas</a>
-    <a href="AdminExamenes.jsp" class="w3-bar-item">Editar/crear tipos examen</a>
-    <a href="AdminMedicos.jsp" class="w3-bar-item">Editar/crear medico</a>
-    <a href="AdminLaboratoristas.jsp" class="w3-bar-item">Editar/crear laboratorista</a>
-    <a href="ReporteAdmin.jsp" class="w3-bar-item">Reportes</a>
-    <a href="Perfil.jsp" class="w3-bar-item">Ver perfil</a>
+    <a href="retiroCajero.jsp" class="w3-bar-item"><img src="../resources/img/013-profit.svg" width="20%">Retirar</a>
+    <a href="depositoCajero.jsp" class="w3-bar-item"><img src="../resources/img/033-savings.svg" width="20%">Depositar</a>
+    <a href="#" class="w3-bar-item"><img src="../resources/img/survey.svg" width="20%">Reportes</a>
     <%}%>
-    <a href="/Banco/sesion?tipo=123" class="w3-bar-item">Cerrar sesión</a>
+    <a href="datos.jsp" class="w3-bar-item"><img src="../resources/img/businessman.svg" width="20%">Datos personales</a>
+    <a href="/Banco/sesion?tipo=123" class="w3-bar-item"><img src="../resources/img/export.svg" width="20%">Cerrar sesión</a>
 </div>
 
 <div class="nav">

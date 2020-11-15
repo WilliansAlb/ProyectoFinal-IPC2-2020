@@ -32,13 +32,25 @@
         <script src="../resources/js/retiro.js" type="text/javascript"></script>
     </head>
     <body>
-        <%@include file='sidebar.jsp'%>
         <%
             HttpSession sesionAcciones = request.getSession();
-            Conector cn = new Conector("encender");
-            AccionDAO controladorAcciones = new AccionDAO(cn);
-            ArrayList<AccionDTO> acciones = controladorAcciones.listadoAcciones(Integer.parseInt(sesionAcciones.getAttribute("codigo").toString()));
+            boolean correcto = false;
+            if (sesionAcciones.getAttribute("tipo") != null) {
+                if (sesionAcciones.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
+                    correcto = true;
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
         %>
+        <%if (correcto) {
+                Conector cn = new Conector("encender");
+                AccionDAO controladorAcciones = new AccionDAO(cn);
+                ArrayList<AccionDTO> acciones = controladorAcciones.listadoAcciones(Integer.parseInt(sesionAcciones.getAttribute("codigo").toString()));
+        %>
+        <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
         <div id="contenedorAcciones" class="crear">
             <div class="contenedorFlex" id="listaAcciones">
@@ -71,6 +83,7 @@
                             <div id="tablaAcciones" style="display: none;">
                                 <%}%>
                                 <h4 style="font-weight: 900; color: white;">Listado de acciones</h4>
+                                <a href="../reporte?tipo=2&filtro=" download="acciones.pdf" id="linkDescarga" style="display:none;color:#5264AE;">Exportar a PDF</a>
                                 <table class="tablaDatos" id="hechas" width="95%">
                                     <thead>
                                         <tr>
@@ -150,6 +163,8 @@
                         var filas = hechas.querySelectorAll("tr");
                         var existen = false;
                         var filtroFecha = false;
+                        $("#linkDescarga").hide();
+                        var hr = document.getElementById("linkDescarga").href;
                         if (select.value === '1') {
                             for (let fila of filas) {
                                 existen = true;
@@ -158,6 +173,8 @@
                         } else if (select.value === '2') {
                             for (let fila of filas) {
                                 if (fila.className === 'accionCliente') {
+                                    $("#linkDescarga").show();
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=CLIENTE";
                                     existen = true;
                                     fila.style.display = "";
                                 } else {
@@ -167,6 +184,8 @@
                         } else if (select.value === '3') {
                             for (let fila of filas) {
                                 if (fila.className === 'accionCajero') {
+                                    $("#linkDescarga").show();
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=CAJERO";
                                     existen = true;
                                     fila.style.display = "";
                                 } else {
@@ -176,6 +195,8 @@
                         } else if (select.value === '4') {
                             for (let fila of filas) {
                                 if (fila.className === 'accionGerente') {
+                                    $("#linkDescarga").show();
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=GERENTE";
                                     existen = true;
                                     fila.style.display = "";
                                 } else {
@@ -185,6 +206,8 @@
                         } else if (select.value === '5') {
                             for (let fila of filas) {
                                 if (fila.className === 'accionConfiguracion') {
+                                    $("#linkDescarga").show();
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=CONFIGURACION";
                                     console.log("encuentra");
                                     existen = true;
                                     fila.style.display = "";
@@ -211,5 +234,6 @@
                 </script>
 
                 <%@include file="footer.html" %>%>
+                <%}%>
                 </body>
                 </html>

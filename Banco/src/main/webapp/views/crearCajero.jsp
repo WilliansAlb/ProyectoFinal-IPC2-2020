@@ -4,6 +4,8 @@
     Author     : yelbetto
 --%>
 
+<%@page import="Base.GerenteDAO"%>
+<%@page import="Base.Conector"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,9 +27,28 @@
         <script src="../resources/js/creacion.js" type="text/javascript"></script>
     </head>
     <body>
+        <%
+            HttpSession configuracion = request.getSession();
+            Conector cn = new Conector("encender");
+            boolean correcto = false;
+            boolean turnoCorrecto = false;
+            if (configuracion.getAttribute("tipo") != null) {
+                if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
+                    GerenteDAO trabajando = new GerenteDAO(cn);
+                    correcto = true;
+                    turnoCorrecto = trabajando.turnoCorrecto(Integer.parseInt(configuracion.getAttribute("codigo").toString()));
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
+        <%if (correcto) {%>
         <%@include file="sidebar.jsp"%>
         <div class="bienvenida">
         </div>
+        <%if (turnoCorrecto) {%>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" >
                 <div class="ingreso" id="ingresoDpiCuenta">
@@ -110,5 +131,10 @@
         </div> 
     </center>
     <%@include file='footer.html' %>
+    <%} else {%>
+    <%@include file="turno.jsp" %>
+    <%@include file='footer.html' %>
+    <%}%>
+    <%}%>
 </body>
 </html>

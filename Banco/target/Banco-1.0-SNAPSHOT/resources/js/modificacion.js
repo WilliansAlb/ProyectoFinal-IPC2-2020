@@ -102,7 +102,6 @@ window.onload = function () {
                         verMensaje("../resources/img/approve.svg", "Los cambios que realizaste fueron guardados en la base de datos", "CAMBIOS GUARDADOS");
                     } else {
                         document.getElementById("cerrarRedirigir").textContent = "CERRAR";
-                        console.log(data);
                         verMensaje("../resources/img/high_priority.svg", "No se pudieron actualizar los cambios, intenta de nuevo", "INCONVENIENTE");
                     }
                 },

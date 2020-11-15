@@ -23,8 +23,11 @@
     <script type="text/javascript" src="../resources/js/newLogin.js"></script>
     <script type="text/javascript" src="../resources/js/oculto.js"></script>
 </head>
-
 <body style="overflow: hidden; margin: 0; padding:0;">
+    <%
+        HttpSession sesionLogin = request.getSession();
+        if (sesionLogin.getAttribute("tipo")==null){
+    %>
     <div class="page-bg"></div>
     <div class="bienvenida"></div>
 <center>
@@ -71,5 +74,8 @@
             </div>
         </div> 
     </center>
+<%} else {
+    response.sendRedirect("home.jsp");
+}%>
 </body>
 </html>

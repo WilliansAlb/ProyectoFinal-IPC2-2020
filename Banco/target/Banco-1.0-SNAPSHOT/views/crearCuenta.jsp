@@ -4,6 +4,8 @@
     Author     : yelbetto
 --%>
 
+<%@page import="Base.Conector"%>
+<%@page import="Base.GerenteDAO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,13 +29,32 @@
         <script src="../resources/js/creacion.js" type="text/javascript"></script>
     </head>
     <body>
-        <% java.util.Date fecha = new Date();
-            SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
-            String fecha_actual = formateador.format(fecha);
-            System.out.println(fecha_actual);
+        <%
+            HttpSession configuracion = request.getSession();
+            Conector cn = new Conector("encender");
+            boolean correcto = false;
+            boolean turnoCorrecto = false;
+            if (configuracion.getAttribute("tipo") != null) {
+                if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
+                    GerenteDAO trabajando = new GerenteDAO(cn);
+                    correcto = true;
+                    turnoCorrecto = trabajando.turnoCorrecto(Integer.parseInt(configuracion.getAttribute("codigo").toString()));
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
         %>
+        <%if (correcto) {%>
         <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
+        <%
+            if (turnoCorrecto) {
+                java.util.Date fecha = new Date();
+                SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+                String fecha_actual = formateador.format(fecha);
+        %>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" id="buscarCliente">
                 <div class="ingreso" id="ingresoDpiCuenta">
@@ -227,6 +248,11 @@
             }
         }
     </script>
+    <%@include file='footer.html' %>
+    <%} else {%>
+    <%@include file="turno.jsp" %>
+    <%@include file='footer.html' %>
+    <%}%>
+    <%}%>
 </body>
-<%@include file='footer.html' %>
 </html>

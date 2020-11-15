@@ -20,9 +20,16 @@
         <link rel="stylesheet" href="../resources/css/home.css">
     </head>
     <body>
-        <%@include file='sidebar.jsp'%>
         <%HttpSession sesionHome = request.getSession();
+        boolean correcto = false;
+        if (sesionHome.getAttribute("tipo")!=null){
+            correcto = true;
+        } else {
+            response.sendRedirect("login.jsp");
+        }
         %>
+        <%if (correcto){%>
+        <%@include file='sidebar.jsp'%>
         <div class="bienvenida">
         </div>
     <center>
@@ -44,7 +51,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver tus datos o el historial de lo que has hecho</p>
-                        <a href="datosGerente.jsp">Ver datos</a>
+                        <a href="datos.jsp">Ver datos</a>
                         <a href="acciones.jsp">Historial</a>
                     </div>
                 </div>
@@ -90,7 +97,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver y exportar tus reportes</p>
-                        <a href="#">Ir</a>
+                        <a href="reporte.jsp">Ir</a>
                     </div>
                 </div>
             </div>
@@ -119,8 +126,8 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver tus datos o el historial de las transacciones</p>
-                        <a href="datosGerente.jsp">Ver datos</a>
-                        <a href="datosGerente.jsp">Ver cuentas</a>
+                        <a href="datos.jsp">Ver datos</a>
+                        <a href="#.jsp">Ver cuentas</a>
                         <a href="#">Historial</a>
                     </div>
                 </div>
@@ -129,7 +136,7 @@
                 <div class="face face1">
                     <div class="content">
                         <center>
-                            <img src="../resources/img/conference_call.svg">
+                            <img src="../resources/img/020-handshake.svg">
                             <h3>Asociaciones</h3>
                         </center>
                     </div>
@@ -184,7 +191,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver tus datos</p>
-                        <a href="datosGerente.jsp">Ver datos</a>
+                        <a href="datos.jsp">Ver datos</a>
                     </div>
                 </div>
             </div>
@@ -222,5 +229,6 @@
             <%}%>
         </div>
     </div>
+        <%}%>
 </body>
 </html>

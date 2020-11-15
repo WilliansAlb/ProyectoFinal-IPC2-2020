@@ -62,4 +62,23 @@ public class AccionDAO {
         return acciones;
     }
     
+    public ArrayList<AccionDTO> listadoAcciones(int gerente,String entidad){
+        String sql = "SELECT * FROM Accion WHERE gerente = ? AND entidad = ? ORDER BY codigo DESC";
+        ArrayList<AccionDTO> acciones = new ArrayList<>();
+        
+        try (PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setInt(1, gerente);
+            ps.setString(2, entidad);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                AccionDTO temporal = new AccionDTO(rs.getInt("codigo"),rs.getString("descripcion"),rs.getInt("gerente"),rs.getString("realizacion"),rs.getString("entidad"));
+                acciones.add(temporal);
+            }
+        } catch (SQLException sqle){
+            System.err.print("ERROR: en metodo listadoAccines() de clase AccionDAO por "+sqle);
+        }
+        
+        return acciones;
+    }
+    
 }

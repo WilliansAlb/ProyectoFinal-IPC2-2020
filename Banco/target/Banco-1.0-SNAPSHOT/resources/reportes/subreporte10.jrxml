@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreporte10" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ced95029-b569-4027-895c-af2843a4e088">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter2.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent"/>
+	<parameter name="clienteCodigo" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT * FROM Cuenta WHERE cliente = $P{clienteCodigo}]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Cuenta"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="credito" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="credito"/>
+		<property name="com.jaspersoft.studio.field.label" value="credito"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Cuenta"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Cuenta"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="creacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="creacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="creacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Cuenta"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="1a61a836-d137-48b1-ad67-6ff64600bf93"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="140" height="16" uuid="97465a02-31f2-40d2-bc42-88f79cef5f3e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a7620a72-2922-4819-900c-fe0501fc54d8"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. cuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="190" height="16" uuid="581601a5-3261-44d8-82a3-79b730ccb186">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fbb95b42-35de-4d75-9ff2-b78d0760648f"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="225" height="16" uuid="5dda3870-2542-46f3-beb1-8a8b34ba6548">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6895e85e-4a11-4c1e-aa37-5d04d6e30b8f"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Creada]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="a98495d8-3c8d-4fa0-81f5-30c3efc2f766"/>
+				<textField>
+					<reportElement x="140" y="-1" width="190" height="31" uuid="d013b140-c65d-4384-90f8-481f53e9eb61">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fbb95b42-35de-4d75-9ff2-b78d0760648f"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{credito}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="-1" width="140" height="31" uuid="6cfe45e8-be99-41a7-94e4-aa3501665cf8">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a7620a72-2922-4819-900c-fe0501fc54d8"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="330" y="-1" width="225" height="31" uuid="6ced58c5-7bbb-4b1a-8bb4-4bb9b915ee01">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6895e85e-4a11-4c1e-aa37-5d04d6e30b8f"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{creacion}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

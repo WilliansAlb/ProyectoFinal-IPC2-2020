@@ -4,6 +4,8 @@
     Author     : yelbetto
 --%>
 
+<%@page import="Base.CajeroDAO"%>
+<%@page import="Base.Conector"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -28,11 +30,30 @@
         <script src="../resources/js/retiro.js" type="text/javascript"></script>
     </head>
     <body>
-        <%@include file='sidebar.jsp'%>
         <%
+            HttpSession configuracion = request.getSession();
+            Conector cn = new Conector("encender");
+            boolean correcto = false;
+            boolean turnoCorrecto = false;
+            if (configuracion.getAttribute("tipo") != null) {
+                if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {
+                    CajeroDAO trabajando = new CajeroDAO(cn);
+                    correcto = true;
+                    turnoCorrecto = trabajando.turnoCorrecto(Integer.parseInt(configuracion.getAttribute("codigo").toString()));
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
+        <%if (correcto) {%>
+        <%@include file='sidebar.jsp'%>
+        <div class="bienvenida"></div>
+        <%
+            if (turnoCorrecto) {
             HttpSession sesionRetiroCajero = request.getSession();
         %>
-        <div class="bienvenida"></div>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" id="busquedaCuenta">
                 <div class="ingreso" id="busqueda">
@@ -153,5 +174,10 @@
             window.location = "depositoCajero.jsp";
         }
     </script>
+    <%} else {%>
+    <%@include file="turno.jsp" %>
+    <%@include file='footer.html' %>
+    <%}%>
+    <%}%>
 </body>
 </html>

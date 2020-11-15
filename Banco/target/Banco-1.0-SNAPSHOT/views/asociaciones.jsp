@@ -32,23 +32,36 @@
         <script src="../resources/js/listadoAsociaciones.js" type="text/javascript"></script>
     </head>
     <body>
-        <%@include file="sidebar.jsp" %>
         <div class="bienvenida"></div>
         <%
             HttpSession sesionAsociaciones = request.getSession();
-            Conector cn = new Conector("encender");
-            AsociacionDAO asociaciones = new AsociacionDAO(cn);
-            ArrayList<AsociacionDTO> asociacion = asociaciones.obtenerAsociacionesRecibidas(Integer.parseInt(sesionAsociaciones.getAttribute("codigo").toString()));
-            ArrayList<AsociacionDTO> asociacion2 = asociaciones.obtenerAsociacionesRealizadas(Integer.parseInt(sesionAsociaciones.getAttribute("codigo").toString()));
-            boolean mensaje = false;
+            boolean correcto = false;
+            if (sesionAsociaciones.getAttribute("tipo") != null) {
+                if (sesionAsociaciones.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {
+                    correcto = true;
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+
         %>
+        <%if (correcto) {
+                Conector cn = new Conector("encender");
+                AsociacionDAO asociaciones = new AsociacionDAO(cn);
+                ArrayList<AsociacionDTO> asociacion = asociaciones.obtenerAsociacionesRecibidas(Integer.parseInt(sesionAsociaciones.getAttribute("codigo").toString()));
+                ArrayList<AsociacionDTO> asociacion2 = asociaciones.obtenerAsociacionesRealizadas(Integer.parseInt(sesionAsociaciones.getAttribute("codigo").toString()));
+                boolean mensaje = false;
+        %>
+        <%@include file="sidebar.jsp" %>
         <div id="contenedorBusqueda" class="crear">
             <div class="contenedorFlex" id="busquedaCuenta">
                 <div class="ingreso" id="busqueda" style="width: 70%;">
                     <center>
                         <img src="../resources/img/conference_call.svg">
-                        <h1 style="font-weight: 900; color: white;">Solicitar asociación de cuenta</h1>
-                        <p style="color: grey;">Ingresa el número de la cuenta a la que le solicitarás la asociación</p>
+                        <h1 style="font-weight: 900; color: white;">Solicitudes de asociación</h1>
+                        <p style="color: grey;">Se muestran las solicitudes de asociacion de cuenta que coinciden con el siguiente filtro</p>
                         <select id="filtrarSolicitudes" onchange="filtrarSolicitudes(this)">
                             <option value="1">Todas las solicitudes recibidas</option>
                             <option value="2">Todas las solicitudes realizadas</option>
@@ -254,5 +267,6 @@
                             }
                         </script>
                         <%@include file='footer.html' %>
+                        <%}%>
                         </body>
                         </html>

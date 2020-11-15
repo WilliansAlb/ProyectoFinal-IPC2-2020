@@ -12,7 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -123,5 +126,42 @@ public class CajeroDAO {
         }
         
         return ingresado;
+    }
+    
+    public CajeroDTO obteniendoDatosPersonales(int codigo){
+        String sql = "SELECT * FROM Cajero WHERE codigo = ?";
+        CajeroDTO retorno = new CajeroDTO();
+        
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setInt(1, codigo);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                retorno = new CajeroDTO(codigo,rs.getString("nombre"),rs.getString("sexo"),rs.getString("turno"),rs.getString("dpi"),rs.getString("direccion"));
+            }
+        } catch (SQLException sqle){
+            System.err.print("Error en método obteniendoDatosPersonales() de la clase CajeroDAO por: "+sqle);
+            System.out.print("Error en método obteniendoDatosPersonales() de la clase CajeroDAO por: "+sqle);
+        }
+        return retorno;
+        
+    }
+    
+    public boolean turnoCorrecto(int codigo) {
+        Date fecha = new Date();
+        DateFormat hora = new SimpleDateFormat("HH:mm:ss");
+        String sql = "SELECT COUNT(g.codigo) AS total FROM Cajero g, Turno t WHERE g.codigo = ? AND g.turno = t.codigo AND ? BETWEEN t.hora_inicio AND t.hora_final GROUP BY g.codigo";
+        boolean correcto = false;
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            ps.setString(2, hora.format(fecha));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                correcto = rs.getInt("total") > 0;
+            }
+        } catch (SQLException sqle) {
+            System.err.print("Error en método turnoCorrecto() de la clase CajeroDAO por: " + sqle);
+            System.out.print("Error en método turnoCorrecto() de la clase CajeroDAO por: " + sqle);
+        }
+        return correcto;
     }
 }

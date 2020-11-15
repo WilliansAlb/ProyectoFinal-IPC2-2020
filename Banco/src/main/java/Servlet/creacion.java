@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Base.AccionDAO;
 import Base.CajeroDAO;
 import Base.ClienteDAO;
 import Base.Conector;
@@ -20,12 +21,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -34,7 +39,7 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig(maxFileSize = 16177215)
 public class creacion extends HttpServlet {
-    
+
     Conector cn = new Conector("encender");
 
     /**
@@ -81,9 +86,9 @@ public class creacion extends HttpServlet {
             String dpi = request.getParameter("dpi");
             ClienteDTO nuevo = new ClienteDTO();
             nuevo.setDpi(dpi);
-            
+
             ClienteDTO obtenido = cliente.obtenerCliente(nuevo);
-            
+
             if (obtenido.getNombre() != null) {
                 String enviarDatos = obtenido.getCodigo() + "\n" + obtenido.getNombre() + "\n" + obtenido.getDireccion() + "\n" + obtenido.getDpi() + "\n" + obtenido.getFecha() + "\n" + obtenido.getSexo();
                 response.getWriter().write(enviarDatos);
@@ -105,8 +110,14 @@ public class creacion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String turno = request.getParameter("turno");
+        HttpSession s = request.getSession();
         String fecha = request.getParameter("fecha");
         String monto = request.getParameter("monto");
+        AccionDAO accion = new AccionDAO(cn);
+        Date fecha2 = new Date();
+        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        UsuarioDTO u = new UsuarioDTO(s.getAttribute("id").toString(),
+                Integer.parseInt(s.getAttribute("codigo").toString()), "", "GERENTE");
         response.setContentType("text/plain;charset=UTF-8");
         if (turno != null) {
             String tipo = request.getParameter("tipo");
@@ -131,6 +142,7 @@ public class creacion extends HttpServlet {
                     if (codigo != (-1)) {
                         UsuarioDTO user = new UsuarioDTO("CA" + codigo, codigo, contra, "CAJERO");
                         if (usuario.ingresarUsuario(user)) {
+                            accion.ingresarAccion("Creación de cajero con codigo " + codigo, u.getCodigo(), formato.format(fecha2), "CAJERO");
                             response.getWriter().write("Cajero con DPI " + cajero.getDpi() + " creado correctamente. Las credenciales del cajero son ID: CA" + codigo + " y PASSWORD: " + contra);
                         } else {
                             response.getWriter().write("Cajero con DPI " + cajero.getDpi() + " creado correctamente. No fue posible crearle el usuario. ");
@@ -160,8 +172,9 @@ public class creacion extends HttpServlet {
                 if (!gerentes.existeGerente(gerente)) {
                     int codigo = gerentes.crearGerente(gerente);
                     if (codigo != (-1)) {
-                        UsuarioDTO user = new UsuarioDTO("CA" + codigo, codigo, contra, "CAJERO");
+                        UsuarioDTO user = new UsuarioDTO("GE" + codigo, codigo, contra, "GERENTE");
                         if (usuario.ingresarUsuario(user)) {
+                            accion.ingresarAccion("Creación de gerente con codigo " + codigo, u.getCodigo(), formato.format(fecha2), "GERENTE");
                             response.getWriter().write("Gerente con DPI " + gerente.getDpi() + " creado correctamente. Las credenciales del gerente son ID: CA" + codigo + " y PASSWORD: " + contra);
                         } else {
                             response.getWriter().write("Gerente con DPI " + gerente.getDpi() + " creado correctamente. No fue posible crearle el usuario. ");
@@ -203,7 +216,8 @@ public class creacion extends HttpServlet {
                 if (codigo != (-1)) {
                     UsuarioDTO user = new UsuarioDTO("CL" + codigo, codigo, contra, "CLIENTE");
                     if (usuario.ingresarUsuario(user)) {
-                        response.getWriter().write(codigo+"|"+"CL"+codigo+"|"+contra);
+                        accion.ingresarAccion("Creación de cliente con codigo " + codigo, u.getCodigo(), formato.format(fecha2), "CLIENTE");
+                        response.getWriter().write(codigo + "|" + "CL" + codigo + "|" + contra);
                     } else {
                         response.getWriter().write("Cliente con DPI " + cliente.getDpi() + " creado correctamente. No fue posible crearle el usuario. ");
                     }
@@ -217,11 +231,12 @@ public class creacion extends HttpServlet {
             Double montoCantidad = Double.parseDouble(monto);
             CuentaDTO cuenta = new CuentaDTO(montoCantidad, Integer.parseInt(request.getParameter("cliente")), request.getParameter("creacion"));
             CuentaDAO cuentas = new CuentaDAO(cn);
-            
+
             long retorno = cuentas.crearCuenta(cuenta);
-            
+
             if (retorno != -1) {
-                response.getWriter().write(retorno+" ");
+                accion.ingresarAccion("Creación de cuenta con codigo " + retorno, u.getCodigo(), formato.format(fecha2), "CUENTA");
+                response.getWriter().write(retorno + " ");
             } else {
                 response.getWriter().write("ERROR: no se pudo ingresa la cuenta");
             }
@@ -248,7 +263,7 @@ public class creacion extends HttpServlet {
         }
         return contra;
     }
-    
+
     public String encoding(String palabra) throws UnsupportedEncodingException {
         return new String(palabra.getBytes("ISO-8859-1"), "UTF-8");
     }

@@ -27,13 +27,27 @@
         <script src="../resources/js/asociacion.js" type="text/javascript"></script>
     </head>
     <body>
+        <%
+            HttpSession asociar = request.getSession();
+            boolean correcto = false;
+            if (asociar.getAttribute("tipo")!=null){
+                if (asociar.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")){
+                    correcto = true;
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
+        <%if (correcto){%>
         <%@include file="sidebar.jsp" %>
         <div class="bienvenida"></div>
         <div id="contenedorBusqueda" class="crear">
             <div class="contenedorFlex" id="busquedaCuenta">
                 <div class="ingreso" id="busqueda">
                     <center>
-                        <img src="../resources/img/conference_call.svg">
+                        <img src="../resources/img/020-handshake.svg">
                         <h1 style="font-weight: 900; color: white;">Solicitar asociación de cuenta</h1>
                         <p style="color: grey;">Ingresa el número de la cuenta a la que le solicitarás la asociación</p>
                         <form id="validarDatos" method="GET" action="../asociacion">
@@ -116,5 +130,6 @@
             }
         </script>
         <%@include file="footer.html" %>
+        <%}%>
     </body>
 </html>

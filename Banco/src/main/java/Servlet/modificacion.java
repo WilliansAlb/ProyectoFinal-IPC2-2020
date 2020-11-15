@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Base.AccionDAO;
 import Base.CajeroDAO;
 import Base.ClienteDAO;
 import Base.Conector;
@@ -18,11 +19,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -88,6 +93,12 @@ public class modificacion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/plain;charset=UTF-8");
+        HttpSession s = request.getSession();
+        AccionDAO accion = new AccionDAO(cn);
+        Date fecha2 = new Date();
+        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        UsuarioDTO usuario = new UsuarioDTO(s.getAttribute("id").toString(),
+                Integer.parseInt(s.getAttribute("codigo").toString()), "", "GERENTE");
         if (request.getParameter("modificado") != null) {
             String modificado = request.getParameter("modificado");
             if (modificado.equalsIgnoreCase("CAJERO")) {
@@ -99,6 +110,7 @@ public class modificacion extends HttpServlet {
                 String sexo = encoding(request.getParameter("sexo"));
                 CajeroDTO cajero = new CajeroDTO(codigo, nombre, sexo, turno, direccion);
                 if (cajeros.actualizarCajero(cajero)) {
+                    accion.ingresarAccion("Actualizar datos de cajero con codigo " + codigo, usuario.getCodigo(), formato.format(fecha2), "CAJERO");
                     response.getWriter().write("ACTUALIZADO");
                 } else {
                     response.getWriter().write("ERROR");
@@ -114,6 +126,7 @@ public class modificacion extends HttpServlet {
                 String dpi = request.getParameter("dpi");
                 GerenteDTO gerente = new GerenteDTO(codigo, nombre, sexo, turno, dpi, direccion);
                 if (gerentes.actualizarGerente(gerente)) {
+                    accion.ingresarAccion("Actualizar datos personales", usuario.getCodigo(), formato.format(fecha2), "GERENTE");
                     response.getWriter().write("ACTUALIZADO");
                 } else {
                     response.getWriter().write("ERROR");
@@ -140,14 +153,14 @@ public class modificacion extends HttpServlet {
             }
             if (archivo != null) {
                 if (clientes.actualizarCliente(cliente, archivo)) {
-                    System.out.println("con pdf");
+                    accion.ingresarAccion("Actualizar datos de cliente con codigo "+cliente.getCodigo(), usuario.getCodigo(), formato.format(fecha2), "CLIENTE");
                     response.getWriter().write("ACTUALIZADO");
                 } else {
                     response.getWriter().write("ERROR");
                 }
             } else {
                 if (clientes.actualizarClienteSinPDF(cliente)) {
-                    System.out.println("sin pdf");
+                    accion.ingresarAccion("Actualizar datos de cliente con codigo "+cliente.getCodigo(), usuario.getCodigo(), formato.format(fecha2), "CLIENTE");
                     response.getWriter().write("ACTUALIZADO");
                 } else {
                     response.getWriter().write("ERROR");

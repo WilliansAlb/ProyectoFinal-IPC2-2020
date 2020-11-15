@@ -4,6 +4,7 @@
     Author     : yelbetto
 --%>
 
+<%@page import="Base.GerenteDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="DTO.CajeroDTO"%>
 <%@page import="Base.CajeroDAO"%>
@@ -30,15 +31,33 @@
         <script src="../resources/js/modificacion.js" type="text/javascript"></script>
     </head>
     <body>
-        <%@include file="sidebar.jsp"%>
         <%
-            Conector cn = new Conector("cn");
+            HttpSession configuracion = request.getSession();
+            Conector cn = new Conector("encender");
+            boolean correcto = false;
+            boolean turnoCorrecto = true;
+            if (configuracion.getAttribute("tipo") != null) {
+                if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
+                    GerenteDAO trabajando = new GerenteDAO(cn);
+                    correcto = true;
+                    turnoCorrecto = trabajando.turnoCorrecto(Integer.parseInt(configuracion.getAttribute("codigo").toString()));
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
+        <%if (correcto) {%>
+        <%@include file="sidebar.jsp"%>
+        <div class="bienvenida">
+        </div>
+        <%
+            if (turnoCorrecto){
             CajeroDAO cajeros = new CajeroDAO(cn);
             ArrayList<CajeroDTO> listadoCajeros = cajeros.obtenerCajeros();
 
         %>
-        <div class="bienvenida">
-        </div>
         <div id="contenedorModCajero" class="crear">
             <div class="contenedorFlex" id="busquedaCajero">
                 <div class="ingreso" id="ingresoDpiCuenta" style="width:80%;">
@@ -65,10 +84,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="cajerosDatos"><td>123456</td><td>Carlos Perez</td><td>MATUTINO</td><td>1111111190901</td><td>4ta calle 1-10 zona 13, Guatemala</td><td>Masculino</td>
-                                    <td><button class="learn-more buttonEspecial" onclick="rellenarCajero(this.parentNode)">EDITAR</button></td></tr>
-                                <tr class="cajerosDatos"><td>654321</td><td>Juan Gonzalez</td><td>MATUTINO</td><td>2222222222222</td><td>4ta calle 1-10 zona 13, Guatemala</td><td>Masculino</td>
-                                    <td><button class="learn-more buttonEspecial" onclick="rellenarCajero(this.parentNode)">EDITAR</button></td></tr>
                                     <%for (int i = 0; i < listadoCajeros.size(); i++) {
                                             CajeroDTO temporal = listadoCajeros.get(i);%>
                                 <tr class="cajerosDatos">
@@ -254,5 +269,10 @@
                 document.getElementById("guardarCambios2").textContent = "CANCELAR";
             }
         </script>
+    <%} else {%>
+    <%@include file="turno.jsp" %>
+    <%@include file='footer.html' %>
+    <%}%>
+    <%}%>
     </body>
 </html>

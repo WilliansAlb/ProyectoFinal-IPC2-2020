@@ -32,12 +32,30 @@
         <script src="../resources/js/modificacion.js" type="text/javascript"></script>
     </head>
     <body>
+        <%
+            HttpSession configuracion = request.getSession();
+            Conector cn = new Conector("encender");
+            boolean correcto = false;
+            boolean turnoCorrecto = true;
+            if (configuracion.getAttribute("tipo") != null) {
+                if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
+                    GerenteDAO trabajando = new GerenteDAO(cn);
+                    correcto = true;
+                    turnoCorrecto = trabajando.turnoCorrecto(Integer.parseInt(configuracion.getAttribute("codigo").toString()));
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
+        <%if (correcto) {%>
         <%@include file="sidebar.jsp"%>
         <div class="bienvenida">
         </div>
         <%
+            if (turnoCorrecto){
             HttpSession sesionModificarCliente = request.getSession();
-            Conector cn = new Conector("encender");
             ClienteDAO clientes = new ClienteDAO(cn);
             ArrayList<ClienteDTO> cliente = clientes.obtenerClientes();
         %>
@@ -266,5 +284,10 @@
             document.getElementById("verificarDatos").style.display = "";
         }
     </script>
+    <%} else {%>
+    <%@include file="turno.jsp" %>
+    <%@include file='footer.html' %>
+    <%}%>
+    <%}%>
 </body>
 </html>

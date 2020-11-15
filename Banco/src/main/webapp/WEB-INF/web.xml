@@ -32,6 +32,14 @@
         <servlet-name>configuracion</servlet-name>
         <servlet-class>Servlet.configuracion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>reporte</servlet-name>
+        <servlet-class>Servlet.reporte</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>reporteGerente</servlet-name>
+        <servlet-class>Servlet.reporteGerente</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>asociacion</servlet-name>
         <url-pattern>/asociacion</url-pattern>
@@ -63,6 +71,14 @@
     <servlet-mapping>
         <servlet-name>configuracion</servlet-name>
         <url-pattern>/configuracion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reporte</servlet-name>
+        <url-pattern>/reporte</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reporteGerente</servlet-name>
+        <url-pattern>/reporteGerente</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

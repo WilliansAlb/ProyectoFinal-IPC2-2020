@@ -4,6 +4,7 @@
     Author     : yelbetto
 --%>
 
+<%@page import="Base.GerenteDAO"%>
 <%@page import="DTO.ConfiguracionDTO"%>
 <%@page import="Base.ConfiguracionDAO"%>
 <%@page import="Base.Conector"%>
@@ -30,10 +31,27 @@
         <script src="../resources/js/configuracion.js" type="text/javascript"></script>
     </head>
     <body>
+        <%
+            HttpSession configuracion = request.getSession();
+            Conector cn = new Conector("encender");
+            boolean correcto = false;
+            boolean turnoCorrecto = true;
+            if (configuracion.getAttribute("tipo") != null) {
+                if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
+                    GerenteDAO trabajando = new GerenteDAO(cn);
+                    correcto = true;
+                } else {
+                    response.sendRedirect("home.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
+        <%if (correcto) {%>
         <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
         <%
-            Conector cn = new Conector("encender");
+            if (turnoCorrecto){
             ConfiguracionDAO configuraciones = new ConfiguracionDAO(cn);
             ConfiguracionDTO confi = configuraciones.obtenerConfiguracion();
         %>
@@ -116,8 +134,8 @@
     </center>
     <a href="../archivo?pdf=2860682908" download="proposed_file_name.pdf">DESCARGAR</a>
     <script>
-        function cerrar(boton){
-            if (boton.textContent === 'CERRAR'){
+        function cerrar(boton) {
+            if (boton.textContent === 'CERRAR') {
                 var con = boton.parentNode;
                 var con2 = con.parentNode;
                 con2.style.display = "none";
@@ -131,15 +149,20 @@
     <script type="text/javascript" src="../resources/js/bootstrap-clockpicker.min.js"></script>
     <script type="text/javascript" src="../resources/js/highlight.min.js"></script>
     <script type="text/javascript">
-                    $('.clockpicker').clockpicker({
-                        placement: 'top',
-                        align: 'left',
-                        donetext: 'Hecho'
-                    });
-                    function activarGuardarConfiguracion() {
-                        document.getElementById("guardarCambios").style.color = "#5264AE";
-                    }
+        $('.clockpicker').clockpicker({
+            placement: 'top',
+            align: 'left',
+            donetext: 'Hecho'
+        });
+        function activarGuardarConfiguracion() {
+            document.getElementById("guardarCambios").style.color = "#5264AE";
+        }
     </script>
+    <%@include file='footer.html' %>
+    <%} else {%>
+    <%@include file="turno.jsp" %>
+    <%@include file='footer.html' %>
+    <%}%>
+    <%}%>
 </body>
-<%@include file='footer.html' %>
 </html>
