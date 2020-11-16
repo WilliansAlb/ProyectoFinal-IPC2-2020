@@ -17,7 +17,9 @@ public class TransaccionDTO {
     private Double monto;
     private String creacion;
     private String tipo;
-    
+    private Double anterior;
+    private Double actual;
+
     /**
      * Constructor de la entidad transaccion
      * @param codigo
@@ -99,5 +101,21 @@ public class TransaccionDTO {
         this.tipo = tipo;
     }
     
+    
+    public Double getAnterior() {
+        return anterior;
+    }
+
+    public void setAnterior(Double anterior) {
+        this.anterior = anterior;
+    }
+
+    public Double getActual() {
+        return actual;
+    }
+
+    public void setActual(Double actual) {
+        this.actual = actual;
+    }
     
 }

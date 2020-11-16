@@ -61,7 +61,7 @@ public class TransaccionDAO {
     public long ingresarTransaccionRetorno(TransaccionDTO transaccion) {
         String sql = "INSERT INTO Transaccion(cuenta,cajero,monto,creacion,tipo) "
                 + "SELECT ?, ?, ?, ?, ? FROM dual WHERE "
-                + "(SELECT COUNT(*) AS total FROM Cuenta WHERE codigo = ? && credito > ?) > 0 OR ? ='C';";
+                + "(SELECT COUNT(*) AS total FROM Cuenta WHERE codigo = ? && credito > ?) > 0 OR ? ='CREDITO';";
         long ingresado = -1;
         
         try(PreparedStatement ps = cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){

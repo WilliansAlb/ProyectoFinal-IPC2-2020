@@ -172,5 +172,24 @@ public class CuentaDAO {
         }
         return cuentas;
     }
+    /**
+     * Método que devuelve el saldo que tiene la cuenta actual
+     * @param cuenta
+     * @return monto de la cuenta
+     */
+    public Double obtenerSaldo(long cuenta){
+        String sql = "SELECT credito FROM Cuenta WHERE codigo = ?";
+        Double saldo = 0.00;
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, cuenta);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                saldo = rs.getDouble(1);
+            }
 
+        } catch (SQLException sqle) {
+            System.err.print("Error en método obtenerCuentasAsociadas() de la clase CuentaDAO por: " + sqle);
+        }
+        return saldo;
+    }
 }

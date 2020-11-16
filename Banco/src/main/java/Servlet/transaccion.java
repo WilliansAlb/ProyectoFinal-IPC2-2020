@@ -8,6 +8,7 @@ package Servlet;
 import Base.ClienteDAO;
 import Base.Conector;
 import Base.CuentaDAO;
+import Base.HistorialDAO;
 import Base.TransaccionDAO;
 import DTO.ClienteDTO;
 import DTO.CuentaDTO;
@@ -127,6 +128,7 @@ public class transaccion extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         HttpSession actual = request.getSession();
         Conector cn = new Conector("encender");
+        HistorialDAO historial = new HistorialDAO(cn);
         UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Long.parseLong(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
         if (retiro != null) {
             if (retiro.equalsIgnoreCase("CLIENTE")) {
@@ -134,12 +136,15 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto*-1, hourdateFormat.format(fecha), "DEBITO");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
                 long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                Double anterior = cuentas.obtenerSaldo(cuenta);
+                Double saldoActual = anterior - transaccion.getMonto();
                 if (codigoTransaccion != -1) {
-                    if (cuentas.actualizarSaldo(cuenta, monto*-1)) {
+                    if (cuentas.actualizarSaldo(cuenta, monto * -1)) {
+                        historial.ingresarHistorialTransaccion(codigoTransaccion, anterior, saldoActual);
                         response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
                     } else {
                         response.getWriter().write("ERROR: se creo la transaccion, pero no se logro actualizar el saldo de la cuenta");
@@ -152,12 +157,15 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto*-1, hourdateFormat.format(fecha), "DEBITO");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
                 long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                Double anterior = cuentas.obtenerSaldo(cuenta);
+                Double saldoActual = anterior - transaccion.getMonto();
                 if (codigoTransaccion != -1) {
                     if (cuentas.actualizarSaldo(cuenta, monto * -1)) {
+                        historial.ingresarHistorialTransaccion(codigoTransaccion, anterior, saldoActual);
                         response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
                     } else {
                         response.getWriter().write("ERROR: se creo la transaccion, pero no se logro actualizar el saldo de la cuenta");
@@ -176,8 +184,11 @@ public class transaccion extends HttpServlet {
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
                 long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                Double anterior = cuentas.obtenerSaldo(cuenta);
+                Double saldoActual = anterior + transaccion.getMonto();
                 if (codigoTransaccion != -1) {
                     if (cuentas.actualizarSaldo(cuenta, monto)) {
+                        historial.ingresarHistorialTransaccion(codigoTransaccion, anterior, saldoActual);
                         response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
                     } else {
                         response.getWriter().write("ERROR: se creo la transaccion, pero no se logro actualizar el saldo de la cuenta");
@@ -191,16 +202,21 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO debitar = new TransaccionDTO(origen, 101, monto*-1, hourdateFormat.format(fecha), "DEBITO");
+                TransaccionDTO debitar = new TransaccionDTO(origen, 101, monto, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDTO acreditar = new TransaccionDTO(destino, 101, monto, hourdateFormat.format(fecha), "CREDITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
                 long codigoDebitado = transacciones.ingresarTransaccionRetorno(debitar);
                 long codigoAcreditado = transacciones.ingresarTransaccionRetorno(acreditar);
-                
-                if (codigoDebitado != -1 && codigoAcreditado != -1){
-                    if (cuentas.actualizarSaldo(origen, monto*-1) && cuentas.actualizarSaldo(destino, monto)){
-                        response.getWriter().write(codigoDebitado + "\n" + codigoAcreditado +"\n"+ hourdateFormat.format(fecha));
+                Double anteriorCuentaA = cuentas.obtenerSaldo(debitar.getCuenta());
+                Double saldoActualCuentaA = anteriorCuentaA - debitar.getMonto();
+                Double anteriorCuentaB = cuentas.obtenerSaldo(acreditar.getCuenta());
+                Double saldoActualCuentaB = anteriorCuentaB + acreditar.getMonto();
+                if (codigoDebitado != -1 && codigoAcreditado != -1) {
+                    if (cuentas.actualizarSaldo(origen, monto * -1) && cuentas.actualizarSaldo(destino, monto)) {
+                        historial.ingresarHistorialTransaccion(codigoDebitado,anteriorCuentaA,saldoActualCuentaA);
+                        historial.ingresarHistorialTransaccion(codigoAcreditado,anteriorCuentaB,saldoActualCuentaB);
+                        response.getWriter().write(codigoDebitado + "\n" + codigoAcreditado + "\n" + hourdateFormat.format(fecha));
                     } else {
                         response.getWriter().write("ERROR: no se actualizaron correctamente los saldos de las cuentas");
                     }

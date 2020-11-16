@@ -71,7 +71,7 @@ public class ReporteDAO {
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {
-            System.err.print("ERROR: en método obtenerCajeroMasTransacciones() en clase ReporteDAO por " + sqle);
+            System.err.print("ERROR: en método clientesTransaccionesMayoresALimiteMenor() en clase ReporteDAO por " + sqle);
         }
         return retorno;
     }
@@ -96,7 +96,7 @@ public class ReporteDAO {
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {
-            System.err.print("ERROR: en método obtenerCajeroMasTransacciones() en clase ReporteDAO por " + sqle);
+            System.err.print("ERROR: en método clientesTransaccionesMayoresALimiteMayor() en clase ReporteDAO por " + sqle);
         }
         return retorno;
     }
@@ -117,12 +117,14 @@ public class ReporteDAO {
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {
-            System.err.print("ERROR: en método obtenerCajeroMasTransacciones() en clase ReporteDAO por " + sqle);
+            System.err.print("ERROR: en método clientesConMásDineroEnCuentas() en clase ReporteDAO por " + sqle);
         }
         return retorno;
     }
+
     /**
      * Método para obtener las 15 transacciones más grandes de una cuenta
+     *
      * @param codigo de la cuenta
      * @return listado de las 15 transacciones más grandes
      */
@@ -135,13 +137,113 @@ public class ReporteDAO {
             ps.setLong(1, codigo);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                TransaccionDTO temporal = new TransaccionDTO(rs.getLong(1),rs.getLong(2),
-                        rs.getLong(3),rs.getDouble(4),
-                        rs.getString(5),rs.getString(6));
+                TransaccionDTO temporal = new TransaccionDTO(rs.getLong(1), rs.getLong(2),
+                        rs.getLong(3), rs.getDouble(4),
+                        rs.getString(5), rs.getString(6));
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {
-            System.err.print("ERROR: en método obtenerCajeroMasTransacciones() en clase ReporteDAO por " + sqle);
+            System.err.print("ERROR: en método obtener15Transacciones() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+
+    /**
+     * Método que devuelve los datos para el reporte de los cliente que no han
+     * hecho transacciones en cierto intervalo de tiempo
+     *
+     * @param fecha1
+     * @param fecha2
+     * @return
+     */
+    public ArrayList<ClienteDTO> clientesSinTransaccionesIntervalo(String fecha1, String fecha2) {
+        ArrayList<ClienteDTO> retorno = new ArrayList<>();
+        String sql = "SELECT c.codigo, c.nombre, c.dpi, c.direccion, c.sexo, c.nacimiento FROM Cliente c WHERE"
+                + " (SELECT COUNT(*) FROM Transaccion t, Cuenta cu WHERE"
+                + " t.cuenta = cu.codigo AND c.codigo = cu.cliente AND DATE(t.creacion) BETWEEN ? AND ?) = 0;";
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, fecha1);
+            ps.setString(2, fecha2);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ClienteDTO temporal = new ClienteDTO(rs.getLong(1), rs.getString(2), rs.getString(6), rs.getString(3), rs.getString(4), rs.getString(5));
+                retorno.add(temporal);
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método clientesSinTransaccionesIntervalo() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+    /**
+     * Método para el reporte de Listado de todas las transacciones realizadas dentro de un intervalo de tiempo mostrando el cambio del dinero de la cuenta por cada transacción
+     * @param codigo el codigo del cliente
+     * @param fecha1 fecha inicio del intervalo
+     * @param fecha2 fecha final del intervalo
+     * @return listado de todas las transacciones realizadas
+     */
+    public ArrayList<TransaccionDTO> obtenerTransaccionesSaldoAnteriorActual(long codigo, String fecha1, String fecha2) {
+        String sql = "SELECT t.codigo, t.cuenta, t.cajero,t.creacion, t.tipo, h.anterior,t.monto,h.actual FROM Transaccion t,Cuenta cu, Historial h "
+                + "WHERE t.codigo = h.transaccion AND t.cuenta = cu.codigo AND cu.cliente = ? "
+                + "AND DATE(t.creacion) BETWEEN ? AND ?";
+        ArrayList<TransaccionDTO> retorno = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, codigo);
+            ps.setString(2, fecha1);
+            ps.setString(3, fecha2);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TransaccionDTO temporal = new TransaccionDTO(rs.getLong(1),rs.getLong(2),rs.getLong(3),rs.getDouble(7),rs.getString(4),rs.getString(5));
+                temporal.setAnterior(rs.getDouble(6));
+                temporal.setActual(rs.getDouble(8));
+                retorno.add(temporal);
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método obtenerTransaccionesSaldoAnteriorActual() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+    /**
+     * Método para obtener la cuenta que tiene más dinero de un cliente en especifico
+     * @param codigo
+     * @return cuenta con todos los datos llenos
+     */
+    public CuentaDTO obtenerCuentaConMásDinero(long codigo){
+        String sql ="SELECT * FROM Cuenta WHERE cliente = ? ORDER BY credito DESC LIMIT 1";
+        CuentaDTO retorno = new CuentaDTO();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, codigo);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                retorno.setCodigo(rs.getLong("codigo"));
+                retorno.setCliente(codigo);
+                retorno.setCreacion(rs.getString("creacion"));
+                retorno.setCredito(rs.getDouble("credito"));
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método obtenerCuentaConMásDinero() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+    /**
+     * Método que devuelve las transacciones de una cuenta desde una fecha en especifico hasta la fecha en curso
+     * @param cuenta
+     * @param fecha
+     * @return listado de transacciones
+     */
+    public ArrayList<TransaccionDTO> obtenerTransaccionesDesdeHastaFechaActual(long cuenta, String fecha) {
+        String sql = "SELECT * FROM Transaccion WHERE cuenta = ? AND DATE(creacion) BETWEEN ? AND DATE(CURDATE());";
+        ArrayList<TransaccionDTO> retorno = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, cuenta);
+            ps.setString(2, fecha);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TransaccionDTO temporal = new TransaccionDTO(rs.getLong("codigo"),rs.getLong("cuenta"),
+                        rs.getLong("cajero"),rs.getDouble("monto"),rs.getString("creacion"),rs.getString("tipo"));
+                retorno.add(temporal);
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método obtenerTransaccionesDesdeHastaFechaActual() en clase ReporteDAO por " + sqle);
         }
         return retorno;
     }

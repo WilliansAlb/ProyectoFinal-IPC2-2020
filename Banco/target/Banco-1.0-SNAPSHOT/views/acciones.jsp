@@ -57,8 +57,8 @@
                 <div class="ingreso" id="listadoDeAcciones" style="width: 70%;">
                     <center>
                         <img src="../resources/img/017-tasks-2.svg" style="margin-top: 1em;">
-                        <h1 style="font-weight: 900; color: white;">Historial de acciones</h1>
-                        <p style="color: grey;">Se muestran las acciones que coinciden con el siguiente filtro, puedes cambiar para ver otros resultados</p>
+                        <h1 style="font-weight: 900; color: white;">Reporte de historial de acciones</h1>
+                        <p style="color: grey;">Se muestran las acciones que coinciden con el siguiente filtro, cambia para ver los reportes de las entidades (cliente,cajero,gerente)</p>
                         <select id="filtrarAcciones" onchange="filtrarAcciones(this)">
                             <option value="1" selected>Todas las acciones</option>
                             <option value="2">Acciones sobre entidad Cliente</option>
