@@ -17,6 +17,8 @@ public class ClienteDTO {
     private String fecha;
     private String dpi;
     private String direccion;
+    private int transacciones;
+    private Double montoMayor;
     
     public ClienteDTO(){
     
@@ -77,6 +79,22 @@ public class ClienteDTO {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public int getTransacciones() {
+        return transacciones;
+    }
+
+    public void setTransacciones(int transacciones) {
+        this.transacciones = transacciones;
+    }
+
+    public Double getMontoMayor() {
+        return montoMayor;
+    }
+
+    public void setMontoMayor(Double montoMayor) {
+        this.montoMayor = montoMayor;
     }
     
     

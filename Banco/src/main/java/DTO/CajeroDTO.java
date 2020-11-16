@@ -17,6 +17,7 @@ public class CajeroDTO {
     private String turno;
     private String dpi;
     private String direccion;
+    private int total;
     
     public CajeroDTO(){
         
@@ -100,6 +101,14 @@ public class CajeroDTO {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
     
     

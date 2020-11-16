@@ -134,12 +134,12 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto, hourdateFormat.format(fecha), "DEBITO");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto*-1, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
                 long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
                 if (codigoTransaccion != -1) {
-                    if (cuentas.actualizarSaldo(cuenta, monto * -1)) {
+                    if (cuentas.actualizarSaldo(cuenta, monto*-1)) {
                         response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
                     } else {
                         response.getWriter().write("ERROR: se creo la transaccion, pero no se logro actualizar el saldo de la cuenta");
@@ -152,7 +152,7 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "DEBITO");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto*-1, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
                 long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
@@ -191,7 +191,7 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO debitar = new TransaccionDTO(origen, 101, monto, hourdateFormat.format(fecha), "DEBITO");
+                TransaccionDTO debitar = new TransaccionDTO(origen, 101, monto*-1, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDTO acreditar = new TransaccionDTO(destino, 101, monto, hourdateFormat.format(fecha), "CREDITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);

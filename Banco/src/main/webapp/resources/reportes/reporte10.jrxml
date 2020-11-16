@@ -32,7 +32,7 @@ DESC LIMIT 10]]>
 		<property name="com.jaspersoft.studio.field.tree.path" value="Cliente"/>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="codigo" class="java.lang.Integer">
+	<field name="codigo" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
 		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="Cliente"/>
@@ -81,7 +81,7 @@ DESC LIMIT 10]]>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="17" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<rectangle>
 				<reportElement x="1" y="0" width="554" height="16" backcolor="#3B3B3B" uuid="074d07a9-cb3f-45df-96c1-c22c90960fa5"/>
 			</rectangle>
@@ -110,7 +110,7 @@ DESC LIMIT 10]]>
 				<text><![CDATA[Nombre de cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-1" y="0" width="100" height="16" forecolor="#FFFFFF" uuid="9b670a73-2a30-4ced-ad49-1cdeb4e1c6e3">
+				<reportElement x="20" y="0" width="79" height="16" forecolor="#FFFFFF" uuid="9b670a73-2a30-4ced-ad49-1cdeb4e1c6e3">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3b016054-d8ef-4a30-a633-786285a535e0"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -135,6 +135,13 @@ DESC LIMIT 10]]>
 					<font fontName="Serif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nacimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="19" height="16" forecolor="#FFFFFF" uuid="1b584fd4-d657-4baa-8818-ee582887ddb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -161,7 +168,7 @@ DESC LIMIT 10]]>
 					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="-1" y="0" width="100" height="30" uuid="fe818533-99cb-42e6-9cb8-7acabc172773">
+					<reportElement x="20" y="0" width="79" height="30" uuid="fe818533-99cb-42e6-9cb8-7acabc172773">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3b016054-d8ef-4a30-a633-786285a535e0"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -195,6 +202,11 @@ DESC LIMIT 10]]>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA["http://localhost:8080/Banco/resources/reportes/subreporte10.jasper"]]></subreportExpression>
 				</subreport>
+				<textField>
+					<reportElement x="1" y="-2" width="19" height="32" uuid="c22530e6-e216-4ec9-9cd6-4d104290e53f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="90" width="555" height="1" uuid="fa45a887-615a-4d84-a2d7-8a2219671b3c"/>

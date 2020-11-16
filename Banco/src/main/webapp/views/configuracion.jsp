@@ -73,7 +73,7 @@
                                 <input type="number" required id="limiteMayor" name="limiteMayor" onkeyup="activarGuardarConfiguracion(this)" value="<%out.print(confi.getLimite_mayor());%>" style="color: #EBEBEB !important;">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label for="limiteMayor">Limite menor</label>
+                                <label for="limiteMayor">Limite mayor</label>
                             </div>
                             <div class="group">
                                 <label  style="top: -20px;font-size: 1em;color: #5264AE;" for="matutino">Turno matutino</label>

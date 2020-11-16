@@ -102,7 +102,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="pdf" style="display:none;">
+                        <div id="pdf">
                             <embed src="../reporte?tipo=2&filtro=CONFIGURACION" style="width:50%;height: 400px;">
                             <br>
                             <a href="../reporte?tipo=1" download="prueba1.pdf">DESCARGAR</a>
