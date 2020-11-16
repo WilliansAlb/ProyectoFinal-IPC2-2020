@@ -20,7 +20,7 @@ public class GerenteDTO implements Serializable{
     public static final String DPI_DB = "dpi";
     public static final String DIRECCION_DB = "direccion";
     
-    private int codigo;
+    private long codigo;
     private String nombre;
     private String sexo;
     private String turno;
@@ -39,7 +39,7 @@ public class GerenteDTO implements Serializable{
      * @param dpi
      * @param direccion 
      */
-    public GerenteDTO(int codigo, String nombre, String sexo, String turno, String dpi, String direccion){
+    public GerenteDTO(long codigo, String nombre, String sexo, String turno, String dpi, String direccion){
         this.codigo = codigo;
         this.nombre = nombre;
         this.sexo = sexo;
@@ -48,11 +48,11 @@ public class GerenteDTO implements Serializable{
         this.direccion = direccion;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 

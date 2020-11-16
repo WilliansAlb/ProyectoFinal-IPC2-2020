@@ -50,8 +50,8 @@
                 HttpSession sesionRetiroCliente = request.getSession();
                 Conector cn = new Conector("encender");
                 CuentaDAO cuentas = new CuentaDAO(cn);
-                ArrayList<CuentaDTO> listado = cuentas.obtenerCuentas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
-                ArrayList<CuentaDTO> listadoAsociada = cuentas.obtenerCuentasAsociadas(Integer.parseInt(sesionRetiroCliente.getAttribute("codigo").toString()));
+                ArrayList<CuentaDTO> listado = cuentas.obtenerCuentas(Long.parseLong(sesionRetiroCliente.getAttribute("codigo").toString()));
+                ArrayList<CuentaDTO> listadoAsociada = cuentas.obtenerCuentasAsociadas(Long.parseLong(sesionRetiroCliente.getAttribute("codigo").toString()));
         %>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" id="buscarCliente">

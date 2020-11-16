@@ -23,7 +23,10 @@ public class ConfiguracionDAO {
     public ConfiguracionDAO(Conector cn){
         this.cn = cn.getConexion();
     }
-    
+    /**
+     * Método que obtiene la configuración completa, con limites y turnos
+     * @return configuracion completa
+     */
     public ConfiguracionDTO obtenerConfiguracion(){
         ConfiguracionDTO configuracion = new ConfiguracionDTO();
         String sql = "SELECT * FROM Configuracion";
@@ -54,7 +57,10 @@ public class ConfiguracionDAO {
         }
         return configuracion;
     }
-    
+    /**
+     * Método que verifica que existe ya la configuración
+     * @return true si ya existe la configuración
+     */
     public boolean existeConfiguracion(){
         boolean existe = false;
         String sql = "SELECT COUNT(*) AS total FROM Configuracion";
@@ -68,7 +74,11 @@ public class ConfiguracionDAO {
         }
         return existe;
     }
-    
+    /**
+     * Método que ingresa la configuración
+     * @param con configuracion completa
+     * @return el codigo de la configuración
+     */
     public int ingresarConfiguracion(ConfiguracionDTO con){
         int existe = -1;
         String sql = "INSERT INTO Configuracion(limite_menor,limite_mayor) VALUES(?,?)";
@@ -85,7 +95,12 @@ public class ConfiguracionDAO {
         }
         return existe;
     }
-    
+    /**
+     * Método que actualiza la configuracion de los limites mayor y menor
+     * @param limite_menor
+     * @param limite_mayor
+     * @return true si se logró actualizar la configuración
+     */
     public boolean actualizarConfiguracion(Double limite_menor, Double limite_mayor){
         boolean actualizado = false;
         String sql = "UPDATE Configuracion SET limite_menor = ?, limite_mayor = ? WHERE codigo = 1";
@@ -98,7 +113,12 @@ public class ConfiguracionDAO {
         }
         return actualizado;
     }
-    
+    /**
+     * Método que actualiza el turno matutino
+     * @param desde hora de inicio
+     * @param hasta hora final
+     * @return true si se logró actualizar el turno matutino
+     */
     public boolean actualizarTurnoMatutino(String desde, String hasta){
         boolean actualizado = false;
         String sql = "UPDATE Turno SET hora_inicio = ?, hora_final = ? WHERE codigo = 'M'";
@@ -111,7 +131,12 @@ public class ConfiguracionDAO {
         }
         return actualizado;
     }
-    
+    /**
+     * Método que actualiza el turno vespertino
+     * @param desde hora inicio
+     * @param hasta hora final
+     * @return true si se logró actualizar el turno vespertino
+     */
     public boolean actualizarTurnoVespertino(String desde, String hasta){
         boolean actualizado = false;
         String sql = "UPDATE Turno SET hora_inicio = ?, hora_final = ? WHERE codigo = 'V'";

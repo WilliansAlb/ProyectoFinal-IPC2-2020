@@ -25,12 +25,12 @@ public class AccionDAO {
         this.cn = cn.getConexion();
     }
     
-    public int ingresarAccion(String descripcion, int gerente, String realizacion, String entidad){
+    public int ingresarAccion(String descripcion, long gerente, String realizacion, String entidad){
         String sql = "INSERT INTO Accion(descripcion,gerente,realizacion, entidad) VALUES(?,?,?,?)";
         int ingreso = -1;
         try (PreparedStatement ps = cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
             ps.setString(1, descripcion);
-            ps.setInt(2,gerente);
+            ps.setLong(2,gerente);
             ps.setString(3, realizacion);
             ps.setString(4, entidad);
             ps.executeUpdate();
@@ -44,15 +44,16 @@ public class AccionDAO {
         return ingreso;
     }
     
-    public ArrayList<AccionDTO> listadoAcciones(int gerente){
-        String sql = "SELECT * FROM Accion WHERE gerente = ? ORDER BY codigo DESC";
+    public ArrayList<AccionDTO> listadoAcciones(long gerente){
+        String sql = "SELECT * FROM Accion WHERE gerente = ? ORDER BY realizacion DESC";
         ArrayList<AccionDTO> acciones = new ArrayList<>();
         
         try (PreparedStatement ps = cn.prepareStatement(sql)){
-            ps.setInt(1, gerente);
+            ps.setLong(1, gerente);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                AccionDTO temporal = new AccionDTO(rs.getInt("codigo"),rs.getString("descripcion"),rs.getInt("gerente"),rs.getString("realizacion"),rs.getString("entidad"));
+                System.out.println(rs.getInt("codigo"));
+                AccionDTO temporal = new AccionDTO(rs.getInt("codigo"),rs.getString("descripcion"),rs.getLong("gerente"),rs.getString("realizacion"),rs.getString("entidad"));
                 acciones.add(temporal);
             }
         } catch (SQLException sqle){
@@ -62,16 +63,16 @@ public class AccionDAO {
         return acciones;
     }
     
-    public ArrayList<AccionDTO> listadoAcciones(int gerente,String entidad){
+    public ArrayList<AccionDTO> listadoAcciones(long gerente,String entidad){
         String sql = "SELECT * FROM Accion WHERE gerente = ? AND entidad = ? ORDER BY codigo DESC";
         ArrayList<AccionDTO> acciones = new ArrayList<>();
         
         try (PreparedStatement ps = cn.prepareStatement(sql)){
-            ps.setInt(1, gerente);
+            ps.setLong(1, gerente);
             ps.setString(2, entidad);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                AccionDTO temporal = new AccionDTO(rs.getInt("codigo"),rs.getString("descripcion"),rs.getInt("gerente"),rs.getString("realizacion"),rs.getString("entidad"));
+                AccionDTO temporal = new AccionDTO(rs.getInt("codigo"),rs.getString("descripcion"),rs.getLong("gerente"),rs.getString("realizacion"),rs.getString("entidad"));
                 acciones.add(temporal);
             }
         } catch (SQLException sqle){

@@ -13,7 +13,7 @@ public class CuentaDTO {
     
     private long codigo;
     private Double credito;
-    private int cliente;
+    private long cliente;
     private String creacion;
     
     public CuentaDTO(){
@@ -26,14 +26,14 @@ public class CuentaDTO {
      * @param cliente
      * @param creacion 
      */
-    public CuentaDTO(long codigo,Double credito,int cliente,String creacion){
+    public CuentaDTO(long codigo,Double credito,long cliente,String creacion){
         this.codigo = codigo;
         this.credito = credito;
         this.cliente = cliente;
         this.creacion = creacion;
     }
     
-    public CuentaDTO(Double credito,int cliente,String creacion){
+    public CuentaDTO(Double credito,long cliente,String creacion){
         this.credito = credito;
         this.cliente = cliente;
         this.creacion = creacion;
@@ -56,11 +56,11 @@ public class CuentaDTO {
         this.credito = credito;
     }
 
-    public int getCliente() {
+    public long getCliente() {
         return cliente;
     }
 
-    public void setCliente(int cliente) {
+    public void setCliente(long cliente) {
         this.cliente = cliente;
     }
 

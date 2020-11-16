@@ -81,7 +81,7 @@ public class configuracion extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         Conector cn = new Conector("encender");
         HttpSession s = request.getSession();
-        int codigo = Integer.parseInt(s.getAttribute("codigo").toString());
+        long codigo = Long.parseLong(s.getAttribute("codigo").toString());
         Date fecha = new Date();
         DateFormat fecha2 = new SimpleDateFormat("yyyy-MM-dd");
         ConfiguracionDAO configuracion = new ConfiguracionDAO(cn);

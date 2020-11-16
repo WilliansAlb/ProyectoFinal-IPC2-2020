@@ -147,7 +147,7 @@ public class archivo extends HttpServlet {
                     String ruta = element.getElementsByTagName("DPI-PDF").item(0).getTextContent();
                     InputStream archivo = null;
                     ClienteDTO clienteTemporal = new ClienteDTO();
-                    clienteTemporal.setCodigo(Integer.parseInt(codigo));
+                    clienteTemporal.setCodigo(Long.parseLong(codigo));
                     for (int i = 0; i < dpis.size(); i++) {
                         if (dpis.get(i).getHeader(HttpHeaders.CONTENT_DISPOSITION).contains(ruta)){
                             archivo = dpis.get(i).getInputStream();

@@ -105,7 +105,7 @@ public class carga extends HttpServlet {
                     // Object of array
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
-                    int codigo = gsonObj.get("codigo").getAsInt();
+                    long codigo = gsonObj.get("codigo").getAsLong();
                     String nombre = encoding(gsonObj.get("nombre").getAsString());
                     String dpi = gsonObj.get("dpi").getAsString();
                     String turno = gsonObj.get("turno").getAsString().toUpperCase();
@@ -115,12 +115,12 @@ public class carga extends HttpServlet {
                     GerenteDAO gerencia = new GerenteDAO(cn);
                     GerenteDTO gerente = new GerenteDTO();
 
-                    gerente.setCodigo(Integer.parseInt(gsonObj.get("codigo").getAsString()));
+                    gerente.setCodigo(gsonObj.get("codigo").getAsLong());
                     gerente.setNombre(encoding(gsonObj.get("nombre").getAsString()));
                     gerente.setDpi(gsonObj.get("dpi").getAsString());
                     gerente.setTurno(gsonObj.get("turno").getAsString().toUpperCase().charAt(0) + "");
                     gerente.setSexo(gsonObj.get("sexo").getAsString().toUpperCase().charAt(0) + "");
-                    gerente.setDireccion(gsonObj.get("direccion").getAsString());
+                    gerente.setDireccion(encoding(gsonObj.get("direccion").getAsString()));
 
                     if (gerencia.ingresarGerente(gerente)) {
                         UsuarioDTO usuario = new UsuarioDTO("GE" + codigo, codigo, password, "GERENTE");
@@ -139,7 +139,7 @@ public class carga extends HttpServlet {
                     // Object of array
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
-                    int codigo = Integer.parseInt(gsonObj.get("codigo").getAsString());
+                    long codigo = gsonObj.get("codigo").getAsLong();
                     String nombre = encoding(gsonObj.get("nombre").getAsString());
                     String dpi = gsonObj.get("dpi").getAsString();
                     String turno = gsonObj.get("turno").getAsString();
@@ -149,7 +149,7 @@ public class carga extends HttpServlet {
                     CajeroDAO cajeros = new CajeroDAO(cn);
                     CajeroDTO cajero = new CajeroDTO();
 
-                    cajero.setCodigo(Integer.parseInt(gsonObj.get("codigo").getAsString()));
+                    cajero.setCodigo(gsonObj.get("codigo").getAsLong());
                     cajero.setNombre(encoding(gsonObj.get("nombre").getAsString()));
                     cajero.setDpi(gsonObj.get("dpi").getAsString());
                     cajero.setTurno(gsonObj.get("turno").getAsString().toUpperCase().charAt(0) + "");
@@ -173,13 +173,13 @@ public class carga extends HttpServlet {
                     // Object of array
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
-                    int codigo = Integer.parseInt(gsonObj.get("codigo1").getAsString());
+                    long codigo = gsonObj.get("codigo1").getAsLong();
                     String nombre = encoding(gsonObj.get("nombre").getAsString());
                     String dpi = gsonObj.get("dpi").getAsString();
                     String fecha = gsonObj.get("fecha").getAsString();
                     String sexo = gsonObj.get("sexo").getAsString();
                     String password = gsonObj.get("password").getAsString();
-                    String direccion = gsonObj.get("direccion").getAsString();
+                    String direccion = encoding(gsonObj.get("direccion").getAsString());
 
                     ClienteDTO cliente = new ClienteDTO(codigo, nombre, fecha, dpi, direccion, sexo.toUpperCase().charAt(0) + "");
                     ClienteDAO clientes = new ClienteDAO(cn);
@@ -201,7 +201,7 @@ public class carga extends HttpServlet {
                     // Object of array
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
-                    int cliente = Integer.parseInt(gsonObj.get("cliente").getAsString());
+                    long cliente = gsonObj.get("cliente").getAsLong();
                     long codigo = gsonObj.get("codigo").getAsLong();
                     String fecha = gsonObj.get("fecha").getAsString();
                     Double monto = gsonObj.get("monto").getAsDouble();
@@ -218,21 +218,21 @@ public class carga extends HttpServlet {
                     // Object of array
                     JsonObject gsonObj = obj.getAsJsonObject();
                     // Primitives elements of object
-                    int codigo = Integer.parseInt(gsonObj.get("codigo").getAsString());
+                    long codigo = gsonObj.get("codigo").getAsLong();
                     long cuenta = gsonObj.get("cuenta").getAsLong();
                     String fecha = gsonObj.get("fecha").getAsString();
                     String hora = gsonObj.get("hora").getAsString();
                     String creacion = fecha + " " + hora;
                     String tipo2 = gsonObj.get("tipo").getAsString();
                     Double monto = gsonObj.get("monto").getAsDouble();
-                    int cajero = Integer.parseInt(gsonObj.get("cajero").getAsString());
+                    long cajero = gsonObj.get("cajero").getAsLong();
                     TransaccionDAO transaccion = new TransaccionDAO(cn);
                     CuentaDAO cuentas = new CuentaDAO(cn);
-                    TransaccionDTO tra = new TransaccionDTO(codigo, cuenta, cajero, monto, creacion, tipo2.toUpperCase().charAt(0) + "");
+                    TransaccionDTO tra = new TransaccionDTO(codigo, cuenta, cajero, monto, creacion, tipo2.toUpperCase());
 
                     if (!transaccion.existeTransaccion(tra)) {
                         if (transaccion.ingresarTransaccion(tra)) {
-                            if (tra.getTipo().equalsIgnoreCase("D")) {
+                            if (tra.getTipo().contains("DEBITO")) {
                                 if (transaccion.existeTransaccion(tra)) {
                                     if (cuentas.actualizarSaldo(tra.getCuenta(), tra.getMonto() * (-1))) {
                                         ingresados += "Transaccion " + codigo + "\n";

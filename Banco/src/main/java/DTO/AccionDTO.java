@@ -12,7 +12,7 @@ package DTO;
 public class AccionDTO {
     private int codigo;
     private String descripcion;
-    private int gerente;
+    private long gerente;
     private String realizacion;
     private String entidad;
     
@@ -20,7 +20,7 @@ public class AccionDTO {
     
     }
     
-    public AccionDTO(int codigo, String descripcion, int gerente, String realizacion, String entidad){
+    public AccionDTO(int codigo, String descripcion, long gerente, String realizacion, String entidad){
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.gerente = gerente;
@@ -44,11 +44,11 @@ public class AccionDTO {
         this.descripcion = descripcion;
     }
 
-    public int getGerente() {
+    public long getGerente() {
         return gerente;
     }
 
-    public void setGerente(int gerente) {
+    public void setGerente(long gerente) {
         this.gerente = gerente;
     }
 

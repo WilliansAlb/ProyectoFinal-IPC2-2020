@@ -10,11 +10,11 @@
 	<style name="Row" backcolor="#0C415E">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-			<style backcolor="#25343C"/>
+			<style forecolor="#FFFFFF" backcolor="#001A28"/>
 		</conditionalStyle>
 	</style>
 	<parameter name="reporte" class="java.lang.String"/>
-	<parameter name="gerente" class="java.lang.Integer"/>
+	<parameter name="gerente" class="java.lang.Long"/>
 	<parameter name="entidad" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -91,7 +91,7 @@
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="-1" width="370" height="20" forecolor="#FFFFFF" uuid="34a229fd-4b80-429d-96b8-fe3e0d361c53">
+				<reportElement x="100" y="-1" width="332" height="20" forecolor="#FFFFFF" uuid="34a229fd-4b80-429d-96b8-fe3e0d361c53">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1b3e3109-ea66-4570-a8f9-b4f48ed0261c"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -100,7 +100,7 @@
 				<text><![CDATA[Descripcion acción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="470" y="0" width="85" height="20" forecolor="#FFFFFF" uuid="d248a440-5918-4e90-b553-93476befafb4">
+				<reportElement x="433" y="0" width="122" height="20" forecolor="#FFFFFF" uuid="d248a440-5918-4e90-b553-93476befafb4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f87904aa-d88b-4bcd-af57-2356ec366aea"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -122,14 +122,14 @@
 					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="100" y="0" width="370" height="20" forecolor="#CCFF99" uuid="819befb2-cf43-4efa-ae38-454c852e09f5">
+					<reportElement x="100" y="0" width="332" height="20" forecolor="#CCFF99" uuid="819befb2-cf43-4efa-ae38-454c852e09f5">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1b3e3109-ea66-4570-a8f9-b4f48ed0261c"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="470" y="0" width="85" height="20" forecolor="#CCFF99" uuid="ded056c1-ed4e-4e6f-88f3-8eab73b9debd">
+					<reportElement x="433" y="0" width="122" height="20" forecolor="#CCFF99" uuid="ded056c1-ed4e-4e6f-88f3-8eab73b9debd">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f87904aa-d88b-4bcd-af57-2356ec366aea"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>

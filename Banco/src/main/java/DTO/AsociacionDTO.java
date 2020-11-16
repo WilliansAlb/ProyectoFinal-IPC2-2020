@@ -12,20 +12,20 @@ package DTO;
 public class AsociacionDTO {
     private int codigo;
     private long cuenta;
-    private int cliente;
+    private long cliente;
     private String estado;
     
     public AsociacionDTO(){
     
     }
-    public AsociacionDTO(int codigo, long cuenta, int cliente, String estado){
+    public AsociacionDTO(int codigo, long cuenta, long cliente, String estado){
         this.codigo = codigo;
         this.cuenta = cuenta;
         this.cliente = cliente;
         this.estado = estado;
     }
 
-    public AsociacionDTO(long cuenta, int cliente, String estado){
+    public AsociacionDTO(long cuenta, long cliente, String estado){
         this.cuenta = cuenta;
         this.cliente = cliente;
         this.estado = estado;
@@ -47,11 +47,11 @@ public class AsociacionDTO {
         this.cuenta = cuenta;
     }
 
-    public int getCliente() {
+    public long getCliente() {
         return cliente;
     }
 
-    public void setCliente(int cliente) {
+    public void setCliente(long cliente) {
         this.cliente = cliente;
     }
 

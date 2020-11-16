@@ -12,7 +12,7 @@ package DTO;
 public class UsuarioDTO {
     
     private String id;
-    private int codigo;
+    private long codigo;
     private String contra;
     private String tipo;
     
@@ -20,7 +20,7 @@ public class UsuarioDTO {
     
     }
     
-    public UsuarioDTO(String id, int codigo, String contra, String tipo){
+    public UsuarioDTO(String id, long codigo, String contra, String tipo){
         this.id = id;
         this.codigo = codigo;
         this.contra = contra;
@@ -35,11 +35,11 @@ public class UsuarioDTO {
         this.id = id;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 

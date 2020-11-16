@@ -70,7 +70,7 @@ public class transaccion extends HttpServlet {
             throws ServletException, IOException {
         HttpSession actual = request.getSession();
         Conector cn = new Conector("encender");
-        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
+        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Long.parseLong(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
         if (request.getParameter("cuenta") != null) {
             response.setContentType("text/plain;charset=UTF-8");
             long cuenta = Long.parseLong(request.getParameter("cuenta"));
@@ -127,17 +127,17 @@ public class transaccion extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         HttpSession actual = request.getSession();
         Conector cn = new Conector("encender");
-        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
+        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Long.parseLong(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
         if (retiro != null) {
             if (retiro.equalsIgnoreCase("CLIENTE")) {
                 long cuenta = Long.parseLong(request.getParameter("cuenta"));
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto, hourdateFormat.format(fecha), "D");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, 101, monto, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
-                int codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
                 if (codigoTransaccion != -1) {
                     if (cuentas.actualizarSaldo(cuenta, monto * -1)) {
                         response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
@@ -152,10 +152,10 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "D");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "DEBITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
-                int codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
                 if (codigoTransaccion != -1) {
                     if (cuentas.actualizarSaldo(cuenta, monto * -1)) {
                         response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
@@ -172,10 +172,10 @@ public class transaccion extends HttpServlet {
                 Double monto = Double.parseDouble(request.getParameter("monto"));
                 Date fecha = new Date();
                 DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "C");
+                TransaccionDTO transaccion = new TransaccionDTO(cuenta, usuario.getCodigo(), monto, hourdateFormat.format(fecha), "CREDITO");
                 TransaccionDAO transacciones = new TransaccionDAO(cn);
                 CuentaDAO cuentas = new CuentaDAO(cn);
-                int codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
+                long codigoTransaccion = transacciones.ingresarTransaccionRetorno(transaccion);
                 if (codigoTransaccion != -1) {
                     if (cuentas.actualizarSaldo(cuenta, monto)) {
                         response.getWriter().write(codigoTransaccion + "\n" + hourdateFormat.format(fecha));
@@ -184,6 +184,28 @@ public class transaccion extends HttpServlet {
                     }
                 } else {
                     response.getWriter().write("ERROR: no se cuenta con el saldo suficiente para realizar la transacción");
+                }
+            } else {
+                long origen = Long.parseLong(request.getParameter("origen"));
+                long destino = Long.parseLong(request.getParameter("destino"));
+                Double monto = Double.parseDouble(request.getParameter("monto"));
+                Date fecha = new Date();
+                DateFormat hourdateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                TransaccionDTO debitar = new TransaccionDTO(origen, 101, monto, hourdateFormat.format(fecha), "DEBITO");
+                TransaccionDTO acreditar = new TransaccionDTO(destino, 101, monto, hourdateFormat.format(fecha), "CREDITO");
+                TransaccionDAO transacciones = new TransaccionDAO(cn);
+                CuentaDAO cuentas = new CuentaDAO(cn);
+                long codigoDebitado = transacciones.ingresarTransaccionRetorno(debitar);
+                long codigoAcreditado = transacciones.ingresarTransaccionRetorno(acreditar);
+                
+                if (codigoDebitado != -1 && codigoAcreditado != -1){
+                    if (cuentas.actualizarSaldo(origen, monto*-1) && cuentas.actualizarSaldo(destino, monto)){
+                        response.getWriter().write(codigoDebitado + "\n" + codigoAcreditado +"\n"+ hourdateFormat.format(fecha));
+                    } else {
+                        response.getWriter().write("ERROR: no se actualizaron correctamente los saldos de las cuentas");
+                    }
+                } else {
+                    response.getWriter().write("ERROR: no se pudieron crear las transacciones necesarias");
                 }
             }
         }

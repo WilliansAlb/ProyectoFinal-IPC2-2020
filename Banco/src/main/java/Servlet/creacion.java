@@ -115,9 +115,9 @@ public class creacion extends HttpServlet {
         String monto = request.getParameter("monto");
         AccionDAO accion = new AccionDAO(cn);
         Date fecha2 = new Date();
-        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         UsuarioDTO u = new UsuarioDTO(s.getAttribute("id").toString(),
-                Integer.parseInt(s.getAttribute("codigo").toString()), "", "GERENTE");
+                Long.parseLong(s.getAttribute("codigo").toString()), "", "GERENTE");
         response.setContentType("text/plain;charset=UTF-8");
         if (turno != null) {
             String tipo = request.getParameter("tipo");
@@ -138,7 +138,7 @@ public class creacion extends HttpServlet {
                     contra = generarContra();
                 }
                 if (!cajeros.existeCajero(cajero)) {
-                    int codigo = cajeros.crearCajero(cajero);
+                    long codigo = cajeros.crearCajero(cajero);
                     if (codigo != (-1)) {
                         UsuarioDTO user = new UsuarioDTO("CA" + codigo, codigo, contra, "CAJERO");
                         if (usuario.ingresarUsuario(user)) {
@@ -170,7 +170,7 @@ public class creacion extends HttpServlet {
                     contra = generarContra();
                 }
                 if (!gerentes.existeGerente(gerente)) {
-                    int codigo = gerentes.crearGerente(gerente);
+                    long codigo = gerentes.crearGerente(gerente);
                     if (codigo != (-1)) {
                         UsuarioDTO user = new UsuarioDTO("GE" + codigo, codigo, contra, "GERENTE");
                         if (usuario.ingresarUsuario(user)) {
@@ -212,7 +212,7 @@ public class creacion extends HttpServlet {
                 System.err.print(ex);
             }
             if (!clientes.existeClienteDPI(cliente)) {
-                int codigo = clientes.crearCliente(cliente, archivo);
+                long codigo = clientes.crearCliente(cliente, archivo);
                 if (codigo != (-1)) {
                     UsuarioDTO user = new UsuarioDTO("CL" + codigo, codigo, contra, "CLIENTE");
                     if (usuario.ingresarUsuario(user)) {
@@ -229,7 +229,7 @@ public class creacion extends HttpServlet {
             }
         } else if (monto != null) {
             Double montoCantidad = Double.parseDouble(monto);
-            CuentaDTO cuenta = new CuentaDTO(montoCantidad, Integer.parseInt(request.getParameter("cliente")), request.getParameter("creacion"));
+            CuentaDTO cuenta = new CuentaDTO(montoCantidad, Long.parseLong(request.getParameter("cliente")), request.getParameter("creacion"));
             CuentaDAO cuentas = new CuentaDAO(cn);
 
             long retorno = cuentas.crearCuenta(cuenta);

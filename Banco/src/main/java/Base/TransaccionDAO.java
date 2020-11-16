@@ -24,17 +24,21 @@ public class TransaccionDAO {
     public TransaccionDAO(Conector cn) {
         this.cn = cn.getConexion();
     }
-
+    /**
+     * Método que ingresa la transacción enviada
+     * @param transaccion con todos los datos completos
+     * @return true si se logró ingresar la transacción
+     */
     public boolean ingresarTransaccion(TransaccionDTO transaccion) {
         String sql = "INSERT INTO Transaccion(codigo,cuenta,cajero,monto,creacion,tipo) "
                 + "SELECT ?, ?, ?, ?, ?, ? FROM dual WHERE "
-                + "(SELECT COUNT(*) AS total FROM Cuenta WHERE codigo = ? && credito > ?) > 0 OR ? ='C';";
+                + "(SELECT COUNT(*) AS total FROM Cuenta WHERE codigo = ? && credito > ?) > 0 OR ? ='CREDITO';";
         boolean ingresado = false;
         
         try(PreparedStatement ps = cn.prepareStatement(sql)){
-            ps.setInt(1, transaccion.getCodigo());
+            ps.setLong(1, transaccion.getCodigo());
             ps.setLong(2, transaccion.getCuenta());
-            ps.setInt(3, transaccion.getCajero());
+            ps.setLong(3, transaccion.getCajero());
             ps.setDouble(4, transaccion.getMonto());
             ps.setString(5, transaccion.getCreacion());
             ps.setString(6, transaccion.getTipo());
@@ -54,15 +58,15 @@ public class TransaccionDAO {
      * @param transaccion
      * @return el codigo de la transaccion
      */
-    public int ingresarTransaccionRetorno(TransaccionDTO transaccion) {
+    public long ingresarTransaccionRetorno(TransaccionDTO transaccion) {
         String sql = "INSERT INTO Transaccion(cuenta,cajero,monto,creacion,tipo) "
                 + "SELECT ?, ?, ?, ?, ? FROM dual WHERE "
                 + "(SELECT COUNT(*) AS total FROM Cuenta WHERE codigo = ? && credito > ?) > 0 OR ? ='C';";
-        int ingresado = -1;
+        long ingresado = -1;
         
         try(PreparedStatement ps = cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
             ps.setLong(1, transaccion.getCuenta());
-            ps.setInt(2, transaccion.getCajero());
+            ps.setLong(2, transaccion.getCajero());
             ps.setDouble(3, transaccion.getMonto());
             ps.setString(4, transaccion.getCreacion());
             ps.setString(5, transaccion.getTipo());
@@ -72,32 +76,38 @@ public class TransaccionDAO {
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             while(rs.next()){
-                ingresado = rs.getInt(1);
+                ingresado = rs.getLong(1);
             }
         } catch (SQLException sqle){
             System.err.print("Error en método ingresarTransaccionRetorno() de la clase TransaccionDAO por: "+sqle);
-            System.out.print("Error en método ingresarTransaccionRetorno() de la clase TransaccionDAO por: "+sqle);
         }
         return ingresado;
     }
-    
+    /**
+     * Método que verifica que exista una transacción
+     * @param transaccion
+     * @return true si existe la transacción
+     */
     public boolean existeTransaccion(TransaccionDTO transaccion){
         String sql = "SELECT COUNT(*) AS total FROM Transaccion WHERE codigo = ?";
         boolean ingresado = false;
         
         try(PreparedStatement ps = cn.prepareStatement(sql)){
-            ps.setInt(1, transaccion.getCodigo());
+            ps.setLong(1, transaccion.getCodigo());
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 ingresado = rs.getInt("total") > 0;
             }
         } catch (SQLException sqle){
             System.err.print("Error en método existeTransaccion() de la clase TransaccionDAO por: "+sqle);
-            System.out.print("Error en método existeTransaccion() de la clase TransaccionDAO por: "+sqle);
         }
         return ingresado;
     }
-    
+    /**
+     * Método que obtiene todas las transacciones de una cuenta en especifico
+     * @param cuenta numero de la cuenta
+     * @return listado de todas las transacciones de la cuenta
+     */
     public ArrayList<TransaccionDTO> obtenerTransaccionesCuenta(long cuenta){
         ArrayList<TransaccionDTO> retorno = new ArrayList<>();
         String sql = "SELECT * FROM Transaccion WHERE cuenta = ? ORDER BY creacion DESC";
@@ -105,7 +115,9 @@ public class TransaccionDAO {
             ps.setLong(1, cuenta);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                TransaccionDTO nueva = new TransaccionDTO(rs.getInt("codigo"),cuenta,rs.getInt("cajero"),rs.getDouble("monto"),rs.getString("creacion"),rs.getString("tipo"));
+                TransaccionDTO nueva = new TransaccionDTO(rs.getLong("codigo"),
+                        cuenta,rs.getLong("cajero"),rs.getDouble("monto"),
+                        rs.getString("creacion"),rs.getString("tipo"));
                 retorno.add(nueva);
             }
         } catch (SQLException sqle){

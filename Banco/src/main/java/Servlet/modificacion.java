@@ -96,14 +96,14 @@ public class modificacion extends HttpServlet {
         HttpSession s = request.getSession();
         AccionDAO accion = new AccionDAO(cn);
         Date fecha2 = new Date();
-        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         UsuarioDTO usuario = new UsuarioDTO(s.getAttribute("id").toString(),
-                Integer.parseInt(s.getAttribute("codigo").toString()), "", "GERENTE");
+                Long.parseLong(s.getAttribute("codigo").toString()), "", "GERENTE");
         if (request.getParameter("modificado") != null) {
             String modificado = request.getParameter("modificado");
             if (modificado.equalsIgnoreCase("CAJERO")) {
                 CajeroDAO cajeros = new CajeroDAO(cn);
-                int codigo = Integer.parseInt(request.getParameter("codigo"));
+                long codigo = Long.parseLong(request.getParameter("codigo"));
                 String nombre = encoding(request.getParameter("nombre"));
                 String direccion = encoding(request.getParameter("direccion"));
                 String turno = encoding(request.getParameter("turno"));
@@ -117,7 +117,7 @@ public class modificacion extends HttpServlet {
                 }
             } else if (modificado.equalsIgnoreCase("GERENTE")) {
                 GerenteDAO gerentes = new GerenteDAO(cn);
-                int codigo = Integer.parseInt(request.getParameter("codigo"));
+                long codigo = Long.parseLong(request.getParameter("codigo"));
                 String nombre = encoding(request.getParameter("nombre"));
                 String direccion = encoding(request.getParameter("direccion"));
                 String turno = encoding(request.getParameter("turno"));
@@ -135,7 +135,7 @@ public class modificacion extends HttpServlet {
         } else {
             ClienteDAO clientes = new ClienteDAO(cn);
             ClienteDTO cliente = new ClienteDTO();
-            cliente.setCodigo(Integer.parseInt(request.getParameter("codigo")));
+            cliente.setCodigo(Long.parseLong(request.getParameter("codigo")));
             String fecha = request.getParameter("fecha");
             cliente.setDpi(request.getParameter("dpi"));
             cliente.setNombre(encoding(request.getParameter("nombre")));

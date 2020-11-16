@@ -24,13 +24,17 @@ public class AsociacionDAO {
     public AsociacionDAO(Conector cn) {
         this.cn = cn.getConexion();
     }
-
+    /**
+     * Método que envia la solicitud de asociacion
+     * @param asociacion con todos sus datos, menos el codigo
+     * @return codigo de la solicitud
+     */
     public int enviarSolicitud(AsociacionDTO asociacion) {
         int enviada = -1;
         String sql = "INSERT INTO Asociacion(cuenta,cliente,estado) VALUES (?,?,?)";
 
         try (PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(2, asociacion.getCliente());
+            ps.setLong(2, asociacion.getCliente());
             ps.setLong(1, asociacion.getCuenta());
             ps.setString(3, asociacion.getEstado());
             ps.executeUpdate();
@@ -43,13 +47,17 @@ public class AsociacionDAO {
         }
         return enviada;
     }
-
+    /**
+     * Método que regresa los estados de las solicitudes que tiene en curso
+     * @param asociacion segun cliente y numero de la cuenta
+     * @return listado de estados de las solicitudes
+     */
     public ArrayList<String> estados(AsociacionDTO asociacion) {
         ArrayList<String> retorno = new ArrayList<>();
         String sql = "SELECT estado FROM Asociacion WHERE cliente = ? AND cuenta = ?";
 
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, asociacion.getCliente());
+            ps.setLong(1, asociacion.getCliente());
             ps.setLong(2, asociacion.getCuenta());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -60,16 +68,20 @@ public class AsociacionDAO {
         }
         return retorno;
     }
-
-    public ArrayList<AsociacionDTO> obtenerAsociacionesRecibidas(int cliente) {
+    /**
+     * Método que devuelve todas las solicitudes de asociacion recibidas según sea el codigo del cliente
+     * @param cliente codigo del cliente
+     * @return listado de las solicitudes recibidas
+     */
+    public ArrayList<AsociacionDTO> obtenerAsociacionesRecibidas(long cliente) {
         ArrayList<AsociacionDTO> retorno = new ArrayList<>();
         String sql = "SELECT a.codigo,a.cuenta,a.cliente,a.estado FROM Asociacion a, Cuenta c WHERE c.codigo = a.cuenta AND c.cliente = ? ORDER BY a.codigo DESC";
 
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, cliente);
+            ps.setLong(1, cliente);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                AsociacionDTO temporal = new AsociacionDTO(rs.getInt(1), rs.getLong(2), rs.getInt(3), rs.getString(4));
+                AsociacionDTO temporal = new AsociacionDTO(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4));
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {
@@ -77,15 +89,20 @@ public class AsociacionDAO {
         }
         return retorno;
     }
-    public ArrayList<AsociacionDTO> obtenerAsociacionesRealizadas(int cliente) {
+    /**
+     * Método que obtiene las solicitudes realizadas
+     * @param cliente codigo del cliente
+     * @return listado de las asociaciones realizadas
+     */
+    public ArrayList<AsociacionDTO> obtenerAsociacionesRealizadas(long cliente) {
         ArrayList<AsociacionDTO> retorno = new ArrayList<>();
         String sql = "SELECT a.codigo,a.cuenta,a.cliente,a.estado FROM Asociacion a, Cuenta c WHERE c.codigo = a.cuenta AND a.cliente = ? ORDER BY a.codigo DESC";
 
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, cliente);
+            ps.setLong(1, cliente);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                AsociacionDTO temporal = new AsociacionDTO(rs.getInt(1), rs.getLong(2), rs.getInt(3), rs.getString(4));
+                AsociacionDTO temporal = new AsociacionDTO(rs.getInt(1), rs.getLong(2), rs.getLong(3), rs.getString(4));
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {
@@ -93,6 +110,12 @@ public class AsociacionDAO {
         }
         return retorno;
     }
+    /**
+     * Método que edita el estado de una solicitud de asociacion
+     * @param asociacion entidad que cambiará
+     * @param estado puede ser EN ESPERA, ACEPTADA, RECHAZADA
+     * @return true si se logro editar el estado de la solicitud
+     */
     public boolean editarEstado(int asociacion, String estado){
         String sql = "UPDATE Asociacion SET estado = ? WHERE codigo = ?";
         boolean editado = false;

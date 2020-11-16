@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>El Billeton</title>
-        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
         <title>Perfil</title><link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;700&display=swap" rel="stylesheet"> 
@@ -83,7 +83,7 @@
                         <p>¿Que deseas modificar?</p>
                         <a href="modificarCliente.jsp">Cliente</a>
                         <a href="modificarCajero.jsp">Cajero</a>
-                        <a href="datosGerente.jsp">Datos Personales</a>
+                        <a href="datos.jsp">Datos Personales</a>
                     </div>
                 </div>
             </div>
@@ -161,7 +161,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Realiza transacciones en banca virtual o cajero automatico</p>
-                        <a href="configuracion.jsp">Transferir dinero</a>
+                        <a href="transferencia.jsp">Transferir dinero</a>
                         <a href="retiroCliente.jsp">Cajero automatico</a>
                     </div>
                 </div>

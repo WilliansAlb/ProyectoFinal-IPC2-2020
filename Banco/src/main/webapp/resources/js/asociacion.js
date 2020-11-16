@@ -18,7 +18,7 @@ window.onload = function () {
             },
             success: function (data) {
                 if (data === 'NOEXISTE') {
-                    console.log("hola");
+                    verMensaje("../resources/img/high_priority.svg", "No existe la cuenta que ingresaste", "CUENTA INEXISTENTE");
                 } else if (data === 'PROPIEDAD') {
                     verMensaje("../resources/img/high_priority.svg", "La cuenta que ingresaste es de tu propiedad", "CUENTA PROPIA");
                 } else {

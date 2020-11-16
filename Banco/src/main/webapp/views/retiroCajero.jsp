@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
         <title>Retirar</title>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -39,7 +39,7 @@
                 if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {
                     CajeroDAO trabajando = new CajeroDAO(cn);
                     correcto = true;
-                    turnoCorrecto = trabajando.turnoCorrecto(Integer.parseInt(configuracion.getAttribute("codigo").toString()));
+                    turnoCorrecto = trabajando.turnoCorrecto(Long.parseLong(configuracion.getAttribute("codigo").toString()));
                 } else {
                     response.sendRedirect("home.jsp");
                 }

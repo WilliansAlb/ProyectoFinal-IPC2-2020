@@ -25,7 +25,11 @@ public class CuentaDAO {
     public CuentaDAO(Conector cn) {
         this.cn = cn.getConexion();
     }
-
+    /**
+     * Método que ingresa la cuenta del cliente
+     * @param cuenta con todos los datos
+     * @return true si se ingresó la cuenta
+     */
     public boolean ingresarCuenta(CuentaDTO cuenta) {
         String sql = "INSERT INTO Cuenta(codigo,credito,cliente,creacion) "
                 + " SELECT ?, ?, ?, ?"
@@ -34,18 +38,22 @@ public class CuentaDAO {
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setLong(1, cuenta.getCodigo());
             ps.setDouble(2, cuenta.getCredito());
-            ps.setInt(3, cuenta.getCliente());
+            ps.setLong(3, cuenta.getCliente());
             ps.setString(4, cuenta.getCreacion());
             ps.setLong(5, cuenta.getCodigo());
             ps.executeUpdate();
             ingresado = true;
         } catch (SQLException sqle) {
             System.err.print("Error en método ingresarCuenta() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método ingresarCuenta() de la clase CuentaDAO por: " + sqle);
         }
         return ingresado;
     }
-
+    /**
+     * Método que actualiza el saldo de la cuenta según sea el monto que se envia
+     * @param cuenta el codigo de la cuenta
+     * @param monto la cantidad que se le quitará a la cuenta
+     * @return true si se logró actualizar el saldo
+     */
     public boolean actualizarSaldo(long cuenta, Double monto) {
         String sql = "UPDATE Cuenta SET credito = credito + ? WHERE codigo = ?";
         boolean ingresado = false;
@@ -56,17 +64,20 @@ public class CuentaDAO {
             ingresado = true;
         } catch (SQLException sqle) {
             System.err.print("Error en método actualizarSaldo() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método actualizarSaldo() de la clase CuentaDAO por: " + sqle);
         }
         return ingresado;
     }
-
+    /**
+     * Método que ingresa una cuenta nueva según los datos enviados
+     * @param cuenta con todos los datos completos
+     * @return codigo de la cuenta
+     */
     public long crearCuenta(CuentaDTO cuenta) {
         String sql = "INSERT INTO Cuenta(credito,cliente,creacion) VALUES(?,?,?)";
         long ingresado = -1;
         try (PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setDouble(1, cuenta.getCredito());
-            ps.setInt(2, cuenta.getCliente());
+            ps.setLong(2, cuenta.getCliente());
             ps.setString(3, cuenta.getCreacion());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
@@ -75,11 +86,14 @@ public class CuentaDAO {
             }
         } catch (SQLException sqle) {
             System.err.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método crearCuenta() de la clase CuentaDAO por: " + sqle);
         }
         return ingresado;
     }
-
+    /**
+     * Método que verifica la existencia de la cuenta y devuelve todos los datos
+     * @param cuenta el codigo de la cuenta
+     * @return la cuenta que se busca
+     */
     public CuentaDTO existeCuenta(long cuenta) {
         String sql = "SELECT * FROM Cuenta WHERE codigo = ?";
         CuentaDTO existe = new CuentaDTO();
@@ -87,37 +101,44 @@ public class CuentaDAO {
             ps.setLong(1, cuenta);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                existe = new CuentaDTO(cuenta,rs.getDouble("credito"),rs.getInt("cliente"),rs.getString("creacion"));
+                existe = new CuentaDTO(cuenta,rs.getDouble("credito"),rs.getLong("cliente"),rs.getString("creacion"));
             }
         } catch (SQLException sqle) {
             System.err.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
         }
         return existe;
     }
-    
-    public CuentaDTO existeCuenta(long cuenta, int codigo) {
+    /**
+     * Método que devuelve la cuenta que se busca según el codigo y el número de cuenta
+     * @param cuenta número de cuenta
+     * @param codigo codigo del cliente
+     * @return cuenta completa
+     */
+    public CuentaDTO existeCuenta(long cuenta, long codigo) {
         String sql = "SELECT * FROM Cuenta WHERE codigo = ? AND cliente = ?";
         CuentaDTO existe = new CuentaDTO();
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setLong(1, cuenta);
-            ps.setInt(2, codigo);
+            ps.setLong(2, codigo);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                existe = new CuentaDTO(cuenta,rs.getDouble("credito"),rs.getInt("cliente"),rs.getString("creacion"));
+                existe = new CuentaDTO(cuenta,rs.getDouble("credito"),rs.getLong("cliente"),rs.getString("creacion"));
             }
         } catch (SQLException sqle) {
             System.err.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método existeCuenta() de la clase CuentaDAO por: " + sqle);
         }
         return existe;
     }
-
-    public ArrayList<CuentaDTO> obtenerCuentas(int codigo) {
+    /**
+     * Método que devuelve todas las cuentas que el cliente tiene
+     * @param codigo del cliente
+     * @return lista de las cuentas del cliente
+     */
+    public ArrayList<CuentaDTO> obtenerCuentas(long codigo) {
         String sql = "SELECT * FROM Cuenta WHERE cliente = ?";
         ArrayList<CuentaDTO> cuentas = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, codigo);
+            ps.setLong(1, codigo);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 CuentaDTO temporal = new CuentaDTO(rs.getLong("codigo"), rs.getDouble("credito"), codigo, rs.getString("creacion"));
@@ -126,25 +147,28 @@ public class CuentaDAO {
 
         } catch (SQLException sqle) {
             System.err.print("Error en método obtenerCuentas() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método obtenerCuentas() de la clase CuentaDAO por: " + sqle);
         }
         return cuentas;
     }
-    public ArrayList<CuentaDTO> obtenerCuentasAsociadas(int codigo) {
+    /**
+     * Método que devuelve todas las cuentas de las que está asociado el cliente
+     * @param codigo del cliente
+     * @return listado de cuentas asociadas
+     */
+    public ArrayList<CuentaDTO> obtenerCuentasAsociadas(long codigo) {
         String sql = "SELECT c.codigo, c.credito, c.cliente, c.creacion FROM Asociacion a, Cuenta c WHERE a.cliente = ? AND a.cuenta = c.codigo AND a.estado = ?;";
         ArrayList<CuentaDTO> cuentas = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, codigo);
+            ps.setLong(1, codigo);
             ps.setString(2, "ACEPTADA");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                CuentaDTO temporal = new CuentaDTO(rs.getLong(1), rs.getDouble(2), rs.getInt(3), rs.getString(4));
+                CuentaDTO temporal = new CuentaDTO(rs.getLong(1), rs.getDouble(2), rs.getLong(3), rs.getString(4));
                 cuentas.add(temporal);
             }
 
         } catch (SQLException sqle) {
             System.err.print("Error en método obtenerCuentasAsociadas() de la clase CuentaDAO por: " + sqle);
-            System.out.print("Error en método obtenerCuentasAsociadas() de la clase CuentaDAO por: " + sqle);
         }
         return cuentas;
     }

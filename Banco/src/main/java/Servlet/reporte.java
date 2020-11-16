@@ -100,7 +100,7 @@ public class reporte extends HttpServlet {
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         AccionDAO acciones = new AccionDAO(cn);
-                        List<AccionDTO> notasUsuario = acciones.listadoAcciones(Integer.parseInt(s.getAttribute("codigo").toString()), entidad);
+                        List<AccionDTO> notasUsuario = acciones.listadoAcciones(Long.parseLong(s.getAttribute("codigo").toString()), entidad);
 
                         File file = new File(request.getServletContext().getRealPath("/resources/reportes/HistorialAcciones.jrxml"));
                         JasperReport jasperReports = JasperCompileManager.compileReport(file.getAbsolutePath());
@@ -108,7 +108,7 @@ public class reporte extends HttpServlet {
 
                         Map<String, Object> parameters = new HashMap<>();
                         parameters.put("reporte", "HISTORIAL DE CAMBIOS REALIZADOS A ENTIDAD");
-                        parameters.put("gerente", Integer.parseInt(s.getAttribute("codigo").toString()));
+                        parameters.put("gerente", Long.parseLong(s.getAttribute("codigo").toString()));
                         parameters.put("entidad", entidad);
                         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReports, parameters, dataSource);
                         JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());

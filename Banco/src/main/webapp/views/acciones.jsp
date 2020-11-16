@@ -13,7 +13,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
         <title>Historial de acciones</title>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -48,7 +48,7 @@
         <%if (correcto) {
                 Conector cn = new Conector("encender");
                 AccionDAO controladorAcciones = new AccionDAO(cn);
-                ArrayList<AccionDTO> acciones = controladorAcciones.listadoAcciones(Integer.parseInt(sesionAcciones.getAttribute("codigo").toString()));
+                ArrayList<AccionDTO> acciones = controladorAcciones.listadoAcciones(Long.parseLong(sesionAcciones.getAttribute("codigo").toString()));
         %>
         <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>

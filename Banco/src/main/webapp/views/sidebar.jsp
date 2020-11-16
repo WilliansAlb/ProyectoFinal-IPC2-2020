@@ -18,9 +18,10 @@
     <a href="modificarCliente.jsp" class="w3-bar-item"><img src="../resources/img/editar.svg" width="20%">Modificar cliente</a>
     <a href="modificarCajero.jsp" class="w3-bar-item"><img src="../resources/img/editar.svg" width="20%">Modificar cajero</a>
     <a href="configuracion.jsp" class="w3-bar-item"><img src="../resources/img/settings.svg" width="20%">Configuracion</a>
+    <a href="acciones.jsp" class="w3-bar-item"><img src="../resources/img/017-tasks-2.svg" width="20%">Reporte de acciones</a>
     <a href="#" class="w3-bar-item"><img src="../resources/img/survey.svg" width="20%">Reportes</a>
     <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {%>
-    <a href="#" class="w3-bar-item"><img src="../resources/img/009-transfer.svg" width="20%">Transferir dinero</a>
+    <a href="transferencia.jsp" class="w3-bar-item"><img src="../resources/img/009-transfer.svg" width="20%">Transferir dinero</a>
     <a href="retiroCliente.jsp" class="w3-bar-item"><img src="../resources/img/cajero-automatico.svg" width="20%">Cajero automático</a>
     <a href="asociar.jsp" class="w3-bar-item"><img src="../resources/img/020-handshake.svg" width="20%">Solicitar asociación</a>
     <a href="asociaciones.jsp" class="w3-bar-item"><img src="../resources/img/conference_call.svg" width="20%">Solicitudes de asociación</a>

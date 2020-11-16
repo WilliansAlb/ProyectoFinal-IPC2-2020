@@ -11,9 +11,9 @@ package DTO;
  */
 public class TransaccionDTO {
     
-    private int codigo;
+    private long codigo;
     private long cuenta;
-    private int cajero;
+    private long cajero;
     private Double monto;
     private String creacion;
     private String tipo;
@@ -27,7 +27,7 @@ public class TransaccionDTO {
      * @param creacion
      * @param tipo 
      */
-    public TransaccionDTO(int codigo, long cuenta, int cajero, Double monto, String creacion, String tipo){
+    public TransaccionDTO(long codigo, long cuenta, long cajero, Double monto, String creacion, String tipo){
         this.codigo = codigo;
         this.cuenta = cuenta;
         this.cajero = cajero;
@@ -43,7 +43,7 @@ public class TransaccionDTO {
      * @param creacion
      * @param tipo 
      */
-    public TransaccionDTO(long cuenta, int cajero, Double monto, String creacion, String tipo){
+    public TransaccionDTO(long cuenta, long cajero, Double monto, String creacion, String tipo){
         this.cuenta = cuenta;
         this.cajero = cajero;
         this.monto = monto;
@@ -51,11 +51,11 @@ public class TransaccionDTO {
         this.tipo = tipo;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 
@@ -67,11 +67,11 @@ public class TransaccionDTO {
         this.cuenta = cuenta;
     }
 
-    public int getCajero() {
+    public long getCajero() {
         return cajero;
     }
 
-    public void setCajero(int cajero) {
+    public void setCajero(long cajero) {
         this.cajero = cajero;
     }
 

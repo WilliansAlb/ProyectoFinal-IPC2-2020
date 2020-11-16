@@ -11,7 +11,7 @@ package DTO;
  */
 public class CajeroDTO {
     
-    private int codigo;
+    private long codigo;
     private String nombre;
     private String sexo;
     private String turno;
@@ -22,7 +22,7 @@ public class CajeroDTO {
         
     }
     /**
-     * Constructor de la entidad Cajero
+     * Constructor de la entidad Cajero con datos completos
      * @param codigo 
      * @param nombre
      * @param sexo
@@ -30,7 +30,7 @@ public class CajeroDTO {
      * @param dpi
      * @param direccion 
      */
-    public CajeroDTO(int codigo,String nombre,String sexo,String turno,String dpi,String direccion){
+    public CajeroDTO(long codigo,String nombre,String sexo,String turno,String dpi,String direccion){
         this.codigo = codigo;
         this.nombre = nombre;
         this.sexo = sexo;
@@ -38,8 +38,15 @@ public class CajeroDTO {
         this.dpi = dpi;
         this.direccion = direccion;
     }
-    
-    public CajeroDTO(int codigo,String nombre,String sexo,String turno,String direccion){
+    /**
+     * Constructor que crea entidad con los siguientes parametros
+     * @param codigo
+     * @param nombre
+     * @param sexo
+     * @param turno
+     * @param direccion 
+     */
+    public CajeroDTO(long codigo,String nombre,String sexo,String turno,String direccion){
         this.codigo = codigo;
         this.nombre = nombre;
         this.sexo = sexo;
@@ -47,11 +54,11 @@ public class CajeroDTO {
         this.direccion = direccion;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 

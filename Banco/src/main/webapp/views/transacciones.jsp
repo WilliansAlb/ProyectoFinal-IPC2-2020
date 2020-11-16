@@ -120,6 +120,8 @@
                 </div>
             </div>
         </div>
+
+        <%@include file='footer.html' %>
         <%
                 sesionRetiro.setAttribute("noCuenta", null);
                 sesionRetiro.removeAttribute("noCuenta");

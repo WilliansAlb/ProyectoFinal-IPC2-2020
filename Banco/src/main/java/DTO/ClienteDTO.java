@@ -11,7 +11,7 @@ package DTO;
  */
 public class ClienteDTO {
     
-    private int codigo;
+    private long codigo;
     private String nombre;
     private String sexo;
     private String fecha;
@@ -22,7 +22,7 @@ public class ClienteDTO {
     
     }
     
-    public ClienteDTO(int codigo, String nombre, String fecha, String dpi, String direccion, String sexo){
+    public ClienteDTO(long codigo, String nombre, String fecha, String dpi, String direccion, String sexo){
         this.codigo = codigo;
         this.nombre = nombre;
         this.fecha = fecha;
@@ -31,11 +31,11 @@ public class ClienteDTO {
         this.sexo = sexo;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 

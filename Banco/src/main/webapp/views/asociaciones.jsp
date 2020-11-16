@@ -13,7 +13,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
         <title>Asociar</title>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -50,8 +50,8 @@
         <%if (correcto) {
                 Conector cn = new Conector("encender");
                 AsociacionDAO asociaciones = new AsociacionDAO(cn);
-                ArrayList<AsociacionDTO> asociacion = asociaciones.obtenerAsociacionesRecibidas(Integer.parseInt(sesionAsociaciones.getAttribute("codigo").toString()));
-                ArrayList<AsociacionDTO> asociacion2 = asociaciones.obtenerAsociacionesRealizadas(Integer.parseInt(sesionAsociaciones.getAttribute("codigo").toString()));
+                ArrayList<AsociacionDTO> asociacion = asociaciones.obtenerAsociacionesRecibidas(Long.parseLong(sesionAsociaciones.getAttribute("codigo").toString()));
+                ArrayList<AsociacionDTO> asociacion2 = asociaciones.obtenerAsociacionesRealizadas(Long.parseLong(sesionAsociaciones.getAttribute("codigo").toString()));
                 boolean mensaje = false;
         %>
         <%@include file="sidebar.jsp" %>

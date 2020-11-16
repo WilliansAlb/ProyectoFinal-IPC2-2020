@@ -69,7 +69,7 @@ public class asociacion extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         HttpSession actual = request.getSession();
         Conector cn = new Conector("encender");
-        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
+        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Long.parseLong(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
         if (request.getParameter("busqueda") != null) {
             long cuenta = Long.parseLong(request.getParameter("busqueda"));
             CuentaDAO cuentas = new CuentaDAO(cn);
@@ -92,7 +92,7 @@ public class asociacion extends HttpServlet {
         } else {
             if (request.getParameter("cliente") != null) {
                 ClienteDAO cliente = new ClienteDAO(cn);
-                int codigo = Integer.parseInt(request.getParameter("cliente"));
+                long codigo = Long.parseLong(request.getParameter("cliente"));
                 ClienteDTO nuevo = new ClienteDTO();
                 nuevo.setCodigo(codigo);
                 ClienteDTO obtenido = cliente.obtenerClienteConCodigo(nuevo);
@@ -130,7 +130,7 @@ public class asociacion extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         HttpSession actual = request.getSession();
         Conector cn = new Conector("encender");
-        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Integer.parseInt(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
+        UsuarioDTO usuario = new UsuarioDTO(actual.getAttribute("id").toString(), Long.parseLong(actual.getAttribute("codigo").toString()), "", actual.getAttribute("tipo").toString());
 
         String tipo = request.getParameter("tipo");
         if (tipo.equalsIgnoreCase("ENVIAR")) {

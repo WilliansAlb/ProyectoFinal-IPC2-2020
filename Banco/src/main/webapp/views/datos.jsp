@@ -16,7 +16,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/bank.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
         <title>Datos personales</title>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -41,7 +41,7 @@
             Conector cn = new Conector("encender");
             if (sesionModificarCliente.getAttribute("tipo").toString().equalsIgnoreCase("GERENTE")) {
                 GerenteDAO gerentes = new GerenteDAO(cn);
-                GerenteDTO gerente = gerentes.obteniendoDatosPersonales(Integer.parseInt(sesionModificarCliente.getAttribute("codigo").toString()));
+                GerenteDTO gerente = gerentes.obteniendoDatosPersonales(Long.parseLong(sesionModificarCliente.getAttribute("codigo").toString()));
         %>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" >
@@ -163,7 +163,7 @@
     </script>                     
     <%} else if (sesionModificarCliente.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {
         CajeroDAO cajeros = new CajeroDAO(cn);
-        CajeroDTO cajero = cajeros.obteniendoDatosPersonales(Integer.parseInt(sesionModificarCliente.getAttribute("codigo").toString()));
+        CajeroDTO cajero = cajeros.obteniendoDatosPersonales(Long.parseLong(sesionModificarCliente.getAttribute("codigo").toString()));
         String sexo = "Masculino";
         String turno = "Matutino";
     %>
@@ -236,7 +236,7 @@
     </div>
     <%} else if (sesionModificarCliente.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {
         ClienteDAO clientes = new ClienteDAO(cn);
-        ClienteDTO cliente = clientes.obtenerClienteConCodigo(Integer.parseInt(sesionModificarCliente.getAttribute("codigo").toString()));
+        ClienteDTO cliente = clientes.obtenerClienteConCodigo(Long.parseLong(sesionModificarCliente.getAttribute("codigo").toString()));
         String sexo = "Masculino";
     %>
     <div id="contenedorCuenta" class="crear">
