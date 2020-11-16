@@ -27,7 +27,7 @@
         <div class="bienvenida"></div>
         <div id="carga">
             <center>
-                <img src="../resources/img/bank.png" width="7%" height="auto" id="logo">
+                <img src="../resources/img/033-savings.svg" width="7%" height="auto" id="logo">
                 <br>
                 <label for="logo" style="font-weight: 900; font-size: 2em;color: white;">Banco El Billeton</label>
                 <hr width="50%">

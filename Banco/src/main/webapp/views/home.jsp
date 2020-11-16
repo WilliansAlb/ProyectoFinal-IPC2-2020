@@ -97,7 +97,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver y exportar tus reportes</p>
-                        <a href="reporte.jsp">Ir</a>
+                        <a href="generado.jsp">Ir</a>
                     </div>
                 </div>
             </div>

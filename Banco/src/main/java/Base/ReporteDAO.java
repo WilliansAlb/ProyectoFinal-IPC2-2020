@@ -35,7 +35,7 @@ public class ReporteDAO {
     public ArrayList<CajeroDTO> obtenerCajeroMasTransacciones(String fechaD, String fechaH) {
         ArrayList<CajeroDTO> retorno = new ArrayList<>();
         String sql = "SELECT COUNT(t.cajero) AS total, c.codigo, c.nombre, c.turno, c.sexo, c.direccion, c.dpi "
-                + "FROM Transaccion t INNER JOIN Cajero c ON (t.cajero = c.codigo) WHERE t.creacion BETWEEN ? AND ? "
+                + "FROM Transaccion t INNER JOIN Cajero c ON (t.cajero = c.codigo) WHERE DATE(t.creacion) BETWEEN ? AND ? "
                 + "GROUP BY t.cajero ORDER BY total DESC";
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, fechaD);
@@ -77,8 +77,8 @@ public class ReporteDAO {
     }
 
     /**
-     * Método que devuelve la sumatoria de las transacciones de sus cuentas y esa sumatoria es
-     * mayor al limite
+     * Método que devuelve la sumatoria de las transacciones de sus cuentas y
+     * esa sumatoria es mayor al limite
      *
      * @return listado de clientes
      */
@@ -93,6 +93,51 @@ public class ReporteDAO {
             while (rs.next()) {
                 ClienteDTO temporal = new ClienteDTO(rs.getLong(1), rs.getString(2), rs.getString(6), rs.getString(3), rs.getString(5), rs.getString(4));
                 temporal.setMontoMayor(rs.getDouble(7));
+                retorno.add(temporal);
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método obtenerCajeroMasTransacciones() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+
+    public ArrayList<ClienteDTO> clientesConMásDineroEnCuentas() {
+        ArrayList<ClienteDTO> retorno = new ArrayList<>();
+        String sql = "SELECT SUM(c.credito) AS suma, cl.nombre , cl.codigo, cl.sexo, cl.nacimiento, cl.dpi, cl.direccion "
+                + "FROM Cuenta c, Cliente cl "
+                + "WHERE cl.codigo = c.cliente "
+                + "GROUP BY cl.codigo "
+                + "ORDER BY suma "
+                + "DESC LIMIT 10";
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ClienteDTO temporal = new ClienteDTO(rs.getLong(3), rs.getString(2), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4));
+                temporal.setMontoMayor(rs.getDouble(1));
+                retorno.add(temporal);
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método obtenerCajeroMasTransacciones() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+    /**
+     * Método para obtener las 15 transacciones más grandes de una cuenta
+     * @param codigo de la cuenta
+     * @return listado de las 15 transacciones más grandes
+     */
+    public ArrayList<TransaccionDTO> obtener15Transacciones(long codigo) {
+        String sql = "SELECT codigo, cuenta, cajero, ABS(monto), creacion, tipo FROM Transaccion "
+                + "WHERE YEAR(DATE(creacion)) = YEAR(CURDATE()) AND cuenta = ? "
+                + "ORDER BY ABS(monto) DESC LIMIT 15";
+        ArrayList<TransaccionDTO> retorno = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, codigo);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TransaccionDTO temporal = new TransaccionDTO(rs.getLong(1),rs.getLong(2),
+                        rs.getLong(3),rs.getDouble(4),
+                        rs.getString(5),rs.getString(6));
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {

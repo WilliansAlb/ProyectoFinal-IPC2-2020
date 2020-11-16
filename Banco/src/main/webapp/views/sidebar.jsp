@@ -19,7 +19,7 @@
     <a href="modificarCajero.jsp" class="w3-bar-item"><img src="../resources/img/editar.svg" width="20%">Modificar cajero</a>
     <a href="configuracion.jsp" class="w3-bar-item"><img src="../resources/img/settings.svg" width="20%">Configuracion</a>
     <a href="acciones.jsp" class="w3-bar-item"><img src="../resources/img/017-tasks-2.svg" width="20%">Reporte de acciones</a>
-    <a href="#" class="w3-bar-item"><img src="../resources/img/survey.svg" width="20%">Reportes</a>
+    <a href="generado.jsp" class="w3-bar-item"><img src="../resources/img/survey.svg" width="20%">Reportes</a>
     <%} else if (sInicio.getAttribute("tipo").toString().equalsIgnoreCase("CLIENTE")) {%>
     <a href="transferencia.jsp" class="w3-bar-item"><img src="../resources/img/009-transfer.svg" width="20%">Transferir dinero</a>
     <a href="retiroCliente.jsp" class="w3-bar-item"><img src="../resources/img/cajero-automatico.svg" width="20%">Cajero automático</a>
