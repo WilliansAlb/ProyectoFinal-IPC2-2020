@@ -166,4 +166,21 @@ public class GerenteDAO {
         }
         return correcto;
     }
+    /**
+     * Método para lograr entrar a la applicacion
+     * @return true si existen datos en base
+     */
+    public boolean entrar() {
+        String sql = "SELECT COUNT(*) AS total FROM Gerente";
+        boolean correcto = false;
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                correcto = rs.getInt("total") > 0;
+            }
+        } catch (SQLException sqle) {
+            System.err.print("Error en método entrar() de la clase GerenteDAO por: " + sqle);
+        }
+        return correcto;
+    }
 }

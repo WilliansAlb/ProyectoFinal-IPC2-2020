@@ -4,6 +4,8 @@
     Author     : yelbetto
 --%>
 
+<%@page import="Base.GerenteDAO"%>
+<%@page import="Base.Conector"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,11 +14,19 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%HttpSession s = request.getSession();%>
+        <%
+            HttpSession s = request.getSession();
+            Conector cn = new Conector("encender");
+            GerenteDAO existe = new GerenteDAO(cn);
+            if (existe.entrar()) {
+        %>
         <%if (s.getAttribute("usuario") == null) {%>
         <% response.sendRedirect("views/login.jsp"); %>
         <%} else {%>
-        <% response.sendRedirect("views/carga.jsp");%>
+        <% response.sendRedirect("views/home.jsp");%>
         <%}%>
+        <%} else {
+                response.sendRedirect("views/carga.jsp");
+            }%>
     </body>
 </html>
