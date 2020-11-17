@@ -83,7 +83,7 @@
                             <div id="tablaAcciones" style="display: none;">
                                 <%}%>
                                 <h4 style="font-weight: 900; color: white;">Listado de acciones</h4>
-                                <a href="../reporte?tipo=2&filtro=" download="acciones.pdf" id="linkDescarga" style="display:none;color:#5264AE;">Exportar a PDF</a>
+                                <a href="../reporte?tipo=G1&filtro=" download="acciones.pdf" id="linkDescarga" style="display:none;color:#5264AE;">Exportar a PDF</a>
                                 <table class="tablaDatos" id="hechas" width="95%">
                                     <thead>
                                         <tr>
@@ -174,7 +174,7 @@
                             for (let fila of filas) {
                                 if (fila.className === 'accionCliente') {
                                     $("#linkDescarga").show();
-                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=CLIENTE";
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=G1&filtro=CLIENTE";
                                     existen = true;
                                     fila.style.display = "";
                                 } else {
@@ -185,7 +185,7 @@
                             for (let fila of filas) {
                                 if (fila.className === 'accionCajero') {
                                     $("#linkDescarga").show();
-                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=CAJERO";
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=G1&filtro=CAJERO";
                                     existen = true;
                                     fila.style.display = "";
                                 } else {
@@ -196,7 +196,7 @@
                             for (let fila of filas) {
                                 if (fila.className === 'accionGerente') {
                                     $("#linkDescarga").show();
-                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=GERENTE";
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=G1&filtro=GERENTE";
                                     existen = true;
                                     fila.style.display = "";
                                 } else {
@@ -207,7 +207,7 @@
                             for (let fila of filas) {
                                 if (fila.className === 'accionConfiguracion') {
                                     $("#linkDescarga").show();
-                                    document.getElementById("linkDescarga").href = "../reporte?tipo=2&filtro=CONFIGURACION";
+                                    document.getElementById("linkDescarga").href = "../reporte?tipo=G1&filtro=CONFIGURACION";
                                     console.log("encuentra");
                                     existen = true;
                                     fila.style.display = "";

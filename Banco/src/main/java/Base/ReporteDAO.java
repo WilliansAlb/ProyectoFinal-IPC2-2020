@@ -174,8 +174,12 @@ public class ReporteDAO {
         }
         return retorno;
     }
+
     /**
-     * Método para el reporte de Listado de todas las transacciones realizadas dentro de un intervalo de tiempo mostrando el cambio del dinero de la cuenta por cada transacción
+     * Método para el reporte de Listado de todas las transacciones realizadas
+     * dentro de un intervalo de tiempo mostrando el cambio del dinero de la
+     * cuenta por cada transacción
+     *
      * @param codigo el codigo del cliente
      * @param fecha1 fecha inicio del intervalo
      * @param fecha2 fecha final del intervalo
@@ -184,7 +188,7 @@ public class ReporteDAO {
     public ArrayList<TransaccionDTO> obtenerTransaccionesSaldoAnteriorActual(long codigo, String fecha1, String fecha2) {
         String sql = "SELECT t.codigo, t.cuenta, t.cajero,t.creacion, t.tipo, h.anterior,t.monto,h.actual FROM Transaccion t,Cuenta cu, Historial h "
                 + "WHERE t.codigo = h.transaccion AND t.cuenta = cu.codigo AND cu.cliente = ? "
-                + "AND DATE(t.creacion) BETWEEN ? AND ?";
+                + "AND DATE(t.creacion) BETWEEN ? AND ? ORDER BY t.creacion DESC";
         ArrayList<TransaccionDTO> retorno = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setLong(1, codigo);
@@ -192,7 +196,7 @@ public class ReporteDAO {
             ps.setString(3, fecha2);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                TransaccionDTO temporal = new TransaccionDTO(rs.getLong(1),rs.getLong(2),rs.getLong(3),rs.getDouble(7),rs.getString(4),rs.getString(5));
+                TransaccionDTO temporal = new TransaccionDTO(rs.getLong(1), rs.getLong(2), rs.getLong(3), rs.getDouble(7), rs.getString(4), rs.getString(5));
                 temporal.setAnterior(rs.getDouble(6));
                 temporal.setActual(rs.getDouble(8));
                 retorno.add(temporal);
@@ -202,13 +206,16 @@ public class ReporteDAO {
         }
         return retorno;
     }
+
     /**
-     * Método para obtener la cuenta que tiene más dinero de un cliente en especifico
+     * Método para obtener la cuenta que tiene más dinero de un cliente en
+     * especifico
+     *
      * @param codigo
      * @return cuenta con todos los datos llenos
      */
-    public CuentaDTO obtenerCuentaConMásDinero(long codigo){
-        String sql ="SELECT * FROM Cuenta WHERE cliente = ? ORDER BY credito DESC LIMIT 1";
+    public CuentaDTO obtenerCuentaConMásDinero(long codigo) {
+        String sql = "SELECT * FROM Cuenta WHERE cliente = ? ORDER BY credito DESC LIMIT 1";
         CuentaDTO retorno = new CuentaDTO();
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setLong(1, codigo);
@@ -224,26 +231,92 @@ public class ReporteDAO {
         }
         return retorno;
     }
+
     /**
-     * Método que devuelve las transacciones de una cuenta desde una fecha en especifico hasta la fecha en curso
+     * Método que devuelve las transacciones de una cuenta desde una fecha en
+     * especifico hasta la fecha en curso
+     *
      * @param cuenta
      * @param fecha
      * @return listado de transacciones
      */
     public ArrayList<TransaccionDTO> obtenerTransaccionesDesdeHastaFechaActual(long cuenta, String fecha) {
-        String sql = "SELECT * FROM Transaccion WHERE cuenta = ? AND DATE(creacion) BETWEEN ? AND DATE(CURDATE());";
+        String sql = "SELECT * FROM Transaccion WHERE cuenta = ? AND DATE(creacion) BETWEEN ? AND DATE(CURDATE()) ORDER BY creacion DESC;";
         ArrayList<TransaccionDTO> retorno = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setLong(1, cuenta);
             ps.setString(2, fecha);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                TransaccionDTO temporal = new TransaccionDTO(rs.getLong("codigo"),rs.getLong("cuenta"),
-                        rs.getLong("cajero"),rs.getDouble("monto"),rs.getString("creacion"),rs.getString("tipo"));
+                TransaccionDTO temporal = new TransaccionDTO(rs.getLong("codigo"), rs.getLong("cuenta"),
+                        rs.getLong("cajero"), rs.getDouble("monto"), rs.getString("creacion"), rs.getString("tipo"));
                 retorno.add(temporal);
             }
         } catch (SQLException sqle) {
             System.err.print("ERROR: en método obtenerTransaccionesDesdeHastaFechaActual() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+    /**
+     * Método para rellenar el reporte de Listado de las transacciones realizadas por día en un intervalo de tiempo, mostrando el balance final
+     * @param cajero
+     * @param fecha1
+     * @param fecha2
+     * @return listado de balance final
+     */
+    public ArrayList<BalanceDTO> obtenerBalanceFinal(long cajero, String fecha1, String fecha2) {
+        String sql = "SELECT DATE(creacion) AS fecha, cajero AS cCajero,"
+                + " (SELECT IFNULL(SUM(ABS(monto)),0) FROM Transaccion"
+                + " WHERE tipo = 'DEBITO' AND DATE(creacion) = fecha AND cajero = cCajero) AS retiros,"
+                + " (SELECT IFNULL(SUM(ABS(monto)),0) FROM Transaccion"
+                + " WHERE tipo = 'CREDITO' AND DATE(creacion) = fecha AND cajero = cCajero) AS depositos,"
+                + " (SELECT depositos - retiros FROM dual) AS balance FROM Transaccion"
+                + " WHERE DATE(creacion) BETWEEN ? AND ? AND cajero = ? GROUP BY DATE(creacion);";
+        ArrayList<BalanceDTO> retorno = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(3, cajero);
+            ps.setString(1, fecha1);
+            ps.setString(2, fecha2);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                BalanceDTO nuevo = new BalanceDTO();
+                nuevo.setFecha(rs.getString(1));
+                nuevo.setCajero(cajero);
+                nuevo.setRetiro(rs.getDouble(3));
+                nuevo.setDeposito(rs.getDouble(4));
+                nuevo.setBalance(rs.getDouble(5));
+                nuevo.setTransacciones(obtenerTransaccionesSegúnDía(cajero,rs.getString(1)));
+                retorno.add(nuevo);
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método obtenerBalanceFinal() en clase ReporteDAO por " + sqle);
+        }
+        return retorno;
+    }
+    /**
+     * Método que devuelve las transacciones según el día 
+     * @param codigo
+     * @param fecha
+     * @return listado de las transacciones
+     */
+    public ArrayList<TransaccionDTO> obtenerTransaccionesSegúnDía(long codigo, String fecha) {
+        String sql = "SELECT codigo, cuenta, monto, creacion, tipo FROM Transaccion WHERE cajero = ? AND DATE(creacion) = ?";
+        ArrayList<TransaccionDTO> retorno = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setLong(1, codigo);
+            ps.setString(2, fecha);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TransaccionDTO temporal = new TransaccionDTO();
+                temporal.setCodigo(rs.getLong(1));
+                temporal.setCuenta(rs.getLong(2));
+                temporal.setMonto(rs.getDouble(3));
+                temporal.setCreacion(rs.getString(4));
+                temporal.setTipo(rs.getString(5));
+                retorno.add(temporal);
+            }
+        } catch (SQLException sqle) {
+            System.err.print("ERROR: en método obtener15Transacciones() en clase ReporteDAO por " + sqle);
         }
         return retorno;
     }

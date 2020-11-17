@@ -97,7 +97,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver y exportar tus reportes</p>
-                        <a href="generado.jsp">Ir</a>
+                        <a href="reporte.jsp">Ir</a>
                     </div>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver y exportar tus reportes</p>
-                        <a href="#">Ir</a>
+                        <a href="reporte.jsp">Ir</a>
                     </div>
                 </div>
             </div>
@@ -222,7 +222,7 @@
                 <div class="face face2">
                     <div class="content">
                         <p>Ver y exportar tus reportes</p>
-                        <a href="#">Ir</a>
+                        <a href="reporte.jsp">Ir</a>
                     </div>
                 </div>
             </div>

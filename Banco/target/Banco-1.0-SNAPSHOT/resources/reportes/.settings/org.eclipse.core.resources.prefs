@@ -1,3 +1,14 @@
 eclipse.preferences.version=1
 encoding/reporte10.jrxml=UTF-8
+encoding/reporte15.jrxml=UTF-8
+encoding/reporteAsociacionRealizada.jrxml=UTF-8
+encoding/reporteAsociacionRecibida.jrxml=UTF-8
+encoding/reporteBalance.jrxml=UTF-8
+encoding/reporteCajeroMas.jrxml=UTF-8
+encoding/reporteClienteSin.jrxml=UTF-8
+encoding/reporteCuentaMasDinero.jrxml=UTF-8
+encoding/reporteLimiteMayor.jrxml=UTF-8
+encoding/reporteTransaccionesCambio.jrxml=UTF-8
 encoding/subreporte10.jrxml=UTF-8
+encoding/subreporte15.jrxml=UTF-8
+encoding/subreporteBalance.jrxml=UTF-8

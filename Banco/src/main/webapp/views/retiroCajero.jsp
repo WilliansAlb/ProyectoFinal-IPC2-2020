@@ -38,8 +38,12 @@
             if (configuracion.getAttribute("tipo") != null) {
                 if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {
                     CajeroDAO trabajando = new CajeroDAO(cn);
-                    correcto = true;
-                    turnoCorrecto = trabajando.turnoCorrecto(Long.parseLong(configuracion.getAttribute("codigo").toString()));
+                    if (configuracion.getAttribute("codigo").toString().equalsIgnoreCase("101")) {
+                        response.sendRedirect("home.jsp");
+                    } else {
+                        correcto = true;
+                        turnoCorrecto = trabajando.turnoCorrecto(Long.parseLong(configuracion.getAttribute("codigo").toString()));
+                    }
                 } else {
                     response.sendRedirect("home.jsp");
                 }
@@ -51,8 +55,8 @@
         <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
         <%
-            if (turnoCorrecto){
-            HttpSession sesionRetiroCajero = request.getSession();
+            if (turnoCorrecto) {
+                HttpSession sesionRetiroCajero = request.getSession();
         %>
         <div id="contenedorCuenta" class="crear">
             <div class="contenedorFlex" id="busquedaCuenta">
@@ -135,8 +139,8 @@
     </center>
     <%@include file='footer.html' %>
     <script>
-        function cerrar(boton){
-            if (boton.textContent === 'CERRAR'){
+        function cerrar(boton) {
+            if (boton.textContent === 'CERRAR') {
                 var con = boton.parentNode;
                 var con2 = con.parentNode;
                 con2.style.display = "none";

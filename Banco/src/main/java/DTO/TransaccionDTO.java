@@ -52,6 +52,9 @@ public class TransaccionDTO {
         this.creacion = creacion;
         this.tipo = tipo;
     }
+    
+    public TransaccionDTO(){
+    }
 
     public long getCodigo() {
         return codigo;

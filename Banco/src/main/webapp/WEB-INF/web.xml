@@ -40,6 +40,10 @@
         <servlet-name>reporteGerente</servlet-name>
         <servlet-class>Servlet.reporteGerente</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>redireccion</servlet-name>
+        <servlet-class>Servlet.redireccion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>asociacion</servlet-name>
         <url-pattern>/asociacion</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>reporteGerente</servlet-name>
         <url-pattern>/reporteGerente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>redireccion</servlet-name>
+        <url-pattern>/redireccion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

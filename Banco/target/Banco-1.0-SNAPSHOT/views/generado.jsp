@@ -4,6 +4,9 @@
     Author     : yelbetto
 --%>
 
+<%@page import="DTO.ConfiguracionDTO"%>
+<%@page import="Base.ConfiguracionDAO"%>
+<%@page import="DTO.BalanceDTO"%>
 <%@page import="Base.TransaccionDAO"%>
 <%@page import="DTO.AsociacionDTO"%>
 <%@page import="Base.AsociacionDAO"%>
@@ -20,7 +23,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Reporte</title>
+        <title>Reporte generado</title>
         <link rel="shortcut icon" type="image/x-icon" href="../resources/img/033-savings.svg" />
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -39,6 +42,19 @@
     <body>
         <%@include file='sidebar.jsp'%>
         <div class="bienvenida"></div>
+        <%
+            HttpSession s = request.getSession();
+            boolean correcto = false;
+            if (s.getAttribute("tipo") != null) {
+                if (s.getAttribute("reporte") != null) {
+                    correcto = true;
+                } else {
+                    response.sendRedirect("reporte.jsp");
+                }
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
         <div class="crear">
             <div class="contenedorFlex">
                 <div class="ingreso" style="width: 95%;">
@@ -51,12 +67,27 @@
                             CuentaDAO cuentas = new CuentaDAO(cn);
                             AsociacionDAO asociaciones = new AsociacionDAO(cn);
                             TransaccionDAO transacciones = new TransaccionDAO(cn);
+                            ConfiguracionDAO settings = new ConfiguracionDAO(cn);
+                            if (correcto) {
+                                String t = s.getAttribute("tipo").toString();
+                                String codigo = s.getAttribute("codigo").toString();
+                                String rep = s.getAttribute("reporte").toString();
+                                s.setAttribute("reporte", null);
+                                s.removeAttribute("reporte");
+                                if (t.equalsIgnoreCase("GERENTE")) {
+                                    if (rep.equalsIgnoreCase("G2")) {
                         %>
                         <div id="reporteG2">
-                            <h2 style="font-weight: 900; color: white;">Clientes con transacciones monetarias mayores a un limite establecido</h2>
+                            <%
+                                ConfiguracionDTO sett = settings.obtenerConfiguracion();
+                                Double limite_menor = sett.getLimite_menor();
+                            %>
+                            <h2 style="font-weight: 900; color: white;">Clientes con transacciones monetarias mayores a <%out.print(limite_menor);%></h2>
                             <%
                                 ArrayList<ClienteDTO> clientes = reporte.clientesTransaccionesMayoresALimiteMenor();
+                                if (clientes.size() > 0) {
                             %>
+                            <a href="../reporte?tipo=G2" download="reporteLimiteMenor.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;text-align: center;">
                                 <thead>
                                     <tr>
@@ -85,12 +116,26 @@
                                     <%}%>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("G3")) {%>
                         <div id="reporteG3">
-                            <h2 style="font-weight: 900; color: white;">Clientes con transacciones monetarias sumadas mayores a un límite establecido</h2>
+                            <%
+                                ConfiguracionDTO sett = settings.obtenerConfiguracion();
+                                Double limite_mayor = sett.getLimite_mayor();
+                            %>
+                            <h2 style="font-weight: 900; color: white;">Clientes con transacciones monetarias sumadas mayores a un límite establecido <%out.print(limite_mayor);%></h2>
                             <%
                                 ArrayList<ClienteDTO> clientes2 = reporte.clientesTransaccionesMayoresALimiteMayor();
+                                if (clientes2.size() > 0) {
                             %>
+                            <a href="../reporte?tipo=G3" download="reporteLimiteMayor.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;text-align: center;">
                                 <thead>
                                     <tr>
@@ -119,13 +164,22 @@
                                     <%}%>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("G4")) {%>
                         <div id="reporteG4">
-                            <h2 style="font-weight: 900; color: white;">Los 10 clientes con más dinero en sus cuentas</h2>
+                            <h2 style="font-weight: 900; color: grey;">Los 10 clientes con más dinero en sus cuentas</h2>
                             <%
                                 ArrayList<ClienteDTO> clientes3 = reporte.clientesConMásDineroEnCuentas();
+                                if (clientes3.size() > 0) {
                             %>
-                            <a href="../reporte?tipo=1" download="prueba1.pdf">DESCARGAR</a>
+                            <a href="../reporte?tipo=G4" download="reporte10cuentas.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;text-align: center;">
                                 <thead>
                                     <tr>
@@ -184,12 +238,30 @@
                                 <%}%>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("G5")) {%>
+                        <%
+                            String fecha1 = s.getAttribute("fecha1").toString();
+                            String fecha2 = s.getAttribute("fecha2").toString();
+                            s.setAttribute("fecha1", null);
+                            s.setAttribute("fecha2", null);
+                            s.removeAttribute("fecha1");
+                            s.removeAttribute("fecha2");
+                        %>
                         <div id="reporteG5">
-                            <h2 style="font-weight: 900; color: white;">Clientes sin transacciones en un intervalo de tiempo</h2>
+                            <h2 style="font-weight: 900; color: white;">Clientes sin transacciones entre <%out.print(fecha1);%> y <%out.print(fecha2);%></h2>
                             <%
-                                ArrayList<ClienteDTO> clientesG5 = reporte.clientesSinTransaccionesIntervalo("1998-07-21", "2020-11-16");
+                                ArrayList<ClienteDTO> clientesG5 = reporte.clientesSinTransaccionesIntervalo(fecha1, fecha2);
+                                if (clientesG5.size() > 0) {
                             %>
+                            <a href="../reporte?tipo=G5&fecha1=<%out.print(fecha1);%>&fecha2=<%out.print(fecha2);%>" download="reporteClientesSin.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;text-align: center;">
                                 <thead>
                                     <tr>
@@ -218,12 +290,31 @@
                                     <%}%>
                                 </tbody>
                             </table>
+
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("G7")) {%>
+                        <%
+                            String fecha1 = s.getAttribute("fecha1").toString();
+                            String fecha2 = s.getAttribute("fecha2").toString();
+                            s.setAttribute("fecha1", null);
+                            s.setAttribute("fecha2", null);
+                            s.removeAttribute("fecha1");
+                            s.removeAttribute("fecha2");
+                        %>
                         <div id="reporteG7">
-                            <h2 style="font-weight: 900; color: white;">Cajero que más transacciones ha realizado en un intervalo de tiempo</h2>
+                            <h2 style="font-weight: 900; color: white;">Cajero que más transacciones ha realizado en un intervalo de tiempo <%out.print(fecha1);%> y <%out.print(fecha2);%></h2>
                             <%
-                                ArrayList<CajeroDTO> cajeros = reporte.obtenerCajeroMasTransacciones("1998-11-11", "2020-11-16");
+                                ArrayList<CajeroDTO> cajeros = reporte.obtenerCajeroMasTransacciones(fecha1, fecha2);
+                                if (cajeros.size() > 0) {
                             %>
+                            <a href="../reporte?tipo=G7&fecha1=<%out.print(fecha1);%>&fecha2=<%out.print(fecha2);%>" download="reporteCajerosMas.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;text-align: center;">
                                 <thead>
                                     <tr>
@@ -252,12 +343,105 @@
                                     <%}%>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
+
                         </div>
+                        <%
+                            }
+                        } else if (t.equalsIgnoreCase("CAJERO")) {
+                            if (rep.equalsIgnoreCase("CA2")) {
+                        %>
+                        <%
+                            String fecha1 = s.getAttribute("fecha1").toString();
+                            String fecha2 = s.getAttribute("fecha2").toString();
+                            s.setAttribute("fecha1", null);
+                            s.setAttribute("fecha2", null);
+                            s.removeAttribute("fecha1");
+                            s.removeAttribute("fecha2");
+                        %>
+                        <div id="reporteCA2">
+                            <h2 style="font-weight: 900; color: white;">Listado de las transacciones realizadas por día en un intervalo de tiempo, mostrando el balance final</h2>
+                            <%
+                                ArrayList<BalanceDTO> balances = reporte.obtenerBalanceFinal(Long.parseLong(codigo), fecha1, fecha2);
+                                if (balances.size() > 0) {
+                            %>
+
+                            <a href="../reporte?tipo=CA2&fecha1=<%out.print(fecha1);%>&fecha2=<%out.print(fecha2);%>" download="reporteBalance.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
+                            <table class="tablaDatos tablas" style="width:95%;text-align: center;">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Balance</th>
+                                        <th>Deposito</th>
+                                        <th>Retiro</th>
+                                        <th>Transacciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%for (int i = 0; i < balances.size(); i++) {
+                                            BalanceDTO temporal = balances.get(i);
+                                    %>
+                                    <tr>
+                                        <td><%out.print(temporal.getFecha());%></td>
+                                        <td><%out.print(temporal.getBalance());%></td>
+                                        <td><%out.print(temporal.getDeposito());%></td>
+                                        <td><%out.print(temporal.getRetiro());%></td>
+                                        <td><table class="tablaDatos tablas" style="width:100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Codigo</th>
+                                                        <th>Monto</th>
+                                                        <th>Cuenta</th>
+                                                        <th>Creacion</th>
+                                                        <th>Tipo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%
+                                                        ArrayList<TransaccionDTO> tra = temporal.getTransacciones();
+                                                        for (int x = 0; x < tra.size(); x++) {
+                                                            TransaccionDTO temporalTra = tra.get(x);
+                                                    %>
+                                                    <tr>
+                                                        <td><%out.print(x + 1);%></td>
+                                                        <td><%out.print(temporalTra.getCodigo());%></td>
+                                                        <td><%out.print(temporalTra.getMonto());%></td>
+                                                        <td><%out.print(temporalTra.getCuenta());%></td>
+                                                        <td><%out.print(temporalTra.getCreacion());%></td>
+                                                        <td><%out.print(temporalTra.getTipo());%></td>
+                                                    </tr>
+                                                    <%}%>
+                                                </tbody>
+                                            </table></td>
+                                    </tr>
+                                    <%}%>
+                                </tbody>
+                            </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
+                        </div>
+                        <%}%>
+                        <%} else if (t.equalsIgnoreCase("CLIENTE")) {
+                            if (rep.equalsIgnoreCase("C1")) {%>
                         <div id="reporteC1">
                             <h2 style="font-weight: 900; color: white;">Las últimas 15 transacciones más grandes realizadas en el último año, por cuenta</h2>
                             <%
-                                ArrayList<CuentaDTO> cuentasCliente = cuentas.obtenerCuentas(Long.parseLong("7874552312345"));
+                                ArrayList<CuentaDTO> cuentasCliente = cuentas.obtenerCuentas(Long.parseLong(codigo));
+                                if (cuentasCliente.size() > 0) {
                             %>
+                            <a href="../reporte?tipo=C1" download="reporte15.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;text-align: center;">
                                 <thead>
                                     <tr>
@@ -309,17 +493,38 @@
                                     <%}%>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("C2")) {%>
                         <div id="reporteC2">
                             <%
-                                ArrayList<TransaccionDTO> tra2 = reporte.obtenerTransaccionesSaldoAnteriorActual(Long.parseLong("7874552312345"), "2020-11-11", "2020-11-16");
+                                String fecha1 = s.getAttribute("fecha1").toString();
+                                String fecha2 = s.getAttribute("fecha2").toString();
+                                s.setAttribute("fecha1", null);
+                                s.setAttribute("fecha2", null);
+                                s.removeAttribute("fecha1");
+                                s.removeAttribute("fecha2");
                             %>
-                            <h4 style="font-weight: 900; color: white;">Listado de todas las transacciones realizadas dentro de un intervalo de tiempo mostrando el cambio del dinero de la cuenta por cada transacción</h4>
+                            <%
+                                ArrayList<TransaccionDTO> tra2 = reporte.obtenerTransaccionesSaldoAnteriorActual(Long.parseLong(codigo), fecha1, fecha2);
+                            %>
+                            <h4 style="font-weight: 900; color: white;">Listado de todas las transacciones realizadas entre <%out.print(fecha1);%> y <%out.print(fecha2);%> mostrando el cambio del dinero de la cuenta por cada transacción</h4>
+                            <%
+                                if (tra2.size() > 0) {
+                            %>
+                            <a href="../reporte?tipo=C2&fecha1=<%out.print(fecha1);%>&fecha2=<%out.print(fecha2);%>" download="reporteCuentaMas.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Codigo</th>
+                                        <th>Codigo transaccion</th>
+                                        <th>Cuenta</th>
                                         <th>Cajero</th>
                                         <th>Creacion</th>
                                         <th>Tipo</th>
@@ -336,6 +541,7 @@
                                     <tr>
                                         <td><%out.print(x + 1);%></td>
                                         <td><%out.print(temporalTra.getCodigo());%></td>
+                                        <td><%out.print(temporalTra.getCuenta());%></td>
                                         <td><%out.print(temporalTra.getCajero());%></td>
                                         <td><%out.print(temporalTra.getCreacion());%></td>
                                         <td><%out.print(temporalTra.getTipo());%></td>
@@ -346,12 +552,26 @@
                                     <%}%>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("C3")) {%>
+                        <%
+                            String fecha1 = s.getAttribute("fecha1").toString();
+                            s.setAttribute("fecha1", null);
+                            s.removeAttribute("fecha1");
+                        %>
                         <div id="reporteC3">
-                            <h2 style="font-weight: 900; color: white;">La cuenta con más dinero y sus transacciones con una fecha inicio a ingresar y la fecha en curso como limite superior</h2>
+                            <h2 style="font-weight: 900; color: white;">La cuenta con más dinero y sus transacciones desde <%out.print(fecha1);%> hasta hoy</h2>
                             <%
-                                CuentaDTO cuentasCliente2 = reporte.obtenerCuentaConMásDinero(Long.parseLong("7874552312345"));
+                                CuentaDTO cuentasCliente2 = reporte.obtenerCuentaConMásDinero(Long.parseLong(codigo));
                             %>
+                            <a href="../reporte?tipo=C3&fecha1=<%out.print(fecha1);%>" download="reporteCuentaMas.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos tablas" style="width:95%;text-align: center;">
                                 <thead>
                                     <tr>
@@ -380,7 +600,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <%
-                                                        ArrayList<TransaccionDTO> tra = reporte.obtenerTransaccionesDesdeHastaFechaActual(cuentasCliente2.getCodigo(),"2020-01-01");
+                                                        ArrayList<TransaccionDTO> tra = reporte.obtenerTransaccionesDesdeHastaFechaActual(cuentasCliente2.getCodigo(), fecha1);
                                                         for (int x = 0; x < tra.size(); x++) {
                                                             TransaccionDTO temporalTra = tra.get(x);
                                                     %>
@@ -400,16 +620,20 @@
                                 </tbody>
                             </table>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("C4")) {%>
                         <div id="reporteC4">
-                            <%
-                                ArrayList<AsociacionDTO> asociacion = asociaciones.obtenerAsociacionesRecibidas(Long.parseLong("75416"));
-                            %>
                             <h4 style="font-weight: 900; color: white;">Reporte listado de solicitudes de asociación de cuenta recibidas con su estado</h4>
+                            <%
+                                ArrayList<AsociacionDTO> asociacion = asociaciones.obtenerAsociacionesRecibidas(Long.parseLong(codigo));
+                                if (asociacion.size() > 0) {
+                            %>
+                            <a href="../reporte?tipo=C4" download="reporteRecibidas.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos" id="realizadas" width="95%">
                                 <thead>
                                     <tr>
                                         <th>CODIGO</th>
                                         <th>NO DE CUENTA</th>
+                                        <th>SOLICITANTE</th>
                                         <th>ESTADO</th>
                                     </tr>
                                 </thead>
@@ -426,6 +650,7 @@
                                         <%}%>
                                         <td><%out.print(temporal.getCodigo());%></td>
                                         <td><%out.print(temporal.getCuenta());%></td>
+                                        <td><%out.print(temporal.getCliente());%></td>
                                         <td><%out.print(temporal.getEstado());%></td>
                                     </tr>
                                     <%
@@ -433,12 +658,22 @@
                                     %>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%} else if (rep.equalsIgnoreCase("C5")) {%>
                         <div id="reporteC5">
+                            <h2 style="font-weight: 900; color: grey;">Reporte listado de solicitudes de asociación de cuenta realizadas con su estado</h2>
                             <%
-                                ArrayList<AsociacionDTO> asociacion2 = asociaciones.obtenerAsociacionesRealizadas(Long.parseLong("75416"));
+                                ArrayList<AsociacionDTO> asociacion2 = asociaciones.obtenerAsociacionesRealizadas(Long.parseLong(codigo));
+                                if (asociacion2.size() > 0) {
                             %>
-                            <h4 style="font-weight: 900; color: white;">Reporte listado de solicitudes de asociación de cuenta recibidas con su estado</h4>
+                            <a href="../reporte?tipo=C5" download="reporteRealizadas.pdf" style="color:#5264AE;font-size: 1.5em;">EXPORTAR A PDF</a>
                             <table class="tablaDatos" id="realizadas" width="95%">
                                 <thead>
                                     <tr>
@@ -467,11 +702,22 @@
                                     %>
                                 </tbody>
                             </table>
+                            <%} else {%>
+                            <div id="tablaSinResultados">
+                                <img src="../resources/img/questions.svg">
+                                <h1 style="font-weight: 900; color: white;">SIN RESULTADOS</h1>
+                                <p style="color: grey;">Los datos para este reporte no generaron ningun registro para el reporte</p>
+                            </div>
+                            <%}%>
                         </div>
+                        <%}
+                            }%>
                 </div>
                 </center>
+                <%}%>
             </div>
         </div>
     </div>
+    <%@include file='footer.html' %>
 </body>
 </html>
