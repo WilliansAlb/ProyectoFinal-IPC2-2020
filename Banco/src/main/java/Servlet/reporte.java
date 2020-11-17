@@ -80,7 +80,6 @@ public class reporte extends HttpServlet {
                     response.setContentType("application/pdf");
                     Conector cn = new Conector();
                     if (cn.conectar()) {
-                        CuentaDAO cuentas = new CuentaDAO(cn);
                         File file = new File(request.getServletContext().getRealPath("/resources/reportes/reporte10.jrxml"));
                         JasperReport jasperReports = JasperCompileManager.compileReport(file.getAbsolutePath());
                         Map<String, Object> parameters = new HashMap<>();
@@ -128,12 +127,10 @@ public class reporte extends HttpServlet {
                 }
             } else if (tipo2.equalsIgnoreCase("G2")) {
                 try {
-                    String entidad = request.getParameter("filtro");
                     response.setContentType("application/pdf");
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         ReporteDAO reporte = new ReporteDAO(cn);
-                        AccionDAO acciones = new AccionDAO(cn);
                         ConfiguracionDAO confi = new ConfiguracionDAO(cn);
                         ConfiguracionDTO con = confi.obtenerConfiguracion();
                         List<ClienteDTO> notasUsuario = reporte.clientesTransaccionesMayoresALimiteMenor();
@@ -164,7 +161,6 @@ public class reporte extends HttpServlet {
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         ReporteDAO reporte = new ReporteDAO(cn);
-                        AccionDAO acciones = new AccionDAO(cn);
                         ConfiguracionDAO confi = new ConfiguracionDAO(cn);
                         ConfiguracionDTO con = confi.obtenerConfiguracion();
                         List<ClienteDTO> notasUsuario = reporte.clientesTransaccionesMayoresALimiteMayor();
@@ -196,9 +192,6 @@ public class reporte extends HttpServlet {
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         ReporteDAO reporte = new ReporteDAO(cn);
-                        AccionDAO acciones = new AccionDAO(cn);
-                        ConfiguracionDAO confi = new ConfiguracionDAO(cn);
-                        ConfiguracionDTO con = confi.obtenerConfiguracion();
                         List<ClienteDTO> notasUsuario = reporte.clientesSinTransaccionesIntervalo(fecha1, fecha2);
 
                         File file = new File(request.getServletContext().getRealPath("/resources/reportes/reporteClienteSin.jrxml"));
@@ -229,9 +222,6 @@ public class reporte extends HttpServlet {
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         ReporteDAO reporte = new ReporteDAO(cn);
-                        AccionDAO acciones = new AccionDAO(cn);
-                        ConfiguracionDAO confi = new ConfiguracionDAO(cn);
-                        ConfiguracionDTO con = confi.obtenerConfiguracion();
                         List<CajeroDTO> notasUsuario = reporte.obtenerCajeroMasTransacciones(fecha1, fecha2);
 
                         File file = new File(request.getServletContext().getRealPath("/resources/reportes/reporteCajeroMas.jrxml"));
@@ -262,9 +252,6 @@ public class reporte extends HttpServlet {
                     if (cn.conectar()) {
                         long codigo = Long.parseLong(s.getAttribute("codigo").toString());
                         ReporteDAO reporte = new ReporteDAO(cn);
-                        AccionDAO acciones = new AccionDAO(cn);
-                        ConfiguracionDAO confi = new ConfiguracionDAO(cn);
-                        ConfiguracionDTO con = confi.obtenerConfiguracion();
                         CuentaDTO cuenta = reporte.obtenerCuentaConMásDinero(codigo);
                         List<TransaccionDTO> transacciones = reporte.obtenerTransaccionesDesdeHastaFechaActual(cuenta.getCodigo(), fecha1);
 
@@ -300,10 +287,6 @@ public class reporte extends HttpServlet {
                     if (cn.conectar()) {
                         long codigo = Long.parseLong(s.getAttribute("codigo").toString());
                         ReporteDAO reporte = new ReporteDAO(cn);
-                        AccionDAO acciones = new AccionDAO(cn);
-                        ConfiguracionDAO confi = new ConfiguracionDAO(cn);
-                        ConfiguracionDTO con = confi.obtenerConfiguracion();
-                        CuentaDTO cuenta = reporte.obtenerCuentaConMásDinero(codigo);
                         List<TransaccionDTO> transacciones = reporte.obtenerTransaccionesSaldoAnteriorActual(codigo, fecha1, fecha2);
 
                         File file = new File(request.getServletContext().getRealPath("/resources/reportes/reporteTransaccionesCambio.jrxml"));
@@ -332,7 +315,6 @@ public class reporte extends HttpServlet {
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         long codigo = Long.parseLong(s.getAttribute("codigo").toString());
-                        ReporteDAO reporte = new ReporteDAO(cn);
                         AsociacionDAO asociaciones = new AsociacionDAO(cn);
                         List<AsociacionDTO> asos = asociaciones.obtenerAsociacionesRecibidas(codigo);
 
@@ -360,7 +342,6 @@ public class reporte extends HttpServlet {
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         long codigo = Long.parseLong(s.getAttribute("codigo").toString());
-                        ReporteDAO reporte = new ReporteDAO(cn);
                         AsociacionDAO asociaciones = new AsociacionDAO(cn);
                         List<AsociacionDTO> asos = asociaciones.obtenerAsociacionesRealizadas(codigo);
 
@@ -388,7 +369,6 @@ public class reporte extends HttpServlet {
                     Conector cn = new Conector();
                     if (cn.conectar()) {
                         long codigo = Long.parseLong(s.getAttribute("codigo").toString());
-                        CuentaDAO cuentas = new CuentaDAO(cn);
                         File file = new File(request.getServletContext().getRealPath("/resources/reportes/reporte15.jrxml"));
                         JasperReport jasperReports = JasperCompileManager.compileReport(file.getAbsolutePath());
                         Map<String, Object> parameters = new HashMap<>();
@@ -396,7 +376,6 @@ public class reporte extends HttpServlet {
                         parameters.put("coCliente", codigo);
                         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReports, parameters, cn.getConexion());
                         JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
-
                         response.getOutputStream().flush();
                         response.getOutputStream().close();
                     }
@@ -413,8 +392,6 @@ public class reporte extends HttpServlet {
                     response.setContentType("application/pdf");
                     Conector cn = new Conector();
                     if (cn.conectar()) {
-                        long codigo = Long.parseLong(s.getAttribute("codigo").toString());
-                        CuentaDAO cuentas = new CuentaDAO(cn);
                         File file = new File(request.getServletContext().getRealPath("/resources/reportes/reporteBalance.jrxml"));
                         JasperReport jasperReports = JasperCompileManager.compileReport(file.getAbsolutePath());
                         Map<String, Object> parameters = new HashMap<>();

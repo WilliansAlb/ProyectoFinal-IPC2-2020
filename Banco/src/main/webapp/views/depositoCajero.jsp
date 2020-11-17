@@ -38,8 +38,12 @@
             if (configuracion.getAttribute("tipo") != null) {
                 if (configuracion.getAttribute("tipo").toString().equalsIgnoreCase("CAJERO")) {
                     CajeroDAO trabajando = new CajeroDAO(cn);
-                    correcto = true;
-                    turnoCorrecto = trabajando.turnoCorrecto(Long.parseLong(configuracion.getAttribute("codigo").toString()));
+                    if (configuracion.getAttribute("codigo").toString().equalsIgnoreCase("101")) {
+                        response.sendRedirect("home.jsp");
+                    } else {
+                        correcto = true;
+                        turnoCorrecto = trabajando.turnoCorrecto(Long.parseLong(configuracion.getAttribute("codigo").toString()));
+                    }
                 } else {
                     response.sendRedirect("home.jsp");
                 }
